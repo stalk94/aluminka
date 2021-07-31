@@ -1,0 +1,210 @@
+body {
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: rgba(28, 29, 30, 1);
+    color:white;
+}
+main {
+    padding-top: 1%;
+}
+section {
+    padding-left: 3%;
+    padding-right: 3%;
+}
+footer {
+    background-color: #151616;
+    text-align: center;
+}
+
+.coop {
+    background-color: #030303;
+    padding-top: 8px;
+    width: 100%;
+    height: 3%;
+}
+.line {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.column {
+    display:grid;
+}
+
+/* sections */
+.catalog {
+    display: flex;
+}
+section.three {
+    background-color: #151616;
+}
+
+/* top nav */
+.one-nav {
+    background-color: black;
+    display: flex;
+}
+.lang {
+    flex: 4 1 auto;
+}
+.email {
+    flex: 1 1 auto;
+}
+.call {
+    flex: 1 1 auto;
+}
+
+.two-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.navigation {
+    cursor: pointer;
+    text-align: center;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+.navigation:hover {
+    text-align: center;
+    color: red;
+}
+
+
+/* buttons */
+.button {
+    cursor: pointer;
+    border: 1px solid white;
+    border-radius: 5px;
+    min-width: 10%;
+    height: 3%;
+    padding: 5px;
+    text-align: center;
+    box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.35);
+}
+.button:hover {
+    border: 1px solid rgb(161, 10, 10);
+    border-radius: 5px;
+    min-width: 10%;
+    padding: 5px;
+    height: 3%;
+    text-align: center;
+    box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.35);
+}
+.red-button {
+    cursor: pointer;
+    background-color: brown;
+    color: white;
+    border-radius: 5px;
+    min-width: 10%;
+    height: 4%;
+    padding: 7px;
+    text-align: center;
+    box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.35);
+}
+.red-button:hover {
+    cursor: pointer;
+    background-color: brown;
+    color: rgb(248, 126, 126);
+    border-radius: 5px;
+    min-width: 10%;
+    height: 4%;
+    padding: 7px;
+    text-align: center;
+    box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.35);
+}
+.fiolet-button {
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    border: 1px solid #565B90;
+}
+.fiolet-button:hover {
+    cursor: pointer;
+    background-color: #565B90;
+    border-radius: 5px;
+    text-align: center;
+    border: 1px solid #565B90;
+}
+
+
+input {
+    background-color: rgba(128, 128, 128, 0);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    padding-top: 1%;
+    padding-bottom: 1%;
+    margin-top: 1%;
+    width: 35%;
+    color: rgb(131, 130, 130);
+    border-radius: 5px;
+}
+input[type=submit] {
+    cursor: pointer;
+    background-color: rgba(128, 128, 128, 0);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    width: 15%;
+    margin-left: 10%;
+    color: white;
+}
+input[type=submit]:hover {
+    cursor: pointer;
+    background-color: rgba(128, 128, 128, 0);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    width: 15%;
+    margin-left: 10%;
+    color: rgba(199, 24, 24, 0.836);
+}
+input[name=text] {
+    padding-top: 10px;
+    padding-bottom: 40px;
+}
+
+
+h1 {
+    font-size: 50px;
+}
+p {
+    padding-left: 5px;
+}
+
+
+.bottom-swipe {
+    cursor: pointer;
+    padding-bottom: 50px;
+}
+.swiper-container {
+    width: 100%;
+    height: 100%;
+}
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: rgb(148, 146, 146);
+    box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.35);
+
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.swiper-container {
+    width: 100%;
+    height: 300px;
+    margin: 20px auto;
+}
