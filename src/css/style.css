@@ -9,10 +9,6 @@ body {
 main {
     padding-top: 1%;
 }
-section {
-    padding-left: 3%;
-    padding-right: 3%;
-}
 footer {
     background-color: #151616;
     text-align: center;
@@ -37,8 +33,15 @@ footer {
 .catalog {
     display: flex;
 }
+section.two {
+    background-color: #151616;
+    padding-left: 3%;
+    padding-right: 3%;
+}
 section.three {
     background-color: #151616;
+    padding-left: 3%;
+    padding-right: 3%;
 }
 
 /* top nav */
@@ -117,9 +120,13 @@ section.three {
 }
 .fiolet-button {
     cursor: pointer;
+    width: 50%;
+    height: 3.7%;
+    margin: 2px;
     border-radius: 5px;
     text-align: center;
-    border: 1px solid #565B90;
+    border: 2px solid #565B90;
+    color: #565B90;
 }
 .fiolet-button:hover {
     cursor: pointer;
@@ -127,6 +134,10 @@ section.three {
     border-radius: 5px;
     text-align: center;
     border: 1px solid #565B90;
+    color: white;
+    width: 50%;
+    height: 3.7%;
+    margin: 2px;
 }
 
 
@@ -207,4 +218,22 @@ p {
     width: 100%;
     height: 300px;
     margin: 20px auto;
+}
+
+.grid {
+    padding: 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "col, col, col"
+                         "col, col, col";
+    grid-column-gap: 30px;
+    grid-row-gap: 30px;
+}
+.nav-cart {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.35);
+    width: 100%;
+    height: 200px;
 }

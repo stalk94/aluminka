@@ -1,7 +1,10 @@
 
 
 class Main {
-    constructor() {
+    constructor(category) {
+        
+    }
+    headText() {
 
     }
     category() {

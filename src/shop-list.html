@@ -1,0 +1,105 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=IANAcharset">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/shop-list.css">
+
+    <script src="jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="modules/engine.js"></script>
+
+    <title>Aluminka</title>
+</head>
+
+
+<body>
+    <header>
+        <nav class="one-nav line">
+            <div class="lang line" style="margin-left:2%;">
+                <p class="navigation" to="ru">рус </p>
+                <p> | </p>
+                <p class="navigation" to="ua">укр</p>
+            </div>
+            
+            <div class="email line">
+                <img src="img/chat.svg" style="margin-right:3px;"></img>
+                <p>aluminka.com@gmail.com</p>
+            </div>
+            
+            <div class="call line">
+                <img src="img/call.svg" style="margin-right:3px;"></img>
+                <p>+38(093) 237 58 55;</p> 
+                <p>+38(097) 814 68 64</p>
+            </div>
+        </nav>
+
+        <nav class="two-nav line" style="z-index:2;position:relative;">
+            <p class="navigation" to="glav">Главная</p>
+            <p class="navigation" to="catalog">Каталог</p>
+            <p class="navigation" to="pay">Оплата и доставка</p>
+            <p class="navigation" to="uslugi">Услуги</p>
+            <p class="navigation" to="contact">Контакты</p>
+        </nav>
+        
+        <img width="100%" src="img/top_fon.png" style="margin-top:-52px;"></img>  
+    </header>
+
+
+    <main>
+        <!-- info section -->
+        <section class="one info">
+            
+        </section>
+        <section class="two">
+            <aside class="story"></aside>
+
+            <div class="swiper-container swypeList">
+                <div class="swiper-wrapper list">
+                    <div class="swiper-slide">list 1</div>
+                    <div class="swiper-slide">list 2</div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+        <section class="three">
+            <h2>Выгодные предложения:</h2>
+
+            <div #swiperRef="" class="swiper-container bottom-swipe">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">Slide 1</div>
+                    <div class="swiper-slide">Slide 2</div>
+                    <div class="swiper-slide">Slide 3</div>
+                    <div class="swiper-slide">Slide 4</div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+
+
+        <section>
+            <div style="padding-left: 40%;">
+                <h2 style="padding-left:1%;">Остались вопросы?</h2>
+                <form class="column">
+                    <input type="text" name="name" placeholder="Ваше имя:">
+                    <input type="email" name="email" placeholder="Ваш email:">
+                    <input type="text" name="text" placeholder="Ваш вопрос:">
+                    <input type="submit" placeholder="Отправить">
+                </form>
+            </div>
+        </section>
+    </main>
+    
+
+    <footer>
+        <section>footer</section>
+        <section class="coop">ТОВ Алюминка - производство алюминиевых профилей © 2021</section>
+    </footer>
+
+    
+    <script src="index.js"></script>
+</body>
