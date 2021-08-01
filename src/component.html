@@ -1,0 +1,71 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=IANAcharset">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" href="src/css/style.css">
+    <link rel="stylesheet" href="src/css/tovar-cart.css">
+    <script src="src/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.1/svg.min.js" integrity="sha512-Aj0P6wguH3GVlCfbvTyMM90Zq886ePyMEYlZooRfx+3wcSYyUa6Uv4iAjoJ7yiWdKamqQzKp7yr/TkMQ8EEWbQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+
+<body>
+    <!-- [cart] -->
+    <div class="tovar-cart line">
+        <img class="tovar-img" src="src/img/load/test.png"></img>
+        <div class="tovar-right">
+            <b class="p-1">Дверная алюминиевая коробка скрытого монтажа</b>
+            <div class="p-1">
+                Дверная алюминиевая коробка скрытого монтажа, изготовлена из 
+                лучшего..
+            </div>
+            <div class="line">
+                <div class="column price" style="margin-top:2%;">
+                    <div class="price-old">2 400$</div>
+                    <div class="price-new">2 300$</div>
+                </div>
+                <div class="column" style="flex:1;margin-top:2%;padding-left:15%;">
+                    <div class="fiolet-button" style="height:65%;margin-bottom:2%;">Купить</div>
+                    <div class="green-button">В закладки</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- [cart-mini] -->
+    <div class="tovar-cart story line">
+        <img class="tovar-img" src="src/img/load/test.png"></img>
+        <div class="tovar-right">
+            <b class="p-1">Дверная алюминиевая коробка скрытого монтажа</b>
+            <div class="p-1">
+                Дверная алюминиевая коробка скрытого монтажа, изготовлена из 
+                лучшего..
+            </div>
+            <div class="line">
+                <div class="column price" style="margin-top:2%;">
+                    <div class="price-old">2 400$</div>
+                    <div class="price-new">2 300$</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- [ap/sub] -->
+    <div class="ap-sub line">
+        <script>
+            function pubSub(elem) {
+                let val = +$(elem).siblings("output").text()
+
+                if(elem.id==="sub") val--
+                else if(elem.id==="ap") val++
+
+                $(elem).siblings("output").text(val)
+            }
+        </script>
+
+        <div id="sub" onClick="pubSub(this)">-</div>
+        <output> 0 </output>
+        <div id="ap" onClick="pubSub(this)">+</div>
+    </div>
+</body>

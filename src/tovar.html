@@ -5,6 +5,7 @@
     
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tovar-cart.css">
     <link rel="stylesheet" href="css/tovar.css">
     <script src="jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
@@ -50,27 +51,76 @@
             <div class="galery">
                 <div class="swiper-container swiperTovar" style="--swiper-navigation-color:#fff;--swiper-pagination-color:#fff;">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide"></div>
+                        <div class="swiper-slide"><img class="tovar-img" src="img/load/test.png"></img></div>
                     </div>
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
                 </div>
                 <div thumbsSlider="" class="swiper-container swiperTovarMini">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">1</div>
-                        <div class="swiper-slide">2</div>
+                        <div class="swiper-slide"><img class="tovar-img" src="img/load/test.png"></img></div>
+                        <div class="swiper-slide"><img class="tovar-img" src="img/load/test_3.png"></img></div>
+                        <div class="swiper-slide"><img class="tovar-img" src="img/load/test_2.png"></img></div>
+                        <div class="swiper-slide"><img class="tovar-img" src="img/load/test.png"></img></div>
+                        <div class="swiper-slide"><img class="tovar-img" src="img/load/test_2.png"></img></div>
+                        <div class="swiper-slide"><img class="tovar-img" src="img/load/test.png"></img></div>
                     </div>
                 </div>
             </div>
 
             <!-- tovar info -->
             <div class="bodyGalery">
-                1
+                <h2>55 мм скрытого монтажа алюминиевый плинтус анодированный</h2>
+                <p>Код товара: 080636</p>
+                <p>Модель: S551</p>
+                <p>Цвет:</p>
+                <h2 style="background-color: rgb(20, 20, 20);margin-top:10%;">400 грн/шт.</h2>
+                <div class="line" style="margin-left:10px;">
+                    <div class="ap-sub line">
+                        <script>
+                            function pubSub(elem) {
+                                let val = +$(elem).siblings("output").text()
+                
+                                if(elem.id==="sub") val--
+                                else if(elem.id==="ap") val++
+                
+                                $(elem).siblings("output").text(val)
+                            }
+                        </script>
+                
+                        <div id="sub" onClick="pubSub(this)">-</div>
+                        <output> 0 </output>
+                        <div id="ap" onClick="pubSub(this)">+</div>
+                    </div>
+
+                    <div class="button-pay">Купить</div>
+                </div>
             </div>
         </section>
 
         <section class="two opisanie">
-            описание
+            <nav class="line">
+                <div id="opis"><b>Описание</b></div>
+                <div id="receivs"><b>Отзывы</b></div>
+            </nav>
+            <hr align="left" width="7%" size="1" color="#2662c9"/>
+            
+            <div class="tovar-text">
+                <h5>
+                    Алюминиевый плинтус скрытого монтажа от производителя. Г-образный плинтус из алюминия высотой 55 мм. Длинна одной планки составляет 3000мм с отступом от стены 15мм. 
+                    Находит отличное применение при отделке помещений в стиле Premium, Hi-Tech или Минимализм. Так же довольно часто используется в интерьерах автосалонов и бизнес-центров. 
+                    Плинтус имеет привлекательный дизайн, отличное качество, а в совокупности  низкой своей ценой, по сравнению с зарубежными аналогами.
+                </h5>
+                <h4 style="text-decoration:underline;text-decoration-style:dotted;">Характеристики:</h4>
+                <p>Материал: Алюминий</p>
+                <p>Покрытие: Анодированный</p>
+                <p>Ширина: 15.0 (мм)</p>
+                <p>Высота: 55.0 (мм)</p>
+                <p>Длинна: 3000.0 (мм)</p>
+                <p>Цвет: Светло серый матовый</p>
+                
+                <h5>Или можем покрасить  в любой цвет, по шкале RAL. </h5>
+            </div>
         </section>
 
 

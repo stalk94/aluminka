@@ -37,3 +37,47 @@
     height: 80%;
     width: 100%;
 }
+
+
+.tovar-text > p {
+    font-style: italic;
+}
+#opis {
+    cursor: pointer;
+    margin-right: 20px;
+    font-size: 26;
+}
+#receivs{
+    cursor: pointer;
+    font-size: 26;
+}
+#opis:hover {
+    color: blue;
+}
+#receivs:hover {
+    color: blue;
+}
+
+.button-pay {
+    cursor: pointer;
+    text-align: center;
+    background-color: #565B90;
+    color: white;
+    width: 40%;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    border-radius: 5px;
+    margin-left: 10%;
+}
+.button-pay:hover {
+    background-color: #565b9071;
+    color: brown;
+}
+
+/* reload */
+.tovar-img {
+    flex: 1;
+    border-radius: 5px;
+    max-height: 100%;
+    max-width: 100%;
+}

@@ -1,0 +1,82 @@
+.tovar-cart {
+    margin-top: 1%;
+    padding: 1%;
+    margin-bottom: 1%;
+    border-radius: 5px;
+    min-width: 96%;
+    min-height: 30%;
+    height: 18%;
+    background-color: white;
+    box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.35);
+}
+.tovar-img {
+    flex: 1;
+    border-radius: 5px;
+    max-height: 100%;
+    max-width: 30%;
+}
+.tovar-right {
+    flex: 2;
+    padding: 1%;
+    margin-left: 2%;
+}
+.price-old {
+    color: black;
+    text-decoration: line-through;
+    font-style: italic;
+    font-size: 23;
+    font-weight: 300;
+}
+.price-new {
+    color: black;
+    font-size: 24;
+    font-weight: 500;
+}
+
+
+.ap-sub {
+    border-radius: 5px;
+    border: 1px solid rgb(78, 46, 110);
+    max-width: 80px;
+    max-height: 50px;
+}
+output {
+    padding: 5px;
+    border: 1px solid rgb(78, 46, 110);
+}
+#ap {
+    cursor: pointer;
+    font-size: 16;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#sub {
+    cursor: pointer;
+    font-size: 16;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#ap:hover {
+    cursor: pointer;
+    padding: 5px;
+    font-size: 16;
+    color: green;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#sub:hover {
+    cursor: pointer;
+    font-size: 16;
+    color:red;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.body > .swiper-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}

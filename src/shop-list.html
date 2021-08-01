@@ -5,10 +5,12 @@
     
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tovar-cart.css">
     <link rel="stylesheet" href="css/shop-list.css">
 
     <script src="jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.1/svg.min.js" integrity="sha512-Aj0P6wguH3GVlCfbvTyMM90Zq886ePyMEYlZooRfx+3wcSYyUa6Uv4iAjoJ7yiWdKamqQzKp7yr/TkMQ8EEWbQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <title>Aluminka</title>
 </head>
@@ -55,22 +57,75 @@
 
 
         <section class="two line">
-            <!-- story view -->
             <aside class="story">
-                <div class="head-blok">hide</div>
-                story
-            </aside>
-            <!-- list -->
-            <div class="swiper-container swypeList">
-                <div class="head-blok">hide</div>
-                <div class="swiper-wrapper list">
-                    <div class="swiper-slide body">
-                        list #1
-                    </div>
-                    <div class="swiper-slide body">
-                        list #2
+                <div class="head-blok">История</div>
+
+                <div class="tovar-cart line">
+                    <img class="tovar-img" src="img/load/test_3.png"></img>
+                    <div class="tovar-right">
+                        <b class="p-1">Дверная алюминиевая коробка скрытого монтажа</b>
+                        <div class="line">
+                            <div class="column price" style="margin-top:2%;">
+                                <div class="price-old">2 400$</div>
+                                <div class="price-new">2 300$</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </aside>
+            
+            
+            <div class="swiper-container swypeList">
+                <div class="head-blok">Товары</div>
+
+                    <div class="swiper-slide body">
+                        <div class="swiper-wrapper">
+
+                            <!-- cart #1 -->
+                            <div class="tovar-cart line">
+                                <img class="tovar-img" src="img/load/test.png"></img>
+                                <div class="tovar-right">
+                                    <b class="p-1">Дверная алюминиевая коробка скрытого монтажа</b>
+                                    <div class="p-1">
+                                        Дверная алюминиевая коробка скрытого монтажа, изготовлена из 
+                                        лучшего..
+                                    </div>
+                                    <div class="line">
+                                        <div class="column price" style="margin-top:2%;">
+                                            <div class="price-old">2 400$</div>
+                                            <div class="price-new">2 300$</div>
+                                        </div>
+                                        <div class="column" style="flex:1;margin-top:2%;padding-left:15%;">
+                                            <div class="fiolet-button" style="height:65%;margin-bottom:2%;">Купить</div>
+                                            <div class="green-button">В закладки</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- cart #2 -->
+                            <div class="tovar-cart line">
+                                <img class="tovar-img" src="img/load/test_2.png"></img>
+                                <div class="tovar-right">
+                                    <b class="p-1">Дверная алюминиевая коробка скрытого монтажа</b>
+                                    <div class="p-1">
+                                        Дверная алюминиевая коробка скрытого монтажа, изготовлена из 
+                                        лучшего..
+                                    </div>
+                                    <div class="line">
+                                        <div class="column price" style="margin-top:2%;">
+                                            <div class="price-old">2 400$</div>
+                                            <div class="price-new">2 300$</div>
+                                        </div>
+                                        <div class="column" style="flex:1;margin-top:2%;padding-left:15%;">
+                                            <div class="fiolet-button" style="height:65%;margin-bottom:2%;">Купить</div>
+                                            <div class="green-button">В закладки</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 <div class="swiper-pagination"></div>
             </div>
         </section>
