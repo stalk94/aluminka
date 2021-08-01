@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="modules/engine.js"></script>
 
     <title>Aluminka</title>
 </head>
@@ -17,9 +16,9 @@
     <header>
         <nav class="one-nav line">
             <div class="lang line" style="margin-left:2%;">
-                <p class="navigation" to="ru">рус </p>
+                <p class="language" id="ru">рус </p>
                 <p> | </p>
-                <p class="navigation" to="ua">укр</p>
+                <p class="language" id="ua">укр</p>
             </div>
             
             <div class="email line">
@@ -35,6 +34,7 @@
         </nav>
 
         <nav class="two-nav line" style="z-index:2;position:relative;">
+            <img class="logo" width="70px" src="img/logo.svg"></img>
             <p class="navigation" to="glav">Главная</p>
             <p class="navigation" to="catalog">Каталог</p>
             <p class="navigation" to="pay">Оплата и доставка</p>
@@ -42,7 +42,7 @@
             <p class="navigation" to="contact">Контакты</p>
         </nav>
         
-        <img width="100%" src="img/top_fon.png" style="margin-top:-52px;"></img>  
+        <img width="100%" src="img/top_fon.png" style="margin-top:-72px;"></img>  
     </header>
 
 
@@ -50,42 +50,42 @@
         <section class="one">
             <div class="grid">
                 <div class="nav-cart">
-                    <h3 style="color: black;">ПЛИНТУСА</h3>
+                    <h3 style="color:black;padding-left:3px;">ПЛИНТУСА</h3>
                     <div class="line">
                         <div class="fiolet-button">Смотреть все</div>
                         <img height="125px" width="110px" src="img/category/1.png"></img>
                     </div>
                 </div>
                 <div class="nav-cart">
-                    <h3 style="color: black;">ФУРНИТУРА К ПЛИНТУСАМ</h3>
+                    <h3 style="color:black;padding-left:3px;">ФУРНИТУРА К ПЛИНТУСАМ</h3>
                     <div class="line">
                         <div class="fiolet-button">Смотреть все</div>
                         <img height="125px" width="110px" src="img/category/2.png"></img>
                     </div>
                 </div>
                 <div class="nav-cart">
-                    <h3 style="color: black;">ДВЕРНЫЕ ПРОФИЛЯ</h3>
+                    <h3 style="color:black;padding-left:3px;">ДВЕРНЫЕ ПРОФИЛЯ</h3>
                     <div class="line">
                         <div class="fiolet-button">Смотреть все</div>
                         <img height="125px" width="110px" src="img/category/3.png"></img>
                     </div>
                 </div>
                 <div class="nav-cart">
-                    <h3 style="color: black;">ФУРНИТУРА</h3>
+                    <h3 style="color:black;padding-left:3px;">ФУРНИТУРА</h3>
                     <div class="line">
                         <div class="fiolet-button">Смотреть все</div>
                         <img height="125px" width="110px" src="img/category/4.png"></img>
                     </div>
                 </div>
                 <div class="nav-cart">
-                    <h3 style="color: black;">ПРОФИЛЯ ТЕНЕВОГО ШВА</h3>
+                    <h3 style="color:black;padding-left:3px;">ПРОФИЛЯ ТЕНЕВОГО ШВА</h3>
                     <div class="line">
                         <div class="fiolet-button">Смотреть все</div>
                         <img height="125px" src="img/category/5.png"></img>
                     </div>
                 </div>
                 <div class="nav-cart">
-                    <h3 style="color: black;">НУЖНА ПОМОЩЬ?</h3>
+                    <h3 style="color:black;padding-left:3px;">НУЖНА ПОМОЩЬ?</h3>
                     <div class="line">
                         <div class="fiolet-button">Смотреть все</div>
                         <img height="125px" width="110px" src="img/category/6.png"></img>
@@ -150,10 +150,21 @@
     
 
     <footer>
-        <section>footer</section>
+        <section class="line">
+            <ul class="column">
+                <li>Контакты</li>
+                <li>Возврат товара</li>
+                <li>Условия и договор</li>
+            </ul>
+            <ul class="column" style="margin-left: 20%;">
+                <li>Каталог</li>
+                <li>Производители</li>
+                <li>Акции</li>
+            </ul>
+        </section>
         <section class="coop">ТОВ Алюминка - производство алюминиевых профилей © 2021</section>
     </footer>
 
     
-    <script src="index.js"></script>
+    <script src="modules/engine.js"></script>
 </body>

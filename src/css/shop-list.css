@@ -8,8 +8,29 @@
     opacity: 1;
     background: rgba(0, 0, 0, 0.2);
 }
-
 .swiper-pagination-bullet-active {
     color: #fff;
     background: #007aff;
+}
+
+/* main section */
+.swypeList {
+    height: 100%;
+    width: 59%;
+    border: 1px solid #303030;
+    border-radius: 5px;
+}
+.body {
+    background-color: #030303;
+}
+.story {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 100%;
+    width: 39%;
+    border: 1px solid #303030;
+    border-radius: 5px;
+}
+.head-blok {
+    background-color: #191919;
 }

@@ -5,9 +5,9 @@
     
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tovar.css">
     <script src="jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="modules/engine.js"></script>
 
     <title>Aluminka</title>
 </head>
@@ -17,9 +17,9 @@
     <header>
         <nav class="one-nav line">
             <div class="lang line" style="margin-left:2%;">
-                <p class="navigation" to="ru">рус </p>
+                <p class="language" id="ru">рус </p>
                 <p> | </p>
-                <p class="navigation" to="ua">укр</p>
+                <p class="language" id="ua">укр</p>
             </div>
             
             <div class="email line">
@@ -40,19 +40,40 @@
             <p class="navigation" to="pay">Оплата и доставка</p>
             <p class="navigation" to="uslugi">Услуги</p>
             <p class="navigation" to="contact">Контакты</p>
-        </nav>
-        
-        <img width="100%" src="img/top_fon.png" style="margin-top:-52px;"></img>  
+        </nav> 
     </header>
 
 
     <main>
-        <section class="one info">
-            
+        <section class="one tovar line">
+            <!-- slider -->
+            <div class="galery">
+                <div class="swiper-container swiperTovar" style="--swiper-navigation-color:#fff;--swiper-pagination-color:#fff;">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"></div>
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+                <div thumbsSlider="" class="swiper-container swiperTovarMini">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">1</div>
+                        <div class="swiper-slide">2</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- tovar info -->
+            <div class="bodyGalery">
+                1
+            </div>
         </section>
-        <section class="two">
-            
+
+        <section class="two opisanie">
+            описание
         </section>
+
+
         <section class="three">
             <h2>Выгодные предложения:</h2>
 
@@ -68,8 +89,6 @@
                 <div class="swiper-pagination"></div>
             </div>
         </section>
-
-
         <section>
             <div style="padding-left: 40%;">
                 <h2 style="padding-left:1%;">Остались вопросы?</h2>
@@ -85,10 +104,21 @@
     
 
     <footer>
-        <section>footer</section>
+        <section class="line">
+            <ul class="column">
+                <li>Контакты</li>
+                <li>Возврат товара</li>
+                <li>Условия и договор</li>
+            </ul>
+            <ul class="column" style="margin-left: 20%;">
+                <li>Каталог</li>
+                <li>Производители</li>
+                <li>Акции</li>
+            </ul>
+        </section>
         <section class="coop">ТОВ Алюминка - производство алюминиевых профилей © 2021</section>
     </footer>
 
-    
-    <script src="index.js"></script>
+
+    <script src="modules/engine.js"></script>
 </body>

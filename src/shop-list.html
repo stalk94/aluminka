@@ -9,7 +9,6 @@
 
     <script src="jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="modules/engine.js"></script>
 
     <title>Aluminka</title>
 </head>
@@ -19,9 +18,9 @@
     <header>
         <nav class="one-nav line">
             <div class="lang line" style="margin-left:2%;">
-                <p class="navigation" to="ru">рус </p>
+                <p class="language" id="ru">рус </p>
                 <p> | </p>
-                <p class="navigation" to="ua">укр</p>
+                <p class="language" id="ua">укр</p>
             </div>
             
             <div class="email line">
@@ -44,7 +43,7 @@
             <p class="navigation" to="contact">Контакты</p>
         </nav>
         
-        <img width="100%" src="img/top_fon.png" style="margin-top:-52px;"></img>  
+        <img width="100%" src="img/top_fon.png" style="margin-top:-72px;"></img>  
     </header>
 
 
@@ -53,17 +52,30 @@
         <section class="one info">
             
         </section>
-        <section class="two">
-            <aside class="story"></aside>
 
+
+        <section class="two line">
+            <!-- story view -->
+            <aside class="story">
+                <div class="head-blok">hide</div>
+                story
+            </aside>
+            <!-- list -->
             <div class="swiper-container swypeList">
+                <div class="head-blok">hide</div>
                 <div class="swiper-wrapper list">
-                    <div class="swiper-slide">list 1</div>
-                    <div class="swiper-slide">list 2</div>
+                    <div class="swiper-slide body">
+                        list #1
+                    </div>
+                    <div class="swiper-slide body">
+                        list #2
+                    </div>
                 </div>
                 <div class="swiper-pagination"></div>
             </div>
         </section>
+
+
         <section class="three">
             <h2>Выгодные предложения:</h2>
 
@@ -96,10 +108,21 @@
     
 
     <footer>
-        <section>footer</section>
+        <section class="line">
+            <ul class="column">
+                <li>Контакты</li>
+                <li>Возврат товара</li>
+                <li>Условия и договор</li>
+            </ul>
+            <ul class="column" style="margin-left: 20%;">
+                <li>Каталог</li>
+                <li>Производители</li>
+                <li>Акции</li>
+            </ul>
+        </section>
         <section class="coop">ТОВ Алюминка - производство алюминиевых профилей © 2021</section>
     </footer>
 
-    
-    <script src="index.js"></script>
+
+    <script src="modules/engine.js"></script>
 </body>

@@ -1,0 +1,39 @@
+.tovar {
+    background-color: #030303;
+    padding-left: 3%;
+    padding-right: 3%;
+}
+.opisanie {
+    background-color: #1B1B1B;
+}
+
+
+.galery {
+    width: 35%;
+    padding-bottom: 3%;
+}
+.bodyGalery {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-left: 5%;
+    padding-bottom: 3%;
+    width: 55%;
+    height: 100%;
+}
+.swiperTovarMini {
+    height: 20%;
+    box-sizing: border-box;
+    padding: 10px 0;
+}
+.swiperTovarMini.swiper-slide-thumb-active {
+    opacity: 1;
+}
+.swiperTovarMini.swiper-slide {
+    width: 25%;
+    height: 100%;
+    opacity: 0.4;
+}
+.swiperTovar {
+    height: 80%;
+    width: 100%;
+}

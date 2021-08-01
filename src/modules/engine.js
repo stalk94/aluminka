@@ -1,8 +1,7 @@
-// слайдер рекомендаций
-const $forvard = $(".swiper-wrapper")
+const urls = document.location.href.split("/")
 
-
-var swiperForvard = new Swiper(".bottom-swipe", {
+// swiper forward
+const swiperForvard = new Swiper(".bottom-swipe", {
 	slidesPerView: 3,
 	centeredSlides: true,
 	spaceBetween: 30,
@@ -19,26 +18,38 @@ var swiperForvard = new Swiper(".bottom-swipe", {
 
 
 // document controller
-if(document.location.href!==document.location.host+'/index.html'){
+if(urls[urls.length-1]!=='index.html'){
     const $info = $(".info")
 }
-if(document.location.href===document.location.host+'/shop-list.html'){
-    const $story = $(".story")
-    const $list = $(".list")
-
+if(urls[urls.length-1]==='shop-list.html'){
     // галерея товаров
-    var swypeList = new Swiper(".swypeList", {
+    const swypeList = new Swiper(".swypeList", {
         pagination: {
-              el: ".swiper-pagination",
-              clickable: true,
-              renderBullet: function(index, className){
+            el: ".swiper-pagination",
+            clickable: true,
+            renderBullet: function(index, className){
                 return '<span class="' + className + '">' + (index + 1) + "</span>";
-              },
+            },
         },
     });
+    
 }
-if(document.location.href===document.location.host+'/tovar.html'){
-    const $galery = $(".galery")
-    const $body = $(".body")
-    const $reviews = $(".reviews")
+if(urls[urls.length-1]==='tovar.html'){
+    const swiperTovarMini = new Swiper(".swiperTovarMini", {
+        spaceBetween: 10,
+        slidesPerView: 4,
+        freeMode: true,
+        watchSlidesVisibility: true,
+        watchSlidesProgress: true
+    });
+    const swiperTovar = new Swiper(".swiperTovar", {
+        spaceBetween: 10,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        thumbs: {
+            swiper: swiper,
+        }
+    });
 }
