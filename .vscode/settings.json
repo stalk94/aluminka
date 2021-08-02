@@ -13,7 +13,9 @@
         "package-lock.json": true,
         "src/jquery-3.6.0.min.js": true,
         "wmr.config.mjs": true,
-        "src\\modules/manifes.json": true
+        "src\\modules/manifes.json": true,
+        ".cache": true,
+        "dist": true
     },
     "explorerExclude.backup": null
 }

@@ -4,24 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "wmr",
-		"build": "wmr build --prerender",
-		"serve": "wmr serve"
+    "build ": "parcel build src/*.html",
+    "start": "parcel src/*.html",
+    "test": "parcel test/index.html --open"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "eslintConfig": {
-		"extends": "preact"
-	},
+    "extends": "preact"
+  },
   "dependencies": {
+    "@types/jquery": "^3.5.6",
     "express": "^4.17.1",
+    "fabric": "^4.5.1",
+    "jquery": "^3.6.0",
     "pant": "^0.4.1",
-		"preact": "^10.5.14",
-		"preact-iso": "^2.0.3"
+    "preact": "^10.5.14",
+    "preact-iso": "^2.0.3"
   },
   "devDependencies": {
-		"sass": "^1.37.0",
-		"wmr": "^3.4.1"
-	}
+    "sass": "^1.37.0",
+    "wmr": "^3.4.1"
+  }
 }
