@@ -1,5 +1,57 @@
 const urls = document.location.href.split("/")
 
+async function send(url, data, metod) {
+    let response
+
+    if(metod==="GET"){
+        response = await fetch(gurl + url, {
+            method: "GET",
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              //'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            redirect: 'follow', 
+            referrerPolicy: 'no-referrer'
+        });
+    }
+    else response = await fetch(gurl + url, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        //'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      redirect: 'follow', 
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(data)
+    });
+
+    return await response.text();
+}
+async function fileLoader(files, clb) {
+    let file = files[0]
+    
+    let img = document.createElement("img")
+    img.classList.add("obj")
+    img.file = file
+    let reader = new FileReader()
+
+    reader.onload = ((aImg)=> { 
+        return (e)=> { 
+            aImg.src = e.target.result
+            clb(img.src)
+        }
+    })(img)
+
+    reader.readAsDataURL(file)
+}
+
+
 // swiper forward
 const swiperForvard = new Swiper(".bottom-swipe", {
 	slidesPerView: 3,
@@ -19,7 +71,7 @@ const swiperForvard = new Swiper(".bottom-swipe", {
 
 // document controller
 if(urls[urls.length-1]!=='index.html'){
-    const $info = $(".info")
+    
 }
 if(urls[urls.length-1]==='shop-list.html'){
     // галерея товаров
@@ -49,7 +101,7 @@ if(urls[urls.length-1]==='tovar.html'){
             prevEl: ".swiper-button-prev",
         },
         thumbs: {
-            swiper: swiper,
+            swiper: swiperTovarMini,
         }
     });
 }

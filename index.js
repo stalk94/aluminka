@@ -15,3 +15,5 @@ const like = `
 `
 
 
+$("body").append("<h1>xru</h1>")
+$("body").empty().append("<h1>xra</h1>")
