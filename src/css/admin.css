@@ -1,0 +1,16 @@
+.admin-auth {
+    display: flex;
+    justify-content: center;
+}
+
+
+input {
+    width: 250px;
+    margin-bottom: 10px;
+}
+input[type=submit] {
+    width: 195px;
+}
+input[type=submit]:hover {
+    width: 195px;
+}

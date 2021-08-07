@@ -15,7 +15,9 @@
         "wmr.config.mjs": true,
         "src\\modules/manifes.json": true,
         ".cache": true,
-        "dist": true
+        "dist": true,
+        ".gitignore": true,
+        "src/html": true
     },
     "explorerExclude.backup": null
 }

@@ -1,4 +1,3 @@
-import $ from "jqueryui";
 import { fabric } from "fabric";
 
 const shadow = document.body.attachShadow({mode: 'open'})
@@ -63,5 +62,3 @@ class Redact extends Function {
 
 
 let clb = new Redact()
-
-

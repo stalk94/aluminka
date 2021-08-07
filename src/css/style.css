@@ -313,3 +313,28 @@ li:hover {
     width: 100%;
     height: 200px;
 }
+
+/* admin tools */
+.tool {
+    position: absolute;
+    padding: 10px;
+    background-color: #d93a3a80;
+    cursor: pointer;
+    border: 1px solid red;
+    border-radius: 5px;
+}
+.tool-add {
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: 0;
+}
+.modal-tool {
+    position: fixed;
+    z-index: 3;
+    top: 40%;
+    left: 40%;
+    min-width: 20%;
+    min-height: 20%;
+    background-color: aliceblue;
+    border-radius: 10px;
+}
