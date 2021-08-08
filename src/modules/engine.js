@@ -133,6 +133,9 @@ function redact(elem) {
     else if(clas.contains("tool-add")){
         modalTool('tovar')
     }
+    else if(tag==="A"){
+        
+    }
 }
 
 

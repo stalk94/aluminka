@@ -1,5 +1,5 @@
 function addTovar(nameTovar, opisanieTovar, priceOld, priceNew, id) {
-    $(".list-tovar").text(`
+    $(".list-tovar").html(`
         <div class="tovar-cart line" id="${id}">
             <img class="tovar-img" src="img/load/${id}.png"></img>
                 <div class="tovar-right">
@@ -24,7 +24,7 @@ function addTovar(nameTovar, opisanieTovar, priceOld, priceNew, id) {
 
 
 function addStory(nameTovar, priceOld, priceNew, id) {
-    $("aside.story").text(`
+    $("aside.story").html(`
         <div class="tovar-cart line" id="${id}">
             <img class="tovar-img" src="img/load/${id}.png"></img>
             <div class="tovar-right">
