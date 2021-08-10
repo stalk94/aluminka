@@ -19,7 +19,11 @@
         ".gitignore": true,
         "src/html": true,
         "error.html": true,
-        "src/error.html": true
+        "src/error.html": true,
+        "src/swiper-bundle.min.js": true,
+        "shop.html": true,
+        "src/shop.html": true,
+        "json.sqlite": true
     },
     "explorerExclude.backup": null
 }

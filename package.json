@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build ": "parcel build src/*.html",
-    "start": "parcel src/*.html",
+    "start": "node index.js",
     "test": "parcel test/index.html --open"
   },
   "keywords": [],

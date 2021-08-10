@@ -1,14 +1,6 @@
-import $ from "jquery";
-import check from '../img/icon/check.svg';
-import close from '../img/icon/close.svg';
-
-
 const urls = document.location.href.split("/")
 window.user = JSON.parse(window.localStorage.getItem("user"))
-const icon = {
-    check: check,
-    close: close
-}
+
 
 
 async function send(url, data, metod) {
@@ -66,7 +58,7 @@ function createTool(name, type, clb) {
         let tool = document.createElement("div")
         tool.setAttribute("class", `tool-${type}`)
         let ic = document.createElement("img")
-        ic.src = icon[name]
+        ic.src = `../img/icon/${name}.svg`
         ic.width = 70
         tool.appendChild(ic)
         tool.addEventListener("click", ()=> {
@@ -164,7 +156,7 @@ function redact(elem) {
             okCall()
         }
     }
-    else if(clas.contains("galery-foto")){
+    else if(clas.contains("galery-foto")||tag==="IMG"){
         let inp = document.createElement("input")
         inp.type = "file"
         inp.click()

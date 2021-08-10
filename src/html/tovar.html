@@ -3,18 +3,19 @@
     <meta http-equiv="Content-Type" content="text/html; charset=IANAcharset">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="./css/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/tovar-cart.css">
     <link rel="stylesheet" href="./css/tovar.css">
     
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="./jquery-3.6.0.min.js"></script>
+    <script src="./swiper-bundle.min.js"></script>
 
     <title>Aluminka</title>
 </head>
 
 
-<body>
+<body root="tovar">
     <header>
         <nav class="one-nav line">
             <div class="lang line" style="margin-left:2%;">
@@ -49,32 +50,30 @@
         <section class="one tovar line">
             <!-- slider -->
             <div class="galery">
+                <div class="foto-add" mod>+</div>
                 <div class="swiper-container swiperTovar" style="--swiper-navigation-color:#fff;--swiper-pagination-color:#fff;">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide"><img class="tovar-img" src="img/load/test.png"></img></div>
+                    <div class="swiper-wrapper swiperTovarWraper">
+                        <div class="swiper-slide">
+                            <img class="tovar-img galery-foto" src="img/load/test.png" mod></img>
+                        </div>
                     </div>
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
                 </div>
                 <div thumbsSlider="" class="swiper-container swiperTovarMini">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide"><img class="tovar-img" src="img/load/test.png"></img></div>
-                        <div class="swiper-slide"><img class="tovar-img" src="img/load/test_3.png"></img></div>
-                        <div class="swiper-slide"><img class="tovar-img" src="img/load/test_2.png"></img></div>
-                        <div class="swiper-slide"><img class="tovar-img" src="img/load/test.png"></img></div>
-                        <div class="swiper-slide"><img class="tovar-img" src="img/load/test_2.png"></img></div>
-                        <div class="swiper-slide"><img class="tovar-img" src="img/load/test.png"></img></div>
+                    <div class="swiper-wrapper miniContainer">
+                        
                     </div>
                 </div>
             </div>
 
             <!-- tovar info -->
             <div class="bodyGalery">
-                <h2>55 мм скрытого монтажа алюминиевый плинтус анодированный</h2>
-                <p>Код товара: 080636</p>
-                <p>Модель: S551</p>
-                <p>Цвет:</p>
-                <h2 style="background-color: rgb(20, 20, 20);margin-top:10%;">400 грн/шт.</h2>
+                <h2 class="info" mod>55 мм скрытого монтажа алюминиевый плинтус анодированный</h2>
+                <p class="info" mod>Код товара: 080636</p>
+                <p class="info" mod>Модель: S551</p>
+                <p class="info" mod>Цвет:</p>
+                <h2 class="info" style="background-color: rgb(20, 20, 20);margin-top:10%;" mod>400 грн/шт.</h2>
                 <div class="line" style="margin-left:10px;">
                     <div class="ap-sub line">
                         <script>
@@ -106,20 +105,20 @@
             <hr align="left" width="7%" size="1" color="#2662c9"/>
             
             <div class="tovar-text">
-                <h5>
+                <h5 class="info" mod>
                     Алюминиевый плинтус скрытого монтажа от производителя. Г-образный плинтус из алюминия высотой 55 мм. Длинна одной планки составляет 3000мм с отступом от стены 15мм. 
                     Находит отличное применение при отделке помещений в стиле Premium, Hi-Tech или Минимализм. Так же довольно часто используется в интерьерах автосалонов и бизнес-центров. 
                     Плинтус имеет привлекательный дизайн, отличное качество, а в совокупности  низкой своей ценой, по сравнению с зарубежными аналогами.
                 </h5>
                 <h4 style="text-decoration:underline;text-decoration-style:dotted;">Характеристики:</h4>
-                <p>Материал: Алюминий</p>
-                <p>Покрытие: Анодированный</p>
-                <p>Ширина: 15.0 (мм)</p>
-                <p>Высота: 55.0 (мм)</p>
-                <p>Длинна: 3000.0 (мм)</p>
-                <p>Цвет: Светло серый матовый</p>
+                <p class="info" mod>Материал: Алюминий</p>
+                <p class="info" mod>Покрытие: Анодированный</p>
+                <p class="info" mod>Ширина: 15.0 (мм)</p>
+                <p class="info" mod>Высота: 55.0 (мм)</p>
+                <p class="info" mod>Длинна: 3000.0 (мм)</p>
+                <p class="info" mod>Цвет: Светло серый матовый</p>
                 
-                <h5>Или можем покрасить  в любой цвет, по шкале RAL. </h5>
+                <h5 class="info" mod>Или можем покрасить  в любой цвет, по шкале RAL. </h5>
             </div>
         </section>
 
@@ -129,10 +128,10 @@
 
             <div #swiperRef="" class="swiper-container bottom-swipe">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">Slide 1</div>
-                    <div class="swiper-slide">Slide 2</div>
-                    <div class="swiper-slide">Slide 3</div>
-                    <div class="swiper-slide">Slide 4</div>
+                    <div class="swiper-slide" mod>Slide 1</div>
+                    <div class="swiper-slide" mod>Slide 2</div>
+                    <div class="swiper-slide" mod>Slide 3</div>
+                    <div class="swiper-slide" mod>Slide 4</div>
                 </div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
@@ -170,5 +169,6 @@
     </footer>
 
 
-    <script src="modules/engine.js"></script>
+    <script src="./modules/tovar.js"></script>
+    <script src="./modules/engine.js"></script>
 </body>

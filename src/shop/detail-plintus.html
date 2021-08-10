@@ -3,19 +3,19 @@
     <meta http-equiv="Content-Type" content="text/html; charset=IANAcharset">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/tovar-cart.css">
-    <link rel="stylesheet" href="./css/shop-list.css">
+    <link rel="stylesheet" href="../css/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/tovar-cart.css">
+    <link rel="stylesheet" href="../css/shop-list.css">
 
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.1/svg.min.js" integrity="sha512-Aj0P6wguH3GVlCfbvTyMM90Zq886ePyMEYlZooRfx+3wcSYyUa6Uv4iAjoJ7yiWdKamqQzKp7yr/TkMQ8EEWbQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="../jquery-3.6.0.min.js"></script>
+    <script src="../swiper-bundle.min.js"></script>
 
     <title>Aluminka</title>
 </head>
 
 
-<body>
+<body root="shop">
     <header>
         <nav class="one-nav line">
             <div class="lang line" style="margin-left:2%;">
@@ -25,12 +25,12 @@
             </div>
             
             <div class="email line">
-                <img src="img/chat.svg" style="margin-right:3px;"></img>
+                <img src="../img/chat.svg" style="margin-right:3px;"></img>
                 <p>aluminka.com@gmail.com</p>
             </div>
             
             <div class="call line">
-                <img src="img/call.svg" style="margin-right:3px;"></img>
+                <img src="../img/call.svg" style="margin-right:3px;"></img>
                 <p>+38(093) 237 58 55;</p> 
                 <p>+38(097) 814 68 64</p>
             </div>
@@ -44,14 +44,22 @@
             <p class="navigation" to="contact">Контакты</p>
         </nav>
         
-        <img width="100%" src="img/foot_fon.png" style="margin-top:-72px;"></img>  
+        <img width="100%" src="../img/foot_fon.png" style="margin-top:-72px;" mod></img>  
     </header>
 
 
     <main>
         <!-- info section -->
-        <section class="one info">
-            
+        <section class="one">
+            <h5 class="info" mod>
+                Алюминиевый профиль имеет различные формы, размеры и предназначение. Давайте поговорим об этом подробнее. 
+                Самый первый раздел каталога это плоский плинтус. Плоский плинтус имеет классическую форму Л-образную, имеет плавный переход от стены к полу, 
+                при этом плинтус не выглядит громоздким, так как имеет небольшую толщину. 
+                Так как плинтус плоский размещение каких-либо проводов за плинтусом не представляется возможным. 
+                Плинтус имеет различную высоту от 40 до 100 мм и различную ширину по полу от 11 до 18 мм. 
+                Монтаж такого плинтуса осуществляется на жидкие гвозди, жидкие гвозди наносятся на заднюю поверхность плинтуса и прижимается к стене.
+                Данный плинтус идет в классическом анодированном светло-сером цвете. Также данные плинтуса могут быть покрашены по желанию заказчика в любой цвет по каталогу RAL.
+            </h5>
         </section>
 
 
@@ -61,7 +69,7 @@
 
                 <!-- story #1 -->
                 <div class="tovar-cart line">
-                    <img class="tovar-img" src="img/load/test_3.png"></img>
+                    <img class="tovar-img" src="../img/load/test_3.png"></img>
                     <div class="tovar-right">
                         <b class="p-1">Дверная алюминиевая коробка скрытого монтажа</b>
                         <div class="line">
@@ -76,57 +84,41 @@
             
             
             <div class="swiper-container swypeList">
-                <div class="head-blok">Товары</div>
+                <div class="head-blok line">
+                    <div>Товары</div>
+                    <div class="tool-add" mod>➕</div>
+                </div>
 
-                    <div class="swiper-slide body">
-                        <div class="swiper-wrapper list-tovar">
+                <div class="swiper-slide body">
+                    <div class="swiper-wrapper list-tovar">
 
-                            <!-- cart #1 -->
-                            <div class="tovar-cart line">
-                                <img class="tovar-img" src="img/load/test.png"></img>
-                                <div class="tovar-right">
-                                    <b class="p-1">Дверная алюминиевая коробка скрытого монтажа</b>
-                                    <div class="p-1 opisanie-div">
-                                        Дверная алюминиевая коробка скрытого монтажа, изготовлена из 
-                                        лучшего..
+                        <!-- cart #1 -->
+                        <div class="tovar-cart line" mod>
+                            <img class="tovar-img" src="../img/load/test.png" mod></img>
+                            <div class="tovar-right">
+                                <b class="p-1" mod>Дверная алюминиевая коробка скрытого монтажа</b>
+                                <div class="p-1 opisanie-div" mod>
+                                    Дверная алюминиевая коробка скрытого монтажа, изготовлена из 
+                                    лучшего..
+                                </div>
+                                <div class="line">
+                                    <div class="column price" style="margin-top:2%;">
+                                        <div class="price-old" mod>2 400₴</div>
+                                        <div class="price-new" mod>2 300₴</div>
                                     </div>
-                                    <div class="line">
-                                        <div class="column price" style="margin-top:2%;">
-                                            <div class="price-old">2 400$</div>
-                                            <div class="price-new">2 300$</div>
-                                        </div>
-                                        <div class="column" style="flex:1;margin-top:2%;padding-left:15%;">
-                                            <div class="fiolet-button" style="height:65%;margin-bottom:2%;">Купить</div>
-                                            <div class="green-button">В закладки</div>
-                                        </div>
+                                    <div class="column" style="flex:1;margin-top:2%;padding-left:15%;">
+                                        <div class="fiolet-button" style="height:65%;margin-bottom:2%;">Купить</div>
+                                        <div class="green-button">В закладки</div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- cart #2 -->
-                            <div class="tovar-cart line">
-                                <img class="tovar-img" src="img/load/test_2.png"></img>
-                                <div class="tovar-right">
-                                    <b class="p-1">Дверная алюминиевая коробка скрытого монтажа</b>
-                                    <div class="p-1">
-                                        Дверная алюминиевая коробка скрытого монтажа, изготовлена из 
-                                        лучшего..
-                                    </div>
-                                    <div class="line">
-                                        <div class="column price" style="margin-top:2%;">
-                                            <div class="price-old">2 400$</div>
-                                            <div class="price-new">2 300$</div>
-                                        </div>
-                                        <div class="column" style="flex:1;margin-top:2%;padding-left:15%;">
-                                            <div class="fiolet-button" style="height:65%;margin-bottom:2%;">Купить</div>
-                                            <div class="green-button">В закладки</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
+                        <!-- ... -->  
+                        
                     </div>
-                <div class="swiper-pagination"></div>
+                </div>
+                
+                <div class="swiper-paginations"></div>
             </div>
         </section>
 
@@ -178,6 +170,6 @@
         <section class="coop">ТОВ Алюминка - производство алюминиевых профилей © 2021</section>
     </footer>
 
-
-    <script src="modules/engine.js"></script>
+    <script src="../modules/shop.js"></script>
+    <script src="../modules/engine.js"></script>
 </body>
