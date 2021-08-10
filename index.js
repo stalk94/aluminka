@@ -1,4 +1,6 @@
 const express = require("express");
+const path = require("path");
+const fs = require("fs");
 const bodyParser = require("body-parser");
 const favicon = require('serve-favicon');
 const db = require("quick.db");
@@ -12,6 +14,14 @@ const jsonParser = bodyParser.json();
 
 app.get("/", (req, res)=> {
     res.sendFile(__dirname+"/src/index.html")
+});
+app.get(/shop/, (req, res)=> {
+    let urls = req.url.split("/")
+    let url = urls.slice(urls.length-2)
+    let paths = __dirname+"/data/"+url[0]+"/"+url[1]+'.html'
+
+    if(fs.existsSync(paths)) res.sendFile(paths)
+    else res.sendFile(__dirname+"/src/error.html")
 });
 
 
@@ -41,10 +51,29 @@ app.post("/admin", jsonParser, (req, res)=> {
         res.send(result)
     });
 });
-app.post("/admin.saveSite", jsonParser, (req, res)=> {
+app.post("/readSite", jsonParser, (req, res)=> {
     adminVerify(req, (result)=> {
         if(result.search('error')!==-1) res.send(result)
-        else saveSite(req.body.data)
+        else fs.writeFile(__dirname+`/data/${req.body.url}`, req.body.data, (err)=> {
+            if(err) res.send(err)
+            else res.send('completed')
+        });
+    });
+});
+app.post("/addTovar", jsonParser, (req, res)=> {
+    adminVerify(req, (result)=> {
+        if(result.search('error')!==-1) res.send(result);
+        else {
+            db.set("shop."+req.body.category, req.body.id)
+
+            fs.readFile(__dirname+"/src/tovar.html", {encoding:"utf-8"}, (err, data)=> {
+                if(err) res.send(err)
+                else fs.writeFile(__dirname+`/data/${req.body.category}/${req.body.id}.html`, data, (err)=> {
+                    if(err) res.send(err)
+                    else res.send("create")
+                });
+            });
+        }
     });
 });
 

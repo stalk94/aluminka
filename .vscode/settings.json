@@ -17,7 +17,9 @@
         ".cache": true,
         "dist": true,
         ".gitignore": true,
-        "src/html": true
+        "src/html": true,
+        "error.html": true,
+        "src/error.html": true
     },
     "explorerExclude.backup": null
 }

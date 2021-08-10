@@ -57,13 +57,16 @@ class Main {
         });
     }
     category(name) {
+        Main.category = name
         this.route = name
         document.location.href = document.location.host + '/shop-list.html'
     }
     tovar(id) {
         if(this.route || this.route.search("/")===-1){
             this.route += "/"+id
-            document.location.href = document.location.host + '/tovar.html'
+            send(this.route, {}, "GET").then((path)=> {
+                document.location.href = path
+            });
         }
         else new Error("не передана категория")
     }

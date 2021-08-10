@@ -315,13 +315,36 @@ li:hover {
 }
 
 /* admin tools */
-.tool {
+.tool-txt {
     position: absolute;
-    padding: 10px;
-    background-color: #d93a3a80;
+    display: flex;
+    margin-left: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 98%;
+    background-color: #fcbb0a21;
     cursor: pointer;
-    border: 1px solid red;
+    border: 1px solid rgb(255, 136, 0);
     border-radius: 5px;
+}
+.tool-exit {
+    position: absolute;
+    left: 93%;
+    display: flex;
+    margin-left: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 98%;
+    background-color: #fc1a0a21;
+    cursor: pointer;
+    border: 1px solid rgba(255, 30, 0, 0.568);
+    border-radius: 5px;
+}
+.tool-txt:hover {
+    border: 1px solid rgb(72, 255, 0);
+}
+.tool-exit:hover {
+    border: 1px solid rgb(255, 0, 0);
 }
 .tool-add {
     cursor: pointer;
@@ -337,4 +360,15 @@ li:hover {
     min-height: 20%;
     background-color: aliceblue;
     border-radius: 10px;
+}
+.admin {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 9999;
+    width: 100%;
+    height: 10%;
+    background-color: #3c4258e5;
+    border: 1px solid rgba(255, 0, 0, 0.164);
+    display: flex;
 }

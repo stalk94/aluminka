@@ -1,5 +1,14 @@
 import $ from "jquery";
+import check from '../img/icon/check.svg';
+import close from '../img/icon/close.svg';
+
+
 const urls = document.location.href.split("/")
+window.user = JSON.parse(window.localStorage.getItem("user"))
+const icon = {
+    check: check,
+    close: close
+}
 
 
 async function send(url, data, metod) {
@@ -38,46 +47,47 @@ async function send(url, data, metod) {
 async function authorize(login, pass) {
 
 } 
-function createTool(name, elem, clb) {
-    let rect = elem.getBoundingClientRect()
-    let tool = document.createElement("div")
-    tool.setAttribute("class", "tool")
-    tool.style.top = rect.y - 20
-    tool.style.left = rect.x
-    tool.textContent = name
-    tool.addEventListener("click", ()=> {
-        if(clb) clb()
-        tool.remove()
+function admin() {
+    let ctx;
+    document.querySelectorAll(".info").forEach((elem)=> {
+        elem.removeAttribute('contenteditable')
     });
-
-    document.body.appendChild(tool)
-}
-function modalTool(type) {
-    let modal = document.createElement("div")
-    modal.className = 'modal-tool'
-    let ok = document.createElement("div")
-    ok.className = 'tool-ok green-button'
-    ok.textContent = "Применить"
-    ok.onclick =()=> {
-        modal.remove()
+    if(!document.querySelector(".admin")){
+        ctx = document.createElement("div")
+        ctx.className = 'admin'
+        document.body.appendChild(ctx)
+        createTool("close", 'exit', ()=> {
+            ctx.remove()
+        });
     }
-    let exit = document.createElement("div")
-    exit.className = 'tool-exit red-button'
-    exit.textContent = "Отмена"
-    exit.onclick =()=> {
-        modal.remove()
-    }
-    let div = document.createElement("div")
-    div.className = 'line'
-    div.appendChild(ok)
-    div.appendChild(exit)
-    
-    modal.appendChild(div)
-    document.body.appendChild(modal)
-
-
 }
-async function fileLoader(files, clb) {
+function createTool(name, type, clb) {
+    if(!document.querySelector(`.tool-${type}`)){
+        let tool = document.createElement("div")
+        tool.setAttribute("class", `tool-${type}`)
+        let ic = document.createElement("img")
+        ic.src = icon[name]
+        ic.width = 70
+        tool.appendChild(ic)
+        tool.addEventListener("click", ()=> {
+            if(clb) clb()
+            tool.remove()
+        });
+
+        document.querySelector(".admin").appendChild(tool)
+    }
+}
+async function save() {
+    let url = document.location.href.replace(document.location.origin, '')
+    let res = await send("readSite", {
+        login: window.user.login, 
+        password: window.user.password,
+        url:url, 
+        data:$("html").html()
+    }, "POST")
+    console.log(res)
+}
+function fileLoader(files, clb) {
     let file = files[0]
     
     let img = document.createElement("img")
@@ -95,10 +105,18 @@ async function fileLoader(files, clb) {
     reader.readAsDataURL(file)
 }
 function redact(elem) {
+    const okCall =()=> {
+        admin()
+        createTool("check", 'txt', ()=> {
+            document.querySelector(".admin").remove()
+            //save()
+        });
+    }
+    let root = document.body.getAttribute("root")
     let clas = elem.classList
     let tag = elem.tagName
 
-    if(clas.contains("swiper-slide")){
+    if(clas.contains("swiper-slide") && root!=="tovar"){
         elem.innerHTML = ""
         let input = document.createElement("input")
         input.type = "file"
@@ -110,6 +128,7 @@ function redact(elem) {
                 img.src = src
                 element.appendChild(img)
             });
+            okCall()
         }
     }
     else if(clas.contains("img-top")){
@@ -121,66 +140,44 @@ function redact(elem) {
             fileLoader(inp.files, (src)=> {
                 elem.src = src
             });
+            okCall()
         }
     }
     else if(clas.contains("info")){
-        if(!elem.hasAttribute('contenteditable')) createTool("Применить", elem, ()=> {
-            elem.removeAttribute('contenteditable')
-        });
+        if(!elem.hasAttribute('contenteditable')) okCall()
 
         elem.setAttribute('contenteditable', "true")
     }
     else if(clas.contains("tool-add")){
-        modalTool('tovar')
+        addTovar("Новый товар", Main.category)
+        okCall()
     }
-    else if(tag==="A"){
-        
-    }
-}
+    else if(clas.contains("foto-add")) {
+        let inps = document.createElement("input")
+        inps.type = "file"
+        inps.click()
 
-
-
-// document controller
-if(urls[urls.length-1]!=='/'){
-    $("body").on("click", (ev)=> {
-        let info = ev.target.getAttribute("info")
-        
-        if(info) alert(info)
-        if(ev.target.hasAttribute('mod')) redact(ev.target)
-    });
-}
-if(urls[urls.length-1]==='shop' || urls[urls.length-1]==='shop-list.html'){
-    // галерея товаров
-    const swypeList = new Swiper(".swypeList", {
-        pagination: {
-            el: ".swiper-paginations",
-            clickable: true,
-            renderBullet: function(index, className){
-                return '<span class="' + className + '">' + (index + 1) + "</span>";
-            },
-        },
-    });
-    
-}
-if(urls[urls.length-1]==='product' || urls[urls.length-1]==='tovar.html'){
-    const swiperTovarMini = new Swiper(".swiperTovarMini", {
-        spaceBetween: 10,
-        slidesPerView: 4,
-        freeMode: true,
-        watchSlidesVisibility: true,
-        watchSlidesProgress: true
-    });
-    const swiperTovar = new Swiper(".swiperTovar", {
-        spaceBetween: 10,
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-        thumbs: {
-            swiper: swiperTovarMini,
+        inps.onchange =()=> {
+            fileLoader(inps.files, (src)=> {
+                $(".miniContainer").append(`<div class="swiper-slide"><img class="tovar-img" src="${src}" mod></img></div>`)
+            });
+            okCall()
         }
-    });
+    }
+    else if(clas.contains("galery-foto")){
+        let inp = document.createElement("input")
+        inp.type = "file"
+        inp.click()
+
+        inp.onchange =()=> {
+            fileLoader(inp.files, (src)=> {
+                elem.src = src
+            });
+            okCall()
+        }
+    }
 }
+
 
 
 // swiper forward
@@ -197,3 +194,10 @@ const swiperForvard = new Swiper(".bottom-swipe", {
 		prevEl: ".swiper-button-prev",
 	},
 });
+
+
+window.onload =()=> {
+    $("body").on("click", (ev)=> {
+        if(ev.target.hasAttribute('mod')) redact(ev.target)
+    });
+}
