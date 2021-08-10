@@ -1,3 +1,4 @@
+const gurl = 'http://localhost:3000/'
 const urls = document.location.href.split("/")
 window.user = JSON.parse(window.localStorage.getItem("user"))
 
@@ -71,6 +72,7 @@ function createTool(name, type, clb) {
 }
 async function save() {
     let url = document.location.href.replace(document.location.origin, '')
+    console.log(url)
     let res = await send("readSite", {
         login: window.user.login, 
         password: window.user.password,
@@ -101,7 +103,7 @@ function redact(elem) {
         admin()
         createTool("check", 'txt', ()=> {
             document.querySelector(".admin").remove()
-            //save()
+            save()
         });
     }
     let root = document.body.getAttribute("root")
@@ -141,7 +143,8 @@ function redact(elem) {
         elem.setAttribute('contenteditable', "true")
     }
     else if(clas.contains("tool-add")){
-        addTovar("Новый товар", Main.category)
+        let url = urls[urls.length-1].replace('.html', '')
+        addTovar("Новый товар", url)
         okCall()
     }
     else if(clas.contains("foto-add")) {
@@ -192,4 +195,18 @@ window.onload =()=> {
     $("body").on("click", (ev)=> {
         if(ev.target.hasAttribute('mod')) redact(ev.target)
     });
+    $(".two-nav").on("click", (ev)=> {
+        switch(ev.target.getAttribute("to")){
+            case "glav": document.location.href = gurl
+                break;
+            case "catalog": document.location.href = gurl+"shop/"+urls[urls.length-2]+".html"
+                break;
+            case "pay": document.location.href = gurl
+                break;
+            case "uslugi": document.location.href = gurl
+                break;
+            case "contact": document.location.href = gurl
+                break;
+        }
+    })
 }

@@ -3,18 +3,21 @@
  */
 const listTovar = document.querySelector(".list-tovar");
 const story = document.querySelector("aside.story");
+window.user = JSON.parse(window.localStorage.getItem("user"))
 
 
-function goTo(category, id) {
-    document.location.href = document.location.hostname+"/tovar/"+category+"/"+id
+function goTo(elem) {
+    let category = elem.id.split("_")[0]
+    let id = elem.id.split("_")[1]
+    document.location.href = document.location.origin+"/"+category+"/"+id+".html"
 }
 
 
 /** Добавить карточку товара и создать страницу товара */
 function addTovar(nameTovar, category) {
     listTovar.innerHTML += `
-        <div class="tovar-cart line" onClick="goTo(${category}, ${listTovar.children.length})" id="${category}_${listTovar.children.length}" mod>
-            <img class="tovar-img" src="img/load/test.png"></img>
+        <div class="tovar-cart line" onClick="goTo(this)" id="${category}_${listTovar.children.length}" mod>
+            <img class="tovar-img" src="../img/load/test.png"></img>
                 <div class="tovar-right">
                 <b class="p-1" mod>${nameTovar}</b>
                 <div class="p-1 opisanie-div" mod>

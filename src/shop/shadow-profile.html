@@ -3,7 +3,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=IANAcharset">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     
-    <link rel="stylesheet" href="../css/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="../css/swiper-bundle.min.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/tovar-cart.css">
     <link rel="stylesheet" href="../css/shop-list.css">
@@ -15,7 +15,7 @@
 </head>
 
 
-<body root="shop">
+<body root="shop" cz-shortcut-listen="true">
     <header>
         <nav class="one-nav line">
             <div class="lang line" style="margin-left:2%;">
@@ -25,12 +25,12 @@
             </div>
             
             <div class="email line">
-                <img src="../img/chat.svg" style="margin-right:3px;"></img>
+                <img src="../img/chat.svg" style="margin-right:3px;">
                 <p>aluminka.com@gmail.com</p>
             </div>
             
             <div class="call line">
-                <img src="../img/call.svg" style="margin-right:3px;"></img>
+                <img src="../img/call.svg" style="margin-right:3px;">
                 <p>+38(093) 237 58 55;</p> 
                 <p>+38(097) 814 68 64</p>
             </div>
@@ -44,14 +44,14 @@
             <p class="navigation" to="contact">Контакты</p>
         </nav>
         
-        <img width="100%" src="../img/foot_fon.png" style="margin-top:-72px;" mod></img>  
+        <img width="100%" src="../img/foot_fon.png" style="margin-top:-72px;" mod="">  
     </header>
 
 
     <main>
         <!-- info section -->
         <section class="one">
-            <h5 class="info" mod>
+            <h5 class="info" mod="">
                 Алюминиевый профиль имеет различные формы, размеры и предназначение. Давайте поговорим об этом подробнее. 
                 Самый первый раздел каталога это плоский плинтус. Плоский плинтус имеет классическую форму Л-образную, имеет плавный переход от стены к полу, 
                 при этом плинтус не выглядит громоздким, так как имеет небольшую толщину. 
@@ -69,7 +69,7 @@
 
                 <!-- story #1 -->
                 <div class="tovar-cart line">
-                    <img class="tovar-img" src="../img/load/test_3.png"></img>
+                    <img class="tovar-img" src="../img/load/test_3.png">
                     <div class="tovar-right">
                         <b class="p-1">Дверная алюминиевая коробка скрытого монтажа</b>
                         <div class="line">
@@ -83,60 +83,55 @@
             </aside>
             
             
-            <div class="swiper-container swypeList">
+            <div class="swiper-container swypeList swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
                 <div class="head-blok line">
                     <div>Товары</div>
-                    <div class="tool-add" mod>➕</div>
+                    <div class="tool-add" mod="">➕</div>
                 </div>
 
                 <div class="swiper-slide body">
                     <div class="swiper-wrapper list-tovar">
-
-                        <!-- cart #1 -->
-                        <div class="tovar-cart line" mod>
-                            <img class="tovar-img" src="../img/load/test.png" mod></img>
-                            <div class="tovar-right">
-                                <b class="p-1" mod>Дверная алюминиевая коробка скрытого монтажа</b>
-                                <div class="p-1 opisanie-div" mod>
-                                    Дверная алюминиевая коробка скрытого монтажа, изготовлена из 
-                                    лучшего..
-                                </div>
-                                <div class="line">
-                                    <div class="column price" style="margin-top:2%;">
-                                        <div class="price-old" mod>2 400₴</div>
-                                        <div class="price-new" mod>2 300₴</div>
-                                    </div>
-                                    <div class="column" style="flex:1;margin-top:2%;padding-left:15%;">
-                                        <div class="fiolet-button" style="height:65%;margin-bottom:2%;">Купить</div>
-                                        <div class="green-button">В закладки</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ... -->  
-                        
+                
+        <div class="tovar-cart line" onclick="goTo(this)" id="shadow-profile_0" mod="">
+            <img class="tovar-img" src="../img/load/test.png">
+                <div class="tovar-right">
+                <b class="p-1" mod="">Новый товар</b>
+                <div class="p-1 opisanie-div" mod="">
+                    Заполните описание...
+                </div>
+                <div class="line">
+                    <div class="column price" style="margin-top:2%;">
+                        <div class="price-old" mod="">200₴</div>
+                        <div class="price-new" mod="">100₴</div>
+                    </div>
+                    <div class="column" style="flex:1;margin-top:2%;padding-left:15%;">
+                        <div class="fiolet-button" style="height:65%;margin-bottom:2%;">Купить</div>
+                        <div class="green-button">В закладки</div>
                     </div>
                 </div>
-                
-                <div class="swiper-paginations"></div>
             </div>
-        </section>
+        </div>
+    </div>
+                
+                <div class="swiper-paginations swiper-pagination-clickable swiper-pagination-bullets"><span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0">1</span></div>
+            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div></section>
 
 
         <section class="three">
             <h2>Выгодные предложения:</h2>
 
-            <div #swiperRef="" class="swiper-container bottom-swipe">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">Slide 1</div>
-                    <div class="swiper-slide">Slide 2</div>
-                    <div class="swiper-slide">Slide 3</div>
-                    <div class="swiper-slide">Slide 4</div>
+            <div #swiperref="" class="swiper-container bottom-swipe swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
+                <div class="swiper-wrapper" id="swiper-wrapper-e8b8448a9805cb106" aria-live="polite" style="transition-duration: 0ms; transform: translate3d(489px, 0px, 0px);">
+                    <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 4" style="width: 459px; margin-right: 30px;">Slide 1</div>
+                    <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 4" style="width: 459px; margin-right: 30px;">Slide 2</div>
+                    <div class="swiper-slide" role="group" aria-label="3 / 4" style="width: 459px; margin-right: 30px;">Slide 3</div>
+                    <div class="swiper-slide" role="group" aria-label="4 / 4" style="width: 459px; margin-right: 30px;">Slide 4</div>
                 </div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-pagination"></div>
-            </div>
+                <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-e8b8448a9805cb106" aria-disabled="false"></div>
+                <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-e8b8448a9805cb106" aria-disabled="true"></div>
+                <div class="swiper-pagination swiper-pagination-fraction"><span class="swiper-pagination-current">1</span> / <span class="swiper-pagination-total">4</span></div>
+            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span><span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
         </section>
 
 

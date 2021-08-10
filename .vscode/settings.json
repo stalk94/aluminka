@@ -23,7 +23,12 @@
         "src/swiper-bundle.min.js": true,
         "shop.html": true,
         "src/shop.html": true,
-        "json.sqlite": true
+        "json.sqlite": true,
+        "src/shadow-profile": true,
+        "src/plintus": true,
+        "src/detail-plintus": true,
+        "src/door-profile": true,
+        "src/fyrnityra": true
     },
     "explorerExclude.backup": null
 }

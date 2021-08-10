@@ -1,20 +1,6 @@
+const db = require("quick.db")
 
 
-function add(color) {
-    document.body.innerHTML = `
-        <div>
-            <h2 style="color:${color};">HI</h2>
-        </div>
-    `
-}
-
-let tact = 0
-setInterval(()=> {
-    if(tact%2===0) add('red')
-    else add('green')
-    
-    tact++
-}, 500)
 
 
 

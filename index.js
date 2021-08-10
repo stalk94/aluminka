@@ -38,35 +38,24 @@ app.post("/setFaq", jsonParser, (req, res)=> {
         res.send("ok")
     }
 });
-app.post("/admin", jsonParser, (req, res)=> {
-    adminVerify(req, (result)=> {
-        res.send(result)
-    });
-});
 app.post("/readSite", jsonParser, (req, res)=> {
-    adminVerify(req, (result)=> {
-        if(result.search('error')!==-1) res.send(result)
-        else fs.writeFile(__dirname+`/src/${req.body.url}`, req.body.data, (err)=> {
-            if(err) res.send(err)
-            else res.send('completed')
-        });
+    if(adminVerify(req)) fs.writeFile(__dirname+`/src/${req.body.url}`, req.body.data, (err)=> {
+        if(err) res.send(err)
+        else res.send('completed')
     });
 });
 app.post("/addTovar", jsonParser, (req, res)=> {
-    adminVerify(req, (result)=> {
-        if(result.search('error')!==-1) res.send(result);
-        else {
-            db.set("shop."+req.body.category, req.body.id)
+    if(adminVerify(req)){
+        db.set("shop."+req.body.category, req.body.id)
 
-            fs.readFile(__dirname+"/src/tovar.html", {encoding:"utf-8"}, (err, data)=> {
+        fs.readFile(__dirname+"/src/tovar.html", {encoding:"utf-8"}, (err, data)=> {
+            if(err) res.send(err)
+            else fs.writeFile(__dirname+`/src/${req.body.category}/${req.body.id}.html`, data, (err)=> {
                 if(err) res.send(err)
-                else fs.writeFile(__dirname+`/src/${req.body.category}/${req.body.id}.html`, data, (err)=> {
-                    if(err) res.send(err)
-                    else res.send("create")
-                });
+                else res.send("create")
             });
-        }
-    });
+        });
+    }
 });
 
 

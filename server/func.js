@@ -2,6 +2,8 @@ const db = require("quick.db");
 const fs = require("fs");
 const CryptoJS = require('crypto-js');
 
+const master = "qwerty"
+
 function setPasswordHash(pass) {
     return CryptoJS.AES.encrypt(pass, master).toString()
 }
@@ -20,14 +22,12 @@ function tokenDecriptor(token, pass) {
 }
 
 
-exports.adminVerify = function(req, send) {
+exports.adminVerify = function(req) {
     if(req.body.login && req.body.password){
         let user = db.get("user."+req.body.login)
     
-        if(user.password===req.body.password && user.permision==="admin") send(user)
-        else send("error password or login")
+        if(user.password===req.body.password && user.permision==="admin") return user
     }
-    else send("error form")
 }
 
 exports.verify = function(req, send) {
