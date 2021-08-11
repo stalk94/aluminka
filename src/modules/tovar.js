@@ -1,5 +1,5 @@
 window.user = JSON.parse(window.localStorage.getItem("user"))
-//if(!window.user || window.user.permision!=="admin") document.querySelector(".foto-add").style.display = "none"
+
 
 
 const swiperTovarMini = new Swiper(".swiperTovarMini", {

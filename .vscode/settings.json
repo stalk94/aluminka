@@ -28,7 +28,9 @@
         "src/plintus": true,
         "src/detail-plintus": true,
         "src/door-profile": true,
-        "src/fyrnityra": true
+        "src/fyrnityra": true,
+        "src/tingle.min.js": true,
+        "src/favicon.ico": true
     },
     "explorerExclude.backup": null
 }

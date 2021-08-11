@@ -7,9 +7,6 @@ class Bay {
         this.root.textContent = `🛒:0 💰:0₴`
         this.count = 0
         this.data = {}
-        this.modal = document.createElement("div")
-        this.modal.className = "modal"
-        this.modal.id = "bay"
         this.root.addEventListener("click", ()=> {
             this.render()
         });
@@ -37,12 +34,13 @@ class Bay {
         return this.total
     }
     render() {
+        let content = ""
         this.calculate()
 
         Object.keys(this.data).forEach((key)=> {
             this.data[key].forEach((data)=> {
                 if(data){
-                    this.modal.innerHTML += `
+                    content += `
                         <div id="d_${key}_${data.name}">
                             <p>Наименование: ${data.name}</p>
                             <p>Артикул: ${data.articul}</p>
@@ -59,19 +57,16 @@ class Bay {
                 }
             });
         });
-        this.modal.innerHTML += `
-            <div class="line">
-                <div class="button" id="confirm">Оплатить</div>
-                <div class="button" id="exit">Назад</div>
-            </div>
-        `;
-        document.querySelector("#exit").addEventListener("click", ()=> {
-            this.modal.remove()
-        });
-        document.querySelector("#confirm").addEventListener("click", ()=> {
-            this.modal.remove()
+        
+        window.modal.setContent(content)
+        window.modal.addFooterBtn('Оплатить', 'tingle-btn tingle-btn--primary', ()=> {
+            window.modal.close();
             this.#toPay()
         });
+        window.modal.addFooterBtn('Отмена', 'tingle-btn tingle-btn--danger', ()=> {
+            window.modal.close();
+        });
+        window.modal.open()
     }
     async #toPay() {
         let res = await send("toPay", {
@@ -79,5 +74,8 @@ class Bay {
             password: this.pass,
             data: this.data
         }, 'POST');
+
+        window.modal.setContent(res)
+        window.modal.open()
     }
 }

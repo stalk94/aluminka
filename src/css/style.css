@@ -393,7 +393,5 @@ hr {
 .modal {
     position: fixed;
     z-index: 999;
-    width: 98%;
-    height: 98%;
     background-color: rgba(28, 29, 30, 1);
 }

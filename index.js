@@ -12,7 +12,8 @@ const app = express()
 app.use(bodyParser.json({limit: "100mb"}));
 app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit:50000}));
 const jsonParser = bodyParser.json();
-const liqpay = new LiqPay(process.env.public_key, process.env.private_key);
+const liqpay = new LiqPay(process.env.test_public_key, process.env.test_private_key);
+
 
 
 app.get("/", (req, res)=> {
@@ -25,6 +26,10 @@ app.post("/reg", jsonParser, (req, res)=> {
 });
 app.post("/auth", jsonParser, (req, res)=> {
     
+});
+app.post("/question", jsonParser, (req, res)=> {
+    db.push("questions", {name:req.body.name, email:req.body.email, text:req.body.text})
+    res.send("<div>Мы свяжемся с вами в ближайшее время</div>")
 });
 app.post("/setFaq", jsonParser, (req, res)=> {
     let name = req.body.name
@@ -81,8 +86,6 @@ app.post("/toPay", jsonParser, (req, res)=> {
 
 
 
-
-
 app.use('/', express.static(path.join(__dirname, './src')));
-//app.use(favicon(path.join(__dirname, 'src', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'src', 'favicon.ico')));
 app.listen(3000, ()=> console.log("listens"))

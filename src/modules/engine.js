@@ -1,6 +1,23 @@
 const gurl = 'http://localhost:3000/'
 const urls = document.location.href.split("/")
 window.user = JSON.parse(window.localStorage.getItem("user"))
+window.modal = new tingle.modal({
+    footer: true,
+    stickyFooter: false,
+    closeMethods: ['overlay', 'button', 'escape'],
+    closeLabel: "Закрыть",
+    cssClass: ['modal', 'modal-window'],
+    onOpen: function() {
+        console.log('modal open');
+    },
+    onClose: function() {
+        console.log('modal closed');
+    },
+    beforeClose: function() {
+        return true;
+        return false;
+    }
+});
 
 
 
@@ -42,6 +59,7 @@ async function authorize(login, pass) {
 } 
 function admin() {
     let ctx;
+    
     document.querySelectorAll(".info").forEach((elem)=> {
         elem.removeAttribute('contenteditable')
     });
@@ -72,7 +90,7 @@ function createTool(name, type, clb) {
 }
 async function save() {
     let url = document.location.href.replace(document.location.origin, '')
-    console.log(url)
+    
     let res = await send("readSite", {
         login: window.user.login, 
         password: window.user.password,
@@ -106,7 +124,7 @@ function redact(elem) {
             save()
         });
     }
-    let root = document.body.getAttribute("root")
+    let root = $('body').attr("root")
     let clas = elem.classList
     let tag = elem.tagName
 
@@ -208,5 +226,5 @@ window.onload =()=> {
             case "contact": document.location.href = gurl
                 break;
         }
-    })
+    });
 }
