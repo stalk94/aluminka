@@ -1,15 +1,18 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
+var LiqPay = require('./server/liqpay');
+const { Bay } = require("./server/model");
 const bodyParser = require("body-parser");
 const favicon = require('serve-favicon');
 const db = require("quick.db");
-const { adminVerify, saveSite } = require("./server/func")
+const { adminVerify } = require("./server/func")
 const app = express()
 
 app.use(bodyParser.json({limit: "100mb"}));
 app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit:50000}));
 const jsonParser = bodyParser.json();
+const liqpay = new LiqPay(process.env.public_key, process.env.private_key);
 
 
 app.get("/", (req, res)=> {
@@ -57,6 +60,27 @@ app.post("/addTovar", jsonParser, (req, res)=> {
         });
     }
 });
+app.post("/toPay", jsonParser, (req, res)=> {
+    let user;
+    if(db.has("user."+req.body.login)) user = db.get("user."+req.body.login)
+    else user = {login:'anonimys', userAgent:req.body.userAgent}
+
+    let bay = new Bay(user)
+    let total = bay.calculate(req.body.data)
+    let html = liqpay.cnb_form({
+        'action'         : 'pay',
+        'amount'         : total,
+        'currency'       : 'UAH',
+        'description'    : 'description text',
+        'order_id'       : `order_id_${Bay.id()}`,
+        'version'        : '3'
+    });
+    
+    res.send(html)
+});
+
+
+
 
 
 app.use('/', express.static(path.join(__dirname, './src')));

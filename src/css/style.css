@@ -372,3 +372,28 @@ li:hover {
     border: 1px solid rgba(255, 0, 0, 0.164);
     display: flex;
 }
+
+hr {
+    border: none; 
+    color: red; 
+    background-color: red;
+    height: 2px;
+}
+.bay {
+    cursor: pointer;
+    border: 1px solid black;
+    color: orange;
+    background-color: azure;
+    text-align: center;
+    padding: 10px;
+}
+.bay:hover {
+    border: 1px solid rgb(42, 190, 92);
+}
+.modal {
+    position: fixed;
+    z-index: 999;
+    width: 98%;
+    height: 98%;
+    background-color: rgba(28, 29, 30, 1);
+}
