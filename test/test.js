@@ -1,15 +1,23 @@
-//const { SVG, Point } = require("@svgdotjs/svg.js")
-
-//const root = SVG().addTo('body').size(700, 700)
-//root.addClass("root")
-
-window.onload =()=> {
-    root.on("click", (ev)=> {
-        let point = root.point()
-        point.x = ev.screenX
-        point.y = ev.screenY
-        console.log(point)
+Object.prototype.forEach = function(clb) {
+    Object.keys(this).forEach((key)=> {
+        clb(this[key], key)
     });
+}
+///////////////////////////////////////////////////////////////
+
+
+
+
+
+let o = {
+    name: 'test', 
+    age: 12, 
+    type: 'ms'
 }
 
 
+
+o.forEach((val, key)=> {
+    val
+    key
+});

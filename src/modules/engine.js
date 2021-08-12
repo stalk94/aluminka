@@ -1,5 +1,10 @@
 const gurl = 'http://localhost:3000/'
 const urls = document.location.href.split("/")
+Object.prototype.forEach = function(clb) {
+    Object.keys(this).forEach((key)=> {
+        clb(this[key], key)
+    });
+}
 window.user = JSON.parse(window.localStorage.getItem("user"))
 window.modal = new tingle.modal({
     footer: true,

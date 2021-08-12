@@ -1,7 +1,8 @@
+require('dotenv').config()
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
-var LiqPay = require('./server/liqpay');
+const LiqPay = require('./server/liqpay');
 const { Bay } = require("./server/model");
 const bodyParser = require("body-parser");
 const favicon = require('serve-favicon');
@@ -12,7 +13,7 @@ const app = express()
 app.use(bodyParser.json({limit: "100mb"}));
 app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit:50000}));
 const jsonParser = bodyParser.json();
-const liqpay = new LiqPay(process.env.test_public_key, process.env.test_private_key);
+const liqpay = new LiqPay(process.env.test_key, process.env.test_private_key);
 
 
 
@@ -77,7 +78,21 @@ app.post("/toPay", jsonParser, (req, res)=> {
         'amount'         : total,
         'currency'       : 'UAH',
         'description'    : 'description text',
-        'order_id'       : `order_id_${Bay.id()}`,
+        'order_id'       : `order_id_${bay.id()}`,
+        'version'        : '3'
+    });
+    
+    res.send(html)
+});
+
+// test
+app.post("/testPay", jsonParser, (req, res)=> {
+    let html = liqpay.cnb_form({
+        'action'         : 'pay',
+        'amount'         : req.body.price,
+        'currency'       : 'UAH',
+        'description'    : req.body.descr,
+        'order_id'       : `order_id_1`,
         'version'        : '3'
     });
     

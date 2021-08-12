@@ -6,10 +6,12 @@
     <link rel="stylesheet" href="./css/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/canvas.css">
+    <link rel="stylesheet" href="./css/tingle.min.css">
 
     <script src="./jquery-3.6.0.min.js"></script>
     <script src="./swiper-bundle.min.js"></script>
-
+    <script src="./tingle.min.js"></script>
+    
     <title>Aluminka</title>
 </head>
 
@@ -56,42 +58,42 @@
                 <div class="nav-cart">
                     <h3 style="color:black;padding-left:3px;">ПЛИНТУСА</h3>
                     <div class="line">
-                        <div class="fiolet-button" info="Плинтуса">Смотреть все</div>
+                        <div class="fiolet-button cat" url="shop/plintus.html">Смотреть все</div>
                         <img height="125px" width="110px" src="img/category/1.png"></img>
                     </div>
                 </div>
                 <div class="nav-cart">
                     <h3 style="color:black;padding-left:3px;">ФУРНИТУРА К ПЛИНТУСАМ</h3>
                     <div class="line">
-                        <div class="fiolet-button" info="Фурнитура">Смотреть все</div>
+                        <div class="fiolet-button cat" url="shop/detail-plintus.html">Смотреть все</div>
                         <img height="125px" width="110px" src="img/category/2.png"></img>
                     </div>
                 </div>
                 <div class="nav-cart">
                     <h3 style="color:black;padding-left:3px;">ДВЕРНЫЕ ПРОФИЛЯ</h3>
                     <div class="line">
-                        <div class="fiolet-button" info="Профиля">Смотреть все</div>
+                        <div class="fiolet-button cat" url="shop/door-profile.html">Смотреть все</div>
                         <img height="125px" width="110px" src="img/category/3.png"></img>
                     </div>
                 </div>
                 <div class="nav-cart">
                     <h3 style="color:black;padding-left:3px;">ФУРНИТУРА</h3>
                     <div class="line">
-                        <div class="fiolet-button" info="Фурнитура">Смотреть все</div>
+                        <div class="fiolet-button cat" url="shop/fyrnityra.html">Смотреть все</div>
                         <img height="125px" width="110px" src="img/category/4.png"></img>
                     </div>
                 </div>
                 <div class="nav-cart">
                     <h3 style="color:black;padding-left:3px;">ПРОФИЛЯ ТЕНЕВОГО ШВА</h3>
                     <div class="line">
-                        <div class="fiolet-button" info="Профиля">Смотреть все</div>
+                        <div class="fiolet-button cat" url="shop/shadow-profile.html">Смотреть все</div>
                         <img height="125px" src="img/category/5.png"></img>
                     </div>
                 </div>
                 <div class="nav-cart">
                     <h3 style="color:black;padding-left:3px;">НУЖНА ПОМОЩЬ?</h3>
                     <div class="line">
-                        <div class="fiolet-button" info="help?">Смотреть все</div>
+                        <div class="fiolet-button">Смотреть все</div>
                         <img height="125px" width="110px" src="img/category/6.png"></img>
                     </div>
                 </div>
@@ -107,7 +109,7 @@
             <h3>Вас приветсвует!</h3> 
             <h3 style="margin-top:-15px;">Производитель ТОВ АЛЮМИНКА</h3>
             <div class="line">
-                <h5 style="width:65%;">
+                <h5 class="index-info" style="width:65%;" mod>
                     С 2015 года наша компания занимается продажей напольных плинтусов из алюминия, дверных профилей и профилей теневого шва. 
                     В нашем каталоге вы сможете найти именно тот профиль, который больше всего подходит для решения ваших задач. 
                     Алюминиевый профиль имеет различные формы, размеры и предназначение. Давайте поговорим об этом подробнее. 
@@ -142,7 +144,7 @@
         <section>
             <div style="padding-left: 40%;">
                 <h2 style="padding-left:1%;">Остались вопросы?</h2>
-                <form class="column">
+                <form class="column" method="POST" action="/question">
                     <input type="text" name="name" placeholder="Ваше имя:">
                     <input type="email" name="email" placeholder="Ваш email:">
                     <input type="text" name="text" placeholder="Ваш вопрос:">
@@ -170,6 +172,6 @@
     </footer>
 
 
-    
+    <script src="./modules/index.js"></script>
     <script src="./modules/engine.js"></script>
 </body>

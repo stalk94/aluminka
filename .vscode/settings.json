@@ -30,7 +30,8 @@
         "src/door-profile": true,
         "src/fyrnityra": true,
         "src/tingle.min.js": true,
-        "src/favicon.ico": true
+        "src/favicon.ico": true,
+        "babel.config.json": true
     },
     "explorerExclude.backup": null
 }

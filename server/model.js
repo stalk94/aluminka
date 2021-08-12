@@ -1,6 +1,6 @@
 const fs = require("fs");
 const cheerio = require("cheerio");
-
+const db = require("quick.db");
 
 
 exports.Bay = class {
@@ -30,7 +30,9 @@ exports.Bay = class {
         });
         return this.total
     }
-    static id() {
-        
+    id() {
+        db.add("bayId", 1)
+        this.data.id = db.get("bayId")
+        return this.data.id
     }
 }
