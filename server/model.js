@@ -1,15 +1,14 @@
 const fs = require("fs");
+const { guard } = require("./guard");
 const cheerio = require("cheerio");
 const db = require("quick.db");
+
 
 
 exports.Bay = class {
     constructor(user) {
         this.user = user
         this.total = 0
-    }
-    guard() {
-
     }
     calculate(data) {
         this.data = data
@@ -21,7 +20,7 @@ exports.Bay = class {
                         let $ = cheerio.load(data)
                         let price = +$(".price").text().replace("₴", "").trim()
 
-                        if(+tovar.price!==price) this.guard()
+                        if(+tovar.price!==price) guard('save', data)
                         data[key][index] = price
                         this.total += price
                     }

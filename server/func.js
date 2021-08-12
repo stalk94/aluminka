@@ -22,20 +22,62 @@ function tokenDecriptor(token, pass) {
 }
 
 
-exports.adminVerify = function(req) {
+
+function adminVerify(req) {
     if(req.body.login && req.body.password){
         let user = db.get("user."+req.body.login)
     
         if(user.password===req.body.password && user.permision==="admin") return user
     }
 }
+function regVerify(login, password) {
+    const p =()=> {
+        if(password.length>5 && password.length<38){
+            if((/[^(\w)|(\@)|(\.)|(\-)]/).test(password)) return 'error password wrong'
+            else return true
+        }
+        else return 'error password max or min simbol'
+    }
 
-exports.verify = function(req, send) {
-    
+    if(login.length>4 && login.length<38){
+        if((/[^(\w)|(\@)|(\.)|(\-)]/).test(login)) return 'error login wrong'
+        else if(db.has("user."+login)) return 'error login busy'
+        else if(p()!==true) return p()
+        else return true
+    }
+    else return 'error login max or min simbol'
 }
+function authVerify(login, password) {
+    const p =()=> {
+        if(password.length>5 && password.length<38){
+            if((/[^(\w)|(\@)|(\.)|(\-)]/).test(password)) return 'error password wrong'
+            else {
+                let user = db.get("user."+login)
 
-exports.saveSite = function(data) {
+                if(user.password!==password) return 'error password wrong'
+                else return true
+            }
+        }
+        else return 'error password max or min simbol'
+    }
+
+    if(login.length>4 && login.length<38){
+        if((/[^(\w)|(\@)|(\.)|(\-)]/).test(login)) return 'error login wrong'
+        else if(db.has("user."+login)) return db.get("user."+login)
+        else return 'error login not find'
+    }
+    else return 'error login max or min simbol'
+}
+function saveSite(data) {
     fs.writeFile("src/"+data.name+".html", data.html, (err)=> {
         if(err) console.log(err)
     });
 }
+
+
+module.exports.adminVerify = adminVerify
+module.exports.regVerify = regVerify
+module.exports.authVerify = authVerify
+module.exports.saveSite = saveSite
+module.exports.setPasswordHash = setPasswordHash
+module.exports.getPasswordHash = getPasswordHash

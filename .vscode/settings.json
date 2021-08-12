@@ -31,7 +31,8 @@
         "src/fyrnityra": true,
         "src/tingle.min.js": true,
         "src/favicon.ico": true,
-        "babel.config.json": true
+        "babel.config.json": true,
+        "server/liqpay.js": true
     },
     "explorerExclude.backup": null
 }

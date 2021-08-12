@@ -2,14 +2,17 @@ require('dotenv').config()
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
+const helmet = require('helmet');
 const LiqPay = require('./server/liqpay');
 const { Bay } = require("./server/model");
 const bodyParser = require("body-parser");
 const favicon = require('serve-favicon');
 const db = require("quick.db");
-const { adminVerify } = require("./server/func")
+const { adminVerify, authVerify, regVerify, setPasswordHash } = require("./server/func");
+const { body } = require('express-validator');
 const app = express()
 
+app.use(helmet());
 app.use(bodyParser.json({limit: "100mb"}));
 app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit:50000}));
 const jsonParser = bodyParser.json();
@@ -23,13 +26,28 @@ app.get("/", (req, res)=> {
 
 
 app.post("/reg", jsonParser, (req, res)=> {
+    let result = regVerify(req.body.login, req.body.password)
 
+    if(result===true){
+        db.set("user."+req.body.login, {
+            password: setPasswordHash(req.body.password)
+        })
+        
+        res.send(db.get("user."+req.body.login))
+    }
+    else res.send(result)
 });
 app.post("/auth", jsonParser, (req, res)=> {
-    
+    let result = authVerify(req.body.login, req.body.password)
+    res.send(result)
 });
 app.post("/question", jsonParser, (req, res)=> {
-    db.push("questions", {name:req.body.name, email:req.body.email, text:req.body.text})
+    // ! отфильтровать
+    let name = req.body.name
+    let email = req.body.email
+    let text = req.body.text
+
+    db.push("questions", {name: name, email: email, text: text})
     res.send("<div>Мы свяжемся с вами в ближайшее время</div>")
 });
 app.post("/setFaq", jsonParser, (req, res)=> {
