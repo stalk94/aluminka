@@ -26,7 +26,7 @@ const Delivery = {
             
             
             <div class="form" id="pay">
-                <div class="title">💰Способ оплаты</div>
+                <div class="title">💵Способ оплаты</div>
                 <div><img class="liqpay" src="src/img/icon/liqpay.svg"></img><input type="radio" name="liqpay"></div>
                 <div><span>Оплата при доставке</span><input type="radio" name="all"></div>
             </div>
@@ -36,8 +36,8 @@ const Delivery = {
 
         window.modal.setFooterContent("")
         window.modal.addFooterBtn('Оплатить', 'tingle-btn tingle-btn--primary', ()=> {
-            this.#getForm()
-            this.#toPay()
+            this.getForm()
+            this.toPay()
         });
         window.modal.addFooterBtn('Отмена', 'tingle-btn tingle-btn--danger', ()=> {
             window.modal.close();
@@ -45,13 +45,13 @@ const Delivery = {
 
         window.modal.open()
     },
-    #getForm() {
-        this.data
-        $(".form#sale")
-        $(".form#deliver")
-        $(".form#pay")
+    getForm() {
+        //this.data
+        //$(".form#sale")
+        //$(".form#deliver")
+        //$(".form#pay")
     },
-    async #toPay() {
+    async toPay() {
         let res = await send("toPay", {
             login: this.login,
             password: this.pass,
@@ -72,18 +72,18 @@ class Bay extends Object {
         Delivery.init()
         this.root = document.createElement("div")
         this.root.className = "bay"
-        this.root.textContent = `🛒:0 💰:0₴`
+        this.root.textContent = `🛒: 0 💵: 0₴`
         this.count = 0
         this.data = {}
         this.root.addEventListener("click", ()=> {
             this.render()
         });
-        this.window = new tingle.modal({
+        this.modal = new tingle.modal({
             footer: true,
             stickyFooter: false,
             closeMethods: ['overlay', 'button', 'escape'],
             closeLabel: "Закрыть",
-            cssClass: ['bay'],
+            cssClass: ['modal'],
             onOpen: function() {
                 console.log('modal open');
             },
@@ -106,6 +106,7 @@ class Bay extends Object {
             this.data[data.name] = []
             this.data[data.name].push(data)
         }
+        this.calculate()
     }
     calculate() {
         this.total = 0
@@ -114,23 +115,26 @@ class Bay extends Object {
                 this.total += data.price
             });
         });
-        this.root.textContent = `🛒:${this.count} 💰:${this.total}₴`
 
+        this.root.textContent = `🛒: ${this.count} 💵: ${this.total}₴`
         return this.total
+    }
+    #setButton() {
+        this.initButton = true
+        this.modal.addFooterBtn('Оформить доставку', 'tingle-btn tingle-btn--primary', ()=> {
+            Delivery.render(this)
+            this.modal.close()
+        });
+        this.modal.addFooterBtn('Отмена', 'tingle-btn tingle-btn--danger', ()=> {
+            this.modal.close();
+        });
     }
     render(snt) {
         let content = ""
         this.calculate()
         const view =()=> {
             this.modal.setContent(content)
-            this.modal.addFooterBtn('Оформить доставку', 'tingle-btn tingle-btn--primary', ()=> {
-                let delivery = new Delivery()
-                delivery.render(this)
-                this.modal.close()
-            });
-            this.modal.addFooterBtn('Отмена', 'tingle-btn tingle-btn--danger', ()=> {
-                this.modal.close();
-            });
+            if(!this.initButton) this.#setButton()
             this.modal.open()
         }
 
@@ -160,3 +164,6 @@ class Bay extends Object {
         else return content
     }
 }
+
+
+window.bay = new Bay()

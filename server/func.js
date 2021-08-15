@@ -22,6 +22,12 @@ function tokenDecriptor(token, pass) {
 }
 
 
+function saveSite(data) {
+    fs.writeFile("src/"+data.name+".html", data.html, (err)=> {
+        if(err) console.log(err)
+    });
+}
+
 
 function adminVerify(req) {
     if(req.body.login && req.body.password){
@@ -68,15 +74,23 @@ function authVerify(login, password) {
     }
     else return 'error login max or min simbol'
 }
-function saveSite(data) {
-    fs.writeFile("src/"+data.name+".html", data.html, (err)=> {
-        if(err) console.log(err)
-    });
+const verify = {
+    isEmail(email) {
+        return (/^\w+@\w+(\.\w+){1,3}$/).test(email)
+    },
+    isTel(phone) {
+        return (/^\d[\d\(\)\ -]{4,14}\d$/).test(phone)
+    },
+    isLogin(login) {
+        return 
+    }
 }
+
 
 
 module.exports.adminVerify = adminVerify
 module.exports.regVerify = regVerify
+module.exports.verify = verify
 module.exports.authVerify = authVerify
 module.exports.saveSite = saveSite
 module.exports.setPasswordHash = setPasswordHash

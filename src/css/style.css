@@ -76,6 +76,10 @@ section.three {
 .call {
     flex: 1 1 auto;
 }
+.main {
+    cursor: pointer;
+    padding-right: 5px;
+}
 
 .two-nav {
     display: flex;
@@ -383,12 +387,12 @@ hr {
     cursor: pointer;
     border: 1px solid black;
     color: orange;
-    background-color: azure;
+    background-color: rgba(240, 255, 255, 0.432);
     text-align: center;
     padding: 10px;
 }
 .bay:hover {
-    border: 1px solid rgb(42, 190, 92);
+    border: 1px solid red;
 }
 .modal {
     position: fixed;

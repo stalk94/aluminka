@@ -35,3 +35,9 @@ exports.Bay = class {
         return this.data.id
     }
 }
+
+
+/** load  */
+exports.sincDir = function(dir) {
+    
+}

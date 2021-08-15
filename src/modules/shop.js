@@ -1,22 +1,33 @@
-/**
- * После сохранения пройтись парсером
- */
 const listTovar = document.querySelector(".list-tovar");
 const story = document.querySelector("aside.story");
 window.user = JSON.parse(window.localStorage.getItem("user"))
 
 
+function autoload() {
+    send("loadDir", {dir: document.location.href}, "POST").then((value)=> {
+
+    });
+}
 function goTo(elem) {
     let category = elem.id.split("_")[0]
     let id = elem.id.split("_")[1]
-    document.location.href = document.location.origin+"/"+category+"/"+id+".html"
+
+    if(window.user.permision==="admin"){
+        console.log("redaction bloc")
+    }
+    else document.location.href = document.location.origin+"/"+category+"/"+id+".html"
+}
+function dblclTo(elem) {
+    let category = elem.id.split("_")[0]
+    let id = elem.id.split("_")[1]
+    if(window.user.permision==="admin") document.location.href = document.location.origin+"/"+category+"/"+id+".html"
 }
 
 
-/** Добавить карточку товара и создать страницу товара */
+
 function addTovar(nameTovar, category) {
     listTovar.innerHTML += `
-        <div class="tovar-cart line" onClick="goTo(this)" id="${category}_${listTovar.children.length}" mod>
+        <div class="tovar-cart line" onClick="goTo(this)" ondblclick="dblclTo(this)" id="${category}_${listTovar.children.length}" mod>
             <img class="tovar-img" src="../img/load/test.png"></img>
                 <div class="tovar-right">
                 <b class="p-1" mod>${nameTovar}</b>
@@ -44,8 +55,6 @@ function addTovar(nameTovar, category) {
         id: listTovar.children.length-1,
     }, "POST").then((res)=> console.log(res))
 }
-
-
 function addStory(nameTovar, priceOld, priceNew, src) {
     story.innerHTML += `
         <div class="tovar-cart line">
@@ -63,11 +72,6 @@ function addStory(nameTovar, priceOld, priceNew, src) {
     `;
 }
 
-
-async function render() {
-    let data = await send(Main.category, {}, "GET")
-    listTovar.innerHTML = data
-}
 
 
 const swypeList = new Swiper(".swypeList", {

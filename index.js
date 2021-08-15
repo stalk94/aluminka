@@ -4,12 +4,11 @@ const path = require("path");
 const fs = require("fs");
 const helmet = require('helmet');
 const LiqPay = require('./server/liqpay');
-const { Bay } = require("./server/model");
+const { Bay, sincDir } = require("./server/model");
 const bodyParser = require("body-parser");
 const favicon = require('serve-favicon');
 const db = require("quick.db");
-const { adminVerify, authVerify, regVerify, setPasswordHash } = require("./server/func");
-const { body } = require('express-validator');
+const { adminVerify, authVerify, regVerify, setPasswordHash, verify } = require("./server/func");
 const app = express()
 
 app.use(helmet());
@@ -86,7 +85,7 @@ app.post("/addTovar", jsonParser, (req, res)=> {
 });
 app.post("/toPay", jsonParser, (req, res)=> {
     let user;
-    if(db.has("user."+req.body.login)) user = db.get("user."+req.body.login)
+    if(verify.isLogin(req.body.login)&&db.has("user."+req.body.login)) user = db.get("user."+req.body.login)
     else user = {login:'anonimys', userAgent:req.body.userAgent}
 
     let bay = new Bay(user)
@@ -102,6 +101,10 @@ app.post("/toPay", jsonParser, (req, res)=> {
     
     res.send(html)
 });
+app.post("/loadDir", jsonParser, (req, res)=> {
+    let dir = req.body.dir.split(".")[0]
+    res.send(sincDir(dir))
+});
 
 // test
 app.post("/testPay", jsonParser, (req, res)=> {
@@ -116,6 +119,7 @@ app.post("/testPay", jsonParser, (req, res)=> {
     
     res.send(html)
 });
+
 
 
 

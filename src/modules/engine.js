@@ -5,6 +5,13 @@ Object.prototype.forEach = function(clb) {
         clb(this[key], key)
     });
 }
+window.sessionStorage.get = function(key) {
+    let val = this.getItem(key)
+    if(val) return JSON.parse(val)
+}
+window.sessionStorage.set = function(key, val) {
+    this.setItem(key, JSON.stringify(val))
+}
 window.user = JSON.parse(window.localStorage.getItem("user"))
 window.modal = new tingle.modal({
     footer: true,
@@ -92,6 +99,12 @@ function createTool(name, type, clb) {
 
         document.querySelector(".admin").appendChild(tool)
     }
+}
+function saveBottomSwiper() {
+    const $swiper = document.querySelector(".bottom-swipe");
+    let slides = [...$swiper.querySelectorAll(".swiper-slide")];
+
+    window.sessionStorage.set('slides', slides)
 }
 async function save() {
     let url = document.location.href.replace(document.location.origin, '')
@@ -182,7 +195,7 @@ function redact(elem) {
             okCall()
         }
     }
-    else if(clas.contains("galery-foto")||tag==="IMG"){
+    else if(clas.contains("galery-foto") || tag==="IMG"){
         let inp = document.createElement("input")
         inp.type = "file"
         inp.click()
@@ -198,7 +211,6 @@ function redact(elem) {
 
 
 
-// swiper forward
 const swiperForvard = new Swiper(".bottom-swipe", {
 	slidesPerView: 3,
 	centeredSlides: true,
@@ -215,8 +227,13 @@ const swiperForvard = new Swiper(".bottom-swipe", {
 
 
 window.onload =()=> {
+    if(window.user.permision!=="admin"){
+        $(".tool-add").css("visibility", "hidden")
+    }
     $("body").on("click", (ev)=> {
-        if(ev.target.hasAttribute('mod')) redact(ev.target)
+        if(ev.target.hasAttribute('mod') && window.user.permision==="admin"){
+            redact(ev.target)
+        }
     });
     $(".two-nav").on("click", (ev)=> {
         switch(ev.target.getAttribute("to")){
