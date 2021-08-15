@@ -43,8 +43,7 @@ async function send(url, data, metod) {
             cache: 'no-cache',
             credentials: 'same-origin',
             headers: {
-              'Content-Type': 'application/json;charset=utf-8',
-              //'Content-Type': 'application/x-www-form-urlencoded'
+              'Content-Type': 'application/json;charset=utf-8'
             },
             redirect: 'follow', 
             referrerPolicy: 'no-referrer'
@@ -56,8 +55,7 @@ async function send(url, data, metod) {
       cache: 'no-cache',
       credentials: 'same-origin',
       headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-        //'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json;charset=utf-8'
       },
       redirect: 'follow', 
       referrerPolicy: 'no-referrer',
@@ -69,6 +67,23 @@ async function send(url, data, metod) {
 async function authorize(login, pass) {
 
 } 
+function metaTagForm() {
+    let content = $(".meta-tag").attr("content")
+
+    window.modal.setContent(`
+        meta tags:
+        <input id="meta-content" name="meta" value="${content}">
+    `);
+    window.modal.setFooterContent("");
+    window.modal.addFooterBtn('Применить', 'tingle-btn tingle-btn--primary', ()=> {
+        $(".meta-tag").attr("content", $("#meta-content").val())
+        modal.close()
+    });
+    window.modal.addFooterBtn('Отмена', 'tingle-btn tingle-btn--danger', ()=> {
+        modal.close()
+    });
+    window.modal.open()
+}
 function admin() {
     let ctx;
     
@@ -81,6 +96,9 @@ function admin() {
         document.body.appendChild(ctx)
         createTool("close", 'exit', ()=> {
             ctx.remove()
+        });
+        createTool("meta", 'tag', ()=> {
+            metaTagForm()
         });
     }
 }

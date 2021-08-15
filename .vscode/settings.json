@@ -32,7 +32,8 @@
         "src/tingle.min.js": true,
         "src/favicon.ico": true,
         "babel.config.json": true,
-        "server/liqpay.js": true
+        "server/liqpay.js": true,
+        "src/popper.min.js": true
     },
     "explorerExclude.backup": null
 }

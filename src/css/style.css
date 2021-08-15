@@ -355,6 +355,21 @@ li:hover {
     margin-left: auto;
     margin-right: 0;
 }
+.tool-meta {
+    position: absolute;
+    display: flex;
+    margin-left: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 98%;
+    background-color: rgba(0, 140, 255, 0.5);
+    cursor: pointer;
+    border: 1px solid rgba(4, 0, 255, 0.5);
+    border-radius: 5px;
+}
+.tool-meta:hover {
+    border: 1px solid rgba(4, 0, 255, 0.2);
+}
 .modal-tool {
     position: fixed;
     z-index: 3;

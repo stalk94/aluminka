@@ -8,12 +8,12 @@ function autoload() {
 
     });
 }
-function goTo(elem) {
+function goTo(elem=new HTMLDivElement()) {
     let category = elem.id.split("_")[0]
     let id = elem.id.split("_")[1]
-
+    
     if(window.user.permision==="admin"){
-        console.log("redaction bloc")
+        console.log(elem.innerHTML)
     }
     else document.location.href = document.location.origin+"/"+category+"/"+id+".html"
 }
