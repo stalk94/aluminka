@@ -1,21 +1,26 @@
 require('dotenv').config()
 const express = require("express");
+const log4js = require('log4js');
 const path = require("path");
 const fs = require("fs");
-const helmet = require('helmet');
 const LiqPay = require('./server/liqpay');
-const { Bay, sincDir } = require("./server/model");
+const { Bay, sincDir, loadFile } = require("./server/model");
 const bodyParser = require("body-parser");
 const favicon = require('serve-favicon');
 const db = require("quick.db");
 const { adminVerify, authVerify, regVerify, setPasswordHash, verify } = require("./server/func");
 const app = express()
 
-app.use(helmet());
+
 app.use(bodyParser.json({limit: "100mb"}));
-app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit:50000}));
+app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit: 50000}));
 const jsonParser = bodyParser.json();
 const liqpay = new LiqPay(process.env.test_key, process.env.test_private_key);
+log4js.configure({
+    appenders: { sys: { type: "file", filename: "log.log" } },
+    categories: { default: { appenders: ["sys"], level: "info" } }
+});
+const log = log4js.getLogger("sys")
 
 
 
@@ -29,8 +34,10 @@ app.post("/reg", jsonParser, (req, res)=> {
 
     if(result===true){
         db.set("user."+req.body.login, {
-            password: setPasswordHash(req.body.password)
-        })
+            login: req.body.login,
+            password: setPasswordHash(req.body.password),
+            phone: req.body.phone
+        });
         
         res.send(db.get("user."+req.body.login))
     }
@@ -41,15 +48,6 @@ app.post("/auth", jsonParser, (req, res)=> {
     res.send(result)
 });
 app.post("/question", jsonParser, (req, res)=> {
-    // ! отфильтровать
-    let name = req.body.name
-    let email = req.body.email
-    let text = req.body.text
-
-    db.push("questions", {name: name, email: email, text: text})
-    res.send("<div>Мы свяжемся с вами в ближайшее время</div>")
-});
-app.post("/setFaq", jsonParser, (req, res)=> {
     let name = req.body.name
     let email = req.body.email
     let text = req.body.text
@@ -58,25 +56,27 @@ app.post("/setFaq", jsonParser, (req, res)=> {
     else if(!name) res.send("error name")
     else if(!text) res.send("error text")
     else {
-        let faq = db.get("faq")??[]
-        faq.push({name:name, email:email, text:text})
-        db.set("faq", faq)
-        res.send("ok")
+        db.push("questions", {name: name, email: email, text: text})
+        res.send("<div>Мы свяжемся с вами в ближайшее время</div>")
     }
 });
 app.post("/readSite", jsonParser, (req, res)=> {
-    if(adminVerify(req)) fs.writeFile(__dirname+`/src/${req.body.url}`, req.body.data, (err)=> {
+    if(adminVerify(req.body.login, req.body.password)) fs.writeFile(__dirname+`/src/${req.body.url}`, req.body.data, (err)=> {
         if(err) res.send(err)
-        else res.send('completed')
+        else {
+            log.info("[📝]:readSite: "+req.body.url)
+            res.send('completed')
+        }
     });
 });
 app.post("/addTovar", jsonParser, (req, res)=> {
-    if(adminVerify(req)){
+    if(adminVerify(req.body.login, req.body.password)!==undefined){
         db.set("shop."+req.body.category, req.body.id)
+        log.info("[✒️🛒]:addTovar: shop/"+req.body.category+"/"+req.body.id)
 
-        fs.readFile(__dirname+"/src/tovar.html", {encoding:"utf-8"}, (err, data)=> {
-            if(err) res.send(err)
-            else fs.writeFile(__dirname+`/src/${req.body.category}/${req.body.id}.html`, data, (err)=> {
+        fs.readFile("src/tovar.html", {encoding:"utf-8"}, (err, data)=> {
+            if(err) res.send(err);
+            fs.writeFile(`src/${req.body.category}/${req.body.id}.html`, data, (err)=> {
                 if(err) res.send(err)
                 else res.send("create")
             });
@@ -85,8 +85,8 @@ app.post("/addTovar", jsonParser, (req, res)=> {
 });
 app.post("/toPay", jsonParser, (req, res)=> {
     let user;
-    if(verify.isLogin(req.body.login)&&db.has("user."+req.body.login)) user = db.get("user."+req.body.login)
-    else user = {login:'anonimys', userAgent:req.body.userAgent}
+    if(verify.isLogin(req.body.login) && db.has("user."+req.body.login)) user = db.get("user."+req.body.login)
+    else user = {login:'anonimys'}
 
     let bay = new Bay(user)
     let total = bay.calculate(req.body.data)
@@ -98,31 +98,52 @@ app.post("/toPay", jsonParser, (req, res)=> {
         'order_id'       : `order_id_${bay.id()}`,
         'version'        : '3'
     });
-    
+
+    log.info("[💵]: "+html)
     res.send(html)
 });
 app.post("/loadDir", jsonParser, (req, res)=> {
     let dir = req.body.dir.split(".")[0]
     res.send(sincDir(dir))
 });
+app.post("/readProfile", jsonParser, (req, res)=> {
+    let user;
+
+    if(verify.isLogin(req.body.login) && db.has("user."+req.body.login)) {
+        user = db.get("user."+req.body.login)
+        Object.keys(req.body).forEach((key)=> {
+            user[key] = req.body[key]
+        });
+
+        db.set("user."+req.body.login, user)
+        res.send(user)
+    }
+    else res.send('error')
+});
 
 // test
 app.post("/testPay", jsonParser, (req, res)=> {
+    let user;
+    if(verify.isLogin(req.body.login) && db.has("user."+req.body.login)) user = db.get("user."+req.body.login)
+    else user = {login:'anonimys'}
+
+    let bay = new Bay(user)
+    let total = bay.calculate(req.body.data)
     let html = liqpay.cnb_form({
         'action'         : 'pay',
-        'amount'         : req.body.price,
+        'amount'         : total,
         'currency'       : 'UAH',
-        'description'    : req.body.descr,
-        'order_id'       : `order_id_1`,
+        'description'    : 'description text',
+        'order_id'       : `order_id_${bay.id()}`,
         'version'        : '3'
     });
-    
+
+    log.info("[💵]test: "+html)
     res.send(html)
 });
 
 
 
-
 app.use('/', express.static(path.join(__dirname, './src')));
 app.use(favicon(path.join(__dirname, 'src', 'favicon.ico')));
-app.listen(3000, ()=> console.log("listens"))
+app.listen(3000, ()=> log.info("start server"))

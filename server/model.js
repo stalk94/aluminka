@@ -22,7 +22,7 @@ exports.Bay = class {
 
                         if(+tovar.price!==price) guard('save', data)
                         data[key][index] = price
-                        this.total += price
+                        this.total += (price * tovar.count)
                     }
                 });
             });
@@ -36,6 +36,12 @@ exports.Bay = class {
     }
 }
 
+exports.loadFile = function(data, category, id) {
+    let $ = cheerio.load(data)
+    $("body").attr("category", category)
+    $("body").attr("id", id)
+    return $.html()
+}
 
 /** load  */
 exports.sincDir = function(dir) {

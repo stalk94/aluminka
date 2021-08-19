@@ -5,5 +5,5 @@ document.querySelectorAll(".nav-cart").forEach((elem)=> {
             console.log(src)
             document.location.href = document.location.origin+"/"+src
         }
-    })
+    });
 });

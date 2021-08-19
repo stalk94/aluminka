@@ -1,0 +1,10 @@
+[2021-08-18T20:51:22.951] [INFO] sys - start server
+[2021-08-18T20:57:27.501] [INFO] sys - [📝]:readSite: index.html
+[2021-08-18T20:58:09.342] [INFO] sys - [📝]:readSite: /plintus/0.html
+[2021-08-18T21:01:40.712] [INFO] sys - [📝]:readSite: /shop/plintus.html
+[2021-08-18T21:03:10.266] [INFO] sys - [📝]:readSite: index.html
+[2021-08-18T21:03:39.743] [INFO] sys - [✒️🛒]:addTovar: shop/plintus/1
+[2021-08-18T21:03:43.602] [INFO] sys - [📝]:readSite: /shop/plintus.html
+[2021-08-18T21:04:42.814] [INFO] sys - [📝]:readSite: /shop/plintus.html
+[2021-08-18T21:05:14.117] [INFO] sys - [📝]:readSite: /shop/plintus.html
+[2021-08-18T21:06:32.177] [INFO] sys - [📝]:readSite: /plintus/1.html

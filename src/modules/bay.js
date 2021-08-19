@@ -1,7 +1,12 @@
 const Delivery = {
     init() {
-        this.login = window.user.login
-        this.pass = window.user.password
+        if(window.user && window.user.login){
+            this.login = window.user.login
+            this.pass = window.user.password
+        }
+        else {
+            this.login = 'anonim'
+        }
     },
     render(bay=Bay) {
         this.data = bay.data
@@ -55,7 +60,8 @@ const Delivery = {
         let res = await send("toPay", {
             login: this.login,
             password: this.pass,
-            data: this.data
+            data: this.data,
+            delivery: {}
         }, 'POST');
 
         window.modal.setContent(res)
@@ -98,7 +104,7 @@ class Bay extends Object {
 
         document.querySelector(".two-nav").appendChild(this.root)
     }
-    add(data={name, articul, src, price, color, category, id}) {
+    add(data={name, articul, src, price, count, info, category, id}) {
         this.count++
 
         if(this.data[data.name]) this.data[data.name].push(data)
@@ -112,7 +118,7 @@ class Bay extends Object {
         this.total = 0
         this.data.forEach((tovar)=> {
             tovar.forEach((data)=> {
-                this.total += data.price
+                this.total += (data.price * data.count)
             });
         });
 
@@ -165,5 +171,27 @@ class Bay extends Object {
     }
 }
 
+
+
+class Partials {
+    constructor() {
+        this.#loadCart()
+    }
+    async #loadCart() {
+        let carts = await send("loadCart", {
+            login: window.user.login, 
+            password: window.user.password
+        }, "POST");
+
+        this.data = JSON.parse(carts)
+    }
+    render() {
+        this.data.forEach((cat, catName)=> {
+            cat.forEach((cart)=> {
+
+            });
+        });
+    }
+}
 
 window.bay = new Bay()

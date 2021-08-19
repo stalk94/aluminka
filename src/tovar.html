@@ -4,7 +4,6 @@
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     
     <link rel="stylesheet" href="../css/swiper-bundle.min.css"/>
-    <link rel="stylesheet" href="../css/icon.min.css"/>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/tovar-cart.css">
     <link rel="stylesheet" href="../css/tovar.css">
@@ -37,6 +36,9 @@
                 <img src="../img/call.svg" style="margin-right:3px;"></img>
                 <p>+38(093) 237 58 55;</p> 
                 <p>+38(097) 814 68 64</p>
+            </div>
+            <div class="main line">
+                <img src="../img/icon/main-icon.svg" width="32" style="margin-right:3px;"></img>
             </div>
         </nav>
 
@@ -73,10 +75,10 @@
 
             <!-- tovar info -->
             <div class="bodyGalery">
-                <h2 class="info" mod>55 мм скрытого монтажа алюминиевый плинтус анодированный</h2>
+                <h2 class="info name-tovar" mod>55 мм скрытого монтажа алюминиевый плинтус анодированный</h2>
                 <p class="info articul" mod>Код товара: 080636</p>
                 <p class="info" mod>Модель: S551</p>
-                <p class="info" mod>Цвет:</p>
+                <p class="info" id="info" mod>Цвет:</p>
                 <h2 class="info price" style="background-color: rgb(20, 20, 20);margin-top:10%;" mod>400 грн/шт.</h2>
                 <div class="line" style="margin-left:10px;">
                     <div class="ap-sub line">
@@ -96,7 +98,7 @@
                         <div id="ap" onClick="pubSub(this)">+</div>
                     </div>
 
-                    <div class="button-pay">Купить</div>
+                    <div class="button-pay" id="sells">Купить</div>
                 </div>
             </div>
         </section>
@@ -128,7 +130,7 @@
 
 
         <section class="three">
-            <h2>Выгодные предложения:</h2>
+            <h2>С этим товаром также покупают:</h2>
 
             <div #swiperRef="" class="swiper-container bottom-swipe">
                 <div class="swiper-wrapper">
@@ -174,6 +176,6 @@
 
     
     <script src="../modules/tovar.js"></script>
+    <script src="../modules/bay.js"></script>
     <script src="../modules/engine.js"></script>
-    <script src="./modules/bay.js"></script>
 </body>

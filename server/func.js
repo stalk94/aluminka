@@ -28,12 +28,11 @@ function saveSite(data) {
     });
 }
 
-
-function adminVerify(req) {
-    if(req.body.login && req.body.password){
-        let user = db.get("user."+req.body.login)
+exports.adminVerify = function(login, password) {
     
-        if(user.password===req.body.password && user.permision==="admin") return user
+    if(login && password){
+        let user = db.get("user."+login)
+        if(user.password===password && user.permision==="admin") return user
     }
 }
 function regVerify(login, password) {
@@ -60,7 +59,7 @@ function authVerify(login, password) {
             else {
                 let user = db.get("user."+login)
 
-                if(user.password!==password) return 'error password wrong'
+                if(user.password!==setPasswordHash(password)) return 'error password wrong'
                 else return true
             }
         }
@@ -88,10 +87,10 @@ const verify = {
 
 
 
-module.exports.adminVerify = adminVerify
-module.exports.regVerify = regVerify
-module.exports.verify = verify
-module.exports.authVerify = authVerify
-module.exports.saveSite = saveSite
-module.exports.setPasswordHash = setPasswordHash
-module.exports.getPasswordHash = getPasswordHash
+
+exports.regVerify = regVerify
+exports.verify = verify
+exports.authVerify = authVerify
+exports.saveSite = saveSite
+exports.setPasswordHash = setPasswordHash
+exports.getPasswordHash = getPasswordHash
