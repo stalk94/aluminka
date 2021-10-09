@@ -7,6 +7,7 @@ import Select from 'react-select';
 
 const user = store.get("user")
 const options = [{value: 'nov', label: 'Новой почтой'}]
+const options2 = [{value: 'naloj', label: 'Наложенный платеж'},{value: 'cart', label: 'LiqPay'}]
 
 
 export const PanelBays =(props)=> {
@@ -27,7 +28,13 @@ export const PanelBays =(props)=> {
         setView(mod)
     }
     const onSell =(mod)=> {
-        useSend()
+        if(typePay==="cart") useSend("payCart", {...state, total:total, delivery:type, bays:bays}, (data)=> "")
+        else useSend("payNaloj", {...state, total:total, bays:bays, delivery:type}, (data)=> "")
+    }
+    const onState =(name, value)=> {
+        let copy = state
+        copy[name] =  value
+        setState(copy)
     }
 
 
@@ -66,13 +73,13 @@ export const PanelBays =(props)=> {
                     labelledby="menu-button"
                 >
                     <div className="delivery">
-                        <Input placeholder="имя" value={state.name}/>
-                        <Input placeholder="фамилия" value={state.familua}/>
-                        <Input placeholder="номер телефона" value={state.phone}/>
-                        <Input placeholder="город" value={state.city}/>
+                        <Input placeholder="имя" onChange={(e)=> onState("name",e.value)} value={state.name}/>
+                        <Input placeholder="фамилия" onChange={(e)=> onState("familua",e.value)} value={state.familua}/>
+                        <Input placeholder="номер телефона" onChange={(e)=> onState("phone",e.value)} value={state.phone}/>
+                        <Input placeholder="город" onChange={(e)=> onState("city",e.value)} value={state.city}/>
                         <Select placeholder={type} onChange={(e)=> setType(e.value)} options={options} value={type}/>
                         <Select placeholder={typePay} onChange={(e)=> setTypePay(e.value)} options={options2} value={typePay}/>
-                        <Input placeholder={type==="nov"?"отделение":"адресс"} value={type==="nov"?"":state.adres}/>
+                        <Input placeholder={type==="nov"?"отделение":"адресс"} onChange={(e)=> onState(type,e.value)} value={type==="nov"?"":state.adres}/>
                         {typePay==="naloj"
                             ? <Button onClick={onSell}> Оформить </Button>
                             : <Button onClick={onSell}> Оплата {total}₴ </Button>
