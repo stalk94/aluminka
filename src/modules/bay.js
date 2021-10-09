@@ -8,17 +8,17 @@ const Delivery = {
             this.login = 'anonim'
         }
     },
-    render(bay=Bay) {
+    render(bay) {
         this.data = bay.data
         window.modal.setContent(`
             <div class="form" id="sale">
                 <div class="title">🗒️Данные покупателя</div>
-                <div><span>Имя:</span><input type="text" name="firstName"></div>
-                <div><span>Фамилия:</span><input type="text" name="lastName"></div>
-                <div><span>Email:</span><input type="email" name="email"></div>
-                <div><span>Телефон:</span><input type="tel" name="phone"></div>
-                <div><span>Город:</span><input type="text" name="city"></div>
-                <div><span>Адрес:</span><input type="text" name="adres"></div>
+                <div><span>Имя:</span><input type="text" value="${window.user.firstName?window.user.firstName:""}" name="firstName"></div>
+                <div><span>Фамилия:</span><input type="text" value="${window.user.lastName?window.user.lastName:""}" name="lastName"></div>
+                <div><span>Email:</span><input type="email" value="${window.user.email?window.user.email:""}" name="email"></div>
+                <div><span>Телефон:</span><input type="tel" value="${window.user.phone?window.user.phone:""}" name="phone"></div>
+                <div><span>Город:</span><input type="text" value="${window.user.city?window.user.city:""}" name="city"></div>
+                <div><span>Адрес:</span><input type="text" value="${window.user.adres?window.user.adres:""}" name="adres"></div>
             </div>
             
             
@@ -41,8 +41,7 @@ const Delivery = {
 
         window.modal.setFooterContent("")
         window.modal.addFooterBtn('Оплатить', 'tingle-btn tingle-btn--primary', ()=> {
-            this.getForm()
-            this.toPay()
+            this.toPay(this.getForm())
         });
         window.modal.addFooterBtn('Отмена', 'tingle-btn tingle-btn--danger', ()=> {
             window.modal.close();
@@ -51,22 +50,35 @@ const Delivery = {
         window.modal.open()
     },
     getForm() {
-        //this.data
-        //$(".form#sale")
-        //$(".form#deliver")
-        //$(".form#pay")
+        let data = {
+            sale: {},
+            deliver: {},
+            pay: {}
+        };
+        
+        [...document.querySelector(".form#sale").children].forEach((elem)=> {
+            data.sale[elem.getAttribute("name")] = elem.value
+        });
+        [...document.querySelector(".form#deliver").children].forEach((elem)=> {
+            // только там где флаг стоит
+            if(elem.value) data.deliver[elem.getAttribute("name")] = elem.value
+        });
+        [...document.querySelector(".form#pay").children].forEach((elem)=> {
+            // только там где флаг стоит
+            if(elem.value) data.pay[elem.getAttribute("name")] = elem.value
+        });
+
+        return data
     },
-    async toPay() {
+    async toPay(deliveryData) {
         let res = await send("toPay", {
             login: this.login,
             password: this.pass,
-            data: this.data,
-            delivery: {}
+            data: this.data
         }, 'POST');
 
         window.modal.setContent(res)
         window.modal.setFooterContent("")
-        window.modal.open()
     }
 }
 
@@ -116,8 +128,9 @@ class Bay extends Object {
     }
     calculate() {
         this.total = 0
-        this.data.forEach((tovar)=> {
-            tovar.forEach((data)=> {
+        
+        Object.keys(this.data).forEach((key)=> {
+            this.data[key].forEach((data)=> {
                 this.total += (data.price * data.count)
             });
         });
@@ -128,7 +141,7 @@ class Bay extends Object {
     #setButton() {
         this.initButton = true
         this.modal.addFooterBtn('Оформить доставку', 'tingle-btn tingle-btn--primary', ()=> {
-            Delivery.render(this)
+            Delivery.render(this)   //переходим к доставке
             this.modal.close()
         });
         this.modal.addFooterBtn('Отмена', 'tingle-btn tingle-btn--danger', ()=> {
@@ -144,7 +157,9 @@ class Bay extends Object {
             this.modal.open()
         }
 
-        this.data.forEach((tovar, key)=> {
+        Object.keys(this.data).forEach((key)=> {
+            let tovar = this.data[key]
+
             tovar.forEach((data)=> {
                 if(data){
                     content += `
@@ -175,6 +190,9 @@ class Bay extends Object {
 
 class Partials {
     constructor() {
+        document.querySelector("body").innerHTML += `<div class="svg-window line"></div>` ;
+        this.window = document.querySelector(".svg-window")
+        this.window.style.display = "none"
         this.#loadCart()
     }
     async #loadCart() {
@@ -183,15 +201,17 @@ class Partials {
             password: window.user.password
         }, "POST");
 
-        this.data = JSON.parse(carts)
+        if(carts!=="error.html"){
+            this.data = JSON.parse(carts)
+            this.render()
+        }
+        else console.log("error !!!")
     }
     render() {
-        this.data.forEach((cat, catName)=> {
-            cat.forEach((cart)=> {
-
-            });
+        let render = []
+        Object.keys(this.data).forEach((key)=> {
+            if(this.data[key]) render.push(`<div class="list-render">${this.data[key]}</div>`)
         });
+        this.window.innerHTML = render.toString()
     }
 }
-
-window.bay = new Bay()

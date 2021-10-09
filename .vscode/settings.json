@@ -5,6 +5,7 @@
         "**/.hg": true,
         "**/CVS": true,
         "**/.DS_Store": true,
+        "**/Thumbs.db": true,
         "**/.classpath": true,
         "**/.project": true,
         "**/.settings": true,
@@ -33,7 +34,9 @@
         "src/favicon.ico": true,
         "babel.config.json": true,
         "server/liqpay.js": true,
-        "src/popper.min.js": true
+        "src/popper.min.js": true,
+        "test/types.js": true,
+        ".babelrc.json": true
     },
     "explorerExclude.backup": null
 }

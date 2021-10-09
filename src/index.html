@@ -3,22 +3,24 @@
     <meta http-equiv="Content-Type" content="text/html; charset=IANAcharset">
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     
-    <link rel="stylesheet" href="css/swiper-bundle.min.css">
+    <link rel="stylesheet" href="./css/swiper-bundle.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/canvas.css">
     <link rel="stylesheet" href="css/tingle.min.css">
+    <script src="../node_modules/image-to-base64/image-to-base64.min.js"></script>
 
     <script src="popper.min.js"></script>
     <script src="jquery-3.6.0.min.js"></script>
-    <script src="swiper-bundle.min.js"></script>
     <script src="tingle.min.js"></script>
+    <script src="./swiper-bundle.min.js"></script>
+    <script src="./modules/app.js"></script>
     
     <title>Aluminka</title>
     <meta class="meta-tag" name="description" content="">
 </head>
 
 
-<body root="index" cz-shortcut-listen="true" class="" style="">
+<body root="index" cz-shortcut-listen="true">
     <header>
         <nav class="one-nav line">
             <div class="lang line" style="margin-left:2%;">
@@ -105,7 +107,7 @@
             </div>
 
             <div class="line" style="margin-left:30%;">
-                <div class="button">Прайс на алюминевый плинтус</div>
+                <div class="button" onclick="toPrices()">Прайс на алюминевый плинтус</div>
                 <div class="red-button" style="margin-left:3%;">Прайс на дверной профиль</div>
             </div>
         </section>
@@ -126,23 +128,23 @@
                     Данный плинтус идет в классическом анодированном светло-сером цвете. Также данные плинтуса могут быть покрашены по желанию заказчика в любой цвет по каталогу RAL. <br><br>Условный текст</h5>
                 <img src="img/title.png" class="prom-img">
             </div>
-            <div class="button" style="margin-bottom:3%;width:15%;">Смотреть еще</div>
+            <div class="button">Смотреть еще</div>
         </section>
 
         <section class="three">
-            <h2>Выгодные предложения:</h2>
+            <h2>Наши партнеры:</h2>
 
             <div #swiperref="" class="swiper-container bottom-swipe swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
-                <div class="swiper-wrapper" id="swiper-wrapper-f117dfdb95a1f4101" aria-live="polite" style="transition-duration: 0ms; transform: translate3d(462.333px, 0px, 0px);">
-                    <div class="swiper-slide swiper-slide-active" mod="" role="group" aria-label="1 / 4" style="width: 432.333px; margin-right: 30px;">Slide 1</div>
-                    <div class="swiper-slide swiper-slide-next" mod="" role="group" aria-label="2 / 4" style="width: 432.333px; margin-right: 30px;">Slide 2</div>
-                    <div class="swiper-slide" mod="" role="group" aria-label="3 / 4" style="width: 432.333px; margin-right: 30px;">Slide 3</div>
-                    <div class="swiper-slide" mod="" role="group" aria-label="4 / 4" style="width: 432.333px; margin-right: 30px;">Slide 4</div>
+                <div class="swiper-wrapper" id="swiper-wrapper-11c0419ea1c823b6" aria-live="polite" style="transition-duration: 0ms; transform: translate3d(458.333px, 0px, 0px);">
+                    <div class="swiper-slide swiper-slide-active" mod="" style="width: 428.333px; margin-right: 30px;" role="group" aria-label="1 / 4"><img src="http://194.61.0.15/img/load/ukrbood.jpg"></div>
+                    <div class="swiper-slide swiper-slide-next" mod="" style="width: 428.333px; margin-right: 30px;" role="group" aria-label="2 / 4"><img src="http://194.61.0.15/img/load/sam-b-stroi-komp-8_w1630110519546.jpeg"></div>
+                    <div class="swiper-slide" mod="" style="width: 428.333px; margin-right: 30px;" role="group" aria-label="3 / 4">Slide 3</div>
+                    <div class="swiper-slide" mod="" role="group" aria-label="4 / 4" style="width: 428.333px; margin-right: 30px;">Slide 4</div>
                 </div>
-                <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-f117dfdb95a1f4101" aria-disabled="false"></div>
-                <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-f117dfdb95a1f4101" aria-disabled="true"></div>
+                <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-11c0419ea1c823b6" aria-disabled="false"></div>
+                <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-11c0419ea1c823b6" aria-disabled="true"></div>
                 <div class="swiper-pagination swiper-pagination-fraction"><span class="swiper-pagination-current">1</span> / <span class="swiper-pagination-total">4</span></div>
-            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span><span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span><span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span><span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span><span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
         </section>
 
         <section>
@@ -175,6 +177,8 @@
         <section class="coop">ТОВ Алюминка - производство алюминиевых профилей © 2021</section>
     </footer>
 
+
+    <script src="./modules/bay.js"></script>
     <script src="./modules/index.js"></script>
     <script src="./modules/engine.js"></script>
 </body>

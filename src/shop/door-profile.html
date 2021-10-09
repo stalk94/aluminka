@@ -12,9 +12,12 @@
     <script src="../jquery-3.6.0.min.js"></script>
     <script src="../swiper-bundle.min.js"></script>
     <script src="../tingle.min.js"></script>
+    <script src="../modules/app.js"></script>
 
     <title>Aluminka</title>
     <meta class="meta-tag" name="description" content=""/>
+
+    <ctx></ctx>
 </head>
 
 
@@ -38,7 +41,7 @@
                 <p>+38(097) 814 68 64</p>
             </div>
             <div class="main line">
-                <img src="img/icon/main-icon.svg" width="32" style="margin-right:3px;"></img>
+                <img src="../img/icon/main-icon.svg" width="32" style="margin-right:3px;"></img>
             </div>
         </nav>
 
@@ -75,19 +78,16 @@
             </aside>
             
             
-            <div class="swiper-container swypeList">
+            <div class="swiper-containers">
                 <div class="head-blok line">
                     <div>Товары</div>
-                    <div class="tool-add" mod>➕</div>
+                    <div class="tool-add" mod="">➕</div>
                 </div>
 
-                <div class="swiper-slide body">
-                    <div class="swiper-wrapper list-tovar">
-                        
-                    </div>
-                </div>
                 
-                <div class="swiper-paginations"></div>
+                <div class="list-tovar">
+                    
+                </div>
             </div>
         </section>
 
@@ -95,12 +95,13 @@
         <section class="three">
             <h2>Выгодные предложения:</h2>
 
+            
             <div #swiperRef="" class="swiper-container bottom-swipe">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">Slide 1</div>
-                    <div class="swiper-slide">Slide 2</div>
-                    <div class="swiper-slide">Slide 3</div>
-                    <div class="swiper-slide">Slide 4</div>
+                    <div class="swiper-slide" id=":0" mod>Slide 1</div>
+                    <div class="swiper-slide" id=":1" mod>Slide 2</div>
+                    <div class="swiper-slide" id=":2" mod>Slide 3</div>
+                    <div class="swiper-slide" id=":3" mod>Slide 4</div>
                 </div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
@@ -140,7 +141,7 @@
     </footer>
 
     
+    <script src="../modules/bay.js"></script>
     <script src="../modules/shop.js"></script>
     <script src="../modules/engine.js"></script>
-    <script src="../modules/bay.js"></script>
 </body>

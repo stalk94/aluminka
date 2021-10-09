@@ -1,8 +1,11 @@
+const glob = require('glob');
 const fs = require("fs");
+const log4js = require('log4js');
 const { guard } = require("./guard");
+const redis = require('redis');
+const cache = redis.createClient()
 const cheerio = require("cheerio");
-const db = require("quick.db");
-
+const log = log4js.getLogger("sys")
 
 
 exports.Bay = class {
@@ -12,6 +15,7 @@ exports.Bay = class {
     }
     calculate(data) {
         this.data = data
+
         Object.keys(data).forEach((key)=> {
             data[key].forEach((tovar, index)=> {
                 fs.readFile("src/"+tovar.category+"/"+tovar.id+".html", {encoding:'utf-8'}, (err, data)=> {
@@ -27,23 +31,50 @@ exports.Bay = class {
                 });
             });
         });
+        
         return this.total
     }
-    id() {
-        db.add("bayId", 1)
-        this.data.id = db.get("bayId")
-        return this.data.id
+    id(clb) {
+        cache.get("pays.count", (err, data)=> {
+            if(err) log.error(err)
+            else {
+                this.data.id = +data + 1
+                cache.set("pays.count", this.data.id)
+                clb(his.data.id)
+            }
+        });
     }
 }
+
 
 exports.loadFile = function(data, category, id) {
     let $ = cheerio.load(data)
     $("body").attr("category", category)
     $("body").attr("id", id)
+
     return $.html()
 }
+exports.addCart = function(cart, category, clb) {
+    fs.readFile(`src/shop/${category}.html`, {encoding:"utf-8"}, (err, data)=> {
+        if(err) log.error(err)
+        else {
+            let $ = cheerio.load(data)
+            $(".list-tovar").append(cart)
 
-/** load  */
-exports.sincDir = function(dir) {
-    
+            fs.writeFile(`src/shop/${category}.html`, $.html(), {encoding:"utf-8"}, (err)=> {
+                if(!err) clb($(".list-tovar").html())
+            });
+        }
+    });
+}
+exports.loadAllTovar =(clb)=> {
+    glob.sync("src/shop/*.html").forEach((key)=> {
+        fs.readFile(key, (err, data)=> {
+            if(err) clb(err);
+            else {
+                let $ = cheerio.load(data)
+                clb(key, $(".list-tovar").html().trim())
+            }
+        });
+    });
 }

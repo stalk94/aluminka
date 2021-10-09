@@ -7,3 +7,8 @@ document.querySelectorAll(".nav-cart").forEach((elem)=> {
         }
     });
 });
+
+
+function toPrices() {
+    document.location.href = "../prices.xlsx"
+}

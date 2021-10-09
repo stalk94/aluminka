@@ -12,6 +12,7 @@
     <script src="../jquery-3.6.0.min.js"></script>
     <script src="../swiper-bundle.min.js"></script>
     <script src="../tingle.min.js"></script>
+    <script src="../modules/app.js"></script>
 
     <title>Aluminka</title>
     <meta class="meta-tag" name="description" content=""/>
@@ -56,19 +57,22 @@
         <section class="one tovar line">
             <!-- slider -->
             <div class="galery">
-                <div class="foto-add" mod>+</div>
+                <div class="foto-add" mod> ➕ </div>
                 <div class="swiper-container swiperTovar" style="--swiper-navigation-color:#fff;--swiper-pagination-color:#fff;">
                     <div class="swiper-wrapper swiperTovarWraper">
                         <div class="swiper-slide">
-                            <img class="tovar-img galery-foto" src="../img/load/test.png" mod></img>
+                            <img class="galery-foto" src="../img/none.jpg" mod></img>
                         </div>
                     </div>
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
                 </div>
+                <!--mini slider-->
                 <div thumbsSlider="" class="swiper-container swiperTovarMini">
                     <div class="swiper-wrapper miniContainer">
-                        
+                        <img class="galery-foto" src="../img/none.jpg" mod></img>
+                        <img class="galery-foto" src="../img/none.jpg" mod></img>
+                        <img class="galery-foto" src="../img/none.jpg" mod></img>
                     </div>
                 </div>
             </div>
@@ -134,16 +138,17 @@
 
             <div #swiperRef="" class="swiper-container bottom-swipe">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide" mod>Slide 1</div>
-                    <div class="swiper-slide" mod>Slide 2</div>
-                    <div class="swiper-slide" mod>Slide 3</div>
-                    <div class="swiper-slide" mod>Slide 4</div>
+                    <div class="swiper-slide" id=":0" mod>Slide 1</div>
+                    <div class="swiper-slide" id=":1" mod>Slide 2</div>
+                    <div class="swiper-slide" id=":2" mod>Slide 3</div>
+                    <div class="swiper-slide" id=":3" mod>Slide 4</div>
                 </div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
                 <div class="swiper-pagination"></div>
             </div>
         </section>
+
         <section>
             <div style="padding-left: 40%;">
                 <h2 style="padding-left:1%;">Остались вопросы?</h2>
@@ -157,6 +162,7 @@
         </section>
     </main>
     
+
 
     <footer>
         <section class="line">
@@ -174,8 +180,7 @@
         <section class="coop">ТОВ Алюминка - производство алюминиевых профилей © 2021</section>
     </footer>
 
-    
-    <script src="../modules/tovar.js"></script>
     <script src="../modules/bay.js"></script>
+    <script src="../modules/shop.js"></script>
     <script src="../modules/engine.js"></script>
 </body>

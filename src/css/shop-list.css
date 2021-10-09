@@ -23,13 +23,7 @@
 .body {
     background-color: #191919;
 }
-.story {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    width: 30%;
-    border: 1px solid #303030;
-    border-radius: 5px;
-}
+
 .head-blok {
     background-color: #303030;
 }

@@ -1,19 +1,7 @@
-const gurl = 'http://194.61.0.15/'
-const urls = document.location.href.split("/")
-Object.prototype.forEach = function(clb) {
-    Object.keys(this).forEach((key)=> {
-        clb(this[key], key)
-    });
-}
-window.sessionStorage.get = function(key) {
-    let val = this.getItem(key)
-    if(val) return JSON.parse(val)
-}
-window.sessionStorage.set = function(key, val) {
-    this.setItem(key, JSON.stringify(val))
-}
-window.user = JSON.parse(window.localStorage.getItem("user"))
-window.story = window.localStorage.getItem("story")===null ? [] : JSON.parse(window.localStorage.getItem("story"))
+let storySelect;
+window.story = window.localStorage.getItem("story")===null ? [] : JSON.parse(window.localStorage.getItem("story"));
+window.bay = new Bay();
+let windowAdmin = document.querySelector('.svg-window')
 window.modal = new tingle.modal({
     footer: true,
     stickyFooter: false,
@@ -33,6 +21,7 @@ window.modal = new tingle.modal({
 });
 
 
+
 const userForm =()=> {
     return(`
         <div class="user-form column">
@@ -46,37 +35,7 @@ const userForm =()=> {
 }
 
 
-async function send(url, data, metod) {
-    let response
 
-    if(metod==="GET"){
-        response = await fetch(gurl + url, {
-            method: "GET",
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8'
-            },
-            redirect: 'follow', 
-            referrerPolicy: 'no-referrer'
-        });
-    }
-    else response = await fetch(gurl + url, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      redirect: 'follow', 
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify(data)
-    });
-
-    return await response.text();
-}
 async function authorize() {
     if(window.user===null){
         window.modal.setContent(`
@@ -185,6 +144,7 @@ function admin() {
         document.body.appendChild(ctx)
         createTool("close", 'exit', ()=> {
             ctx.remove()
+            if(windowAdmin) windowAdmin.style.display = "none"
         });
         createTool("tag", 'meta', ()=> {
             metaTagForm()
@@ -233,17 +193,14 @@ function addStory(nameTovar, priceOld, priceNew, src, selector) {
 
     window.localStorage.setItem("story", JSON.stringify(window.story)) 
 }
-function saveBottomSwiper() {
-    const $swiper = document.querySelector(".bottom-swipe");
-    let slides = [...$swiper.querySelectorAll(".swiper-slide")];
-
-    window.sessionStorage.set('slides', slides)
-}
 async function save() {
     let url = document.location.href.replace(document.location.origin, '')
     if(url==="/") url = 'index.html'
     document.querySelector('.bay').remove()
-    document.querySelector('.tingle-modal').remove()
+    document.querySelectorAll('.tingle-modal').forEach((elem)=> {
+        elem.remove()
+    });
+    if(windowAdmin) windowAdmin.remove()
     
     let res = await send("readSite", {
         login: window.user.login, 
@@ -251,24 +208,6 @@ async function save() {
         url: url, 
         data: $("html").html()
     }, "POST")
-    console.log(res)
-}
-async function fileLoader(files, clb) {
-    let file = files[0]
-    
-    let img = document.createElement("img")
-    img.classList.add("obj")
-    img.file = file
-    let reader = new FileReader()
-
-    reader.onload = ((aImg)=> { 
-        return (e)=> { 
-            aImg.src = e.target.result
-            clb(img.src)
-        }
-    })(img)
-
-    reader.readAsDataURL(file)
 }
 function redact(elem) {
     const okCall =()=> {
@@ -282,17 +221,23 @@ function redact(elem) {
     let clas = elem.classList
     let tag = elem.tagName
 
-    if(clas.contains("swiper-slide") && root!=="tovar"){
-        elem.innerHTML = ""
-        let input = document.createElement("input")
-        input.type = "file"
+    if(clas.contains("swiper-slide") && URL()!=="index.html"){
+        windowAdmin.style.display = "block"
+        storySelect = elem
+        okCall()
+    }
+    else if(clas.contains("swiper-slide") && URL()==="index.html"){
+        let inp = document.createElement("input")
         let img = document.createElement("img")
-        input.click()
+        
+        inp.type = "file"
+        inp.click()
 
-        input.onchange =()=> {
-            fileLoader(input.files, (src)=> {
+        inp.onchange =()=> {
+            fileLoader(inp.files, (src)=> {
                 img.src = src
-                element.appendChild(img)
+                elem.innerHTML = ""
+                elem.appendChild(img)
             });
             okCall()
         }
@@ -303,9 +248,7 @@ function redact(elem) {
         inp.click()
 
         inp.onchange =()=> {
-            fileLoader(inp.files, (src)=> {
-                elem.src = src
-            });
+            fileLoader(inp.files, (src)=> elem.src = src);
             okCall()
         }
     }
@@ -317,7 +260,6 @@ function redact(elem) {
     else if(clas.contains("tool-add")){
         let url = urls[urls.length-1].replace('.html', '')
         addTovar("Новый товар", url)
-        okCall()
     }
     else if(clas.contains("foto-add")) {
         let inps = document.createElement("input")
@@ -346,7 +288,8 @@ function redact(elem) {
 }
 
 
-const swiperForvard = new Swiper(".bottom-swipe", {
+
+let swiperForvard = new Swiper(".bottom-swipe", {
 	slidesPerView: 3,
 	centeredSlides: true,
 	spaceBetween: 30,
@@ -359,7 +302,25 @@ const swiperForvard = new Swiper(".bottom-swipe", {
 		prevEl: ".swiper-button-prev",
 	},
 });
-
+if(document.querySelector(".swiperTovar")) {
+    let swiperTovarMini = new Swiper(".swiperTovarMini", {
+        spaceBetween: 10,
+        slidesPerView: 3,
+        freeMode: true,
+        watchSlidesVisibility: true,
+        watchSlidesProgress: true
+    });
+    let swiperTovar = new Swiper(".swiperTovar", {
+        spaceBetween: 10,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        thumbs: {
+            swiper: swiperTovarMini,
+        }
+    });
+}
 
 
 window.onload =()=> {

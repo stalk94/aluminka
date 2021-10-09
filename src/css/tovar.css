@@ -7,10 +7,12 @@
     background-color: #1B1B1B;
 }
 
-
+section.one {
+    padding-bottom: 0px;
+}
 .galery {
+    height: 80vh;
     width: 35%;
-    padding-bottom: 3%;
 }
 .bodyGalery {
     margin-top: 20px;
@@ -20,6 +22,10 @@
     width: 55%;
     height: 100%;
 }
+.galery-foto {
+    margin: 3px;
+}
+
 .swiperTovarMini {
     height: 20%;
     box-sizing: border-box;
@@ -80,4 +86,11 @@
     border-radius: 5px;
     max-height: 100%;
     max-width: 100%;
+}
+.foto-add {
+    padding-top: 1%;
+}
+.foto-add:hover {
+    cursor: pointer;
+    opacity: 0.7;
 }

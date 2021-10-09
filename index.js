@@ -3,8 +3,9 @@ const express = require("express");
 const log4js = require('log4js');
 const path = require("path");
 const fs = require("fs");
+const ba64 = require("ba64")
 const LiqPay = require('./server/liqpay');
-const { Bay, sincDir, loadFile } = require("./server/model");
+const { Bay, loadAllTovar, loadFile, addCart } = require("./server/model");
 const bodyParser = require("body-parser");
 const favicon = require('serve-favicon');
 const db = require("quick.db");
@@ -18,10 +19,10 @@ const jsonParser = bodyParser.json();
 const liqpay = new LiqPay(process.env.test_key, process.env.test_private_key);
 log4js.configure({
     appenders: { sys: { type: "file", filename: "log.log" } },
-    categories: { default: { appenders: ["sys"], level: "info" } }
+    categories: { default: { appenders: ["sys"], level: "info" }, error: {appenders: ["sys"], level: "error"} }
 });
 const log = log4js.getLogger("sys")
-
+///////////////////////////////////////////////////////////////////////////////////////////
 
 
 app.get("/", (req, res)=> {
@@ -69,38 +70,40 @@ app.post("/readSite", jsonParser, (req, res)=> {
         }
     });
 });
-app.post("/addTovar", jsonParser, (req, res)=> {
-    if(adminVerify(req.body.login, req.body.password)!==undefined){
-        db.set("shop."+req.body.category, req.body.id)
-        log.info("[✒️🛒]:addTovar: shop/"+req.body.category+"/"+req.body.id)
+app.post("/loadCart", jsonParser, (req, res)=> {
+    if(adminVerify(req.body.login, req.body.password)){
+        let data = {}
 
-        fs.readFile("src/tovar.html", {encoding:"utf-8"}, (err, data)=> {
-            if(err) res.send(err);
-            fs.writeFile(`src/${req.body.category}/${req.body.id}.html`, data, (err)=> {
-                if(err) res.send(err)
-                else res.send("create")
-            });
+        loadAllTovar((k, v)=> {
+            let key = k.split("/")
+            let kkey = key[key.length-1].split(".")[0]
+            data[kkey] = v
         });
+
+        setTimeout(()=> res.send(data), 2000)
     }
+    else res.send('error.html')
 });
 app.post("/toPay", jsonParser, (req, res)=> {
     let user;
     if(verify.isLogin(req.body.login) && db.has("user."+req.body.login)) user = db.get("user."+req.body.login)
-    else user = {login:'anonimys'}
+    else user = {login: 'anonimys'}
 
     let bay = new Bay(user)
     let total = bay.calculate(req.body.data)
-    let html = liqpay.cnb_form({
-        'action'         : 'pay',
-        'amount'         : total,
-        'currency'       : 'UAH',
-        'description'    : 'description text',
-        'order_id'       : `order_id_${bay.id()}`,
-        'version'        : '3'
+    bay.id((val)=> {
+        let html = liqpay.cnb_form({
+            'action'         : 'pay',
+            'amount'         : total,
+            'currency'       : 'UAH',
+            'description'    : 'description text',
+            'order_id'       : `order_id_${val}`,
+            'version'        : '3'
+        });
+    
+        log.info("[💵]: "+html)
+        res.send(html)
     });
-
-    log.info("[💵]: "+html)
-    res.send(html)
 });
 app.post("/loadDir", jsonParser, (req, res)=> {
     let dir = req.body.dir.split(".")[0]
@@ -120,6 +123,35 @@ app.post("/readProfile", jsonParser, (req, res)=> {
     }
     else res.send('error')
 });
+app.post("/loadImg", jsonParser, (req, res)=> {
+    if(adminVerify(req.body.login, req.body.password)){
+        let fileName = req.body.name.split(".");
+        let name = Date.now();
+        
+        ba64.writeImage("src/img/load/"+fileName[0]+name, req.body.src, (err)=> {
+            if(err) console.log(err)
+            if(fileName[1]==="jpg") fileName[1] = "jpeg";
+            
+            res.send("img/load/"+fileName[0]+name+"."+fileName[1])
+        });
+    }
+    else res.send('error')
+});
+app.post("/create", jsonParser, (req, res)=> {
+    if(adminVerify(req.body.login, req.body.password)!==undefined){
+        log.info("[✒️🛒]:addTovar: shop/"+req.body.type)
+        let data = db.get("tovars."+req.body.type)??[]
+
+        if(req.body.type){
+            data.unshift(req.body.data)
+            db.set("tovars."+req.body.type, data)
+        }
+    }
+});
+app.post("/tovars", jsonParser, (req, res)=> {
+    res.send(db.get("tovars."+req.body.type))
+});
+
 
 // test
 app.post("/testPay", jsonParser, (req, res)=> {
@@ -141,6 +173,7 @@ app.post("/testPay", jsonParser, (req, res)=> {
     log.info("[💵]test: "+html)
     res.send(html)
 });
+
 
 
 

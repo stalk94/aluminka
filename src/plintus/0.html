@@ -12,13 +12,15 @@
     <script src="../jquery-3.6.0.min.js"></script>
     <script src="../swiper-bundle.min.js"></script>
     <script src="../tingle.min.js"></script>
+    <script src="../modules/app.js"></script>
+    
 
     <title>Aluminka</title>
     <meta class="meta-tag" name="description" content="">
 </head>
 
 
-<body root="tovar" cz-shortcut-listen="true">
+<body root="tovar">
     <header>
         <nav class="one-nav line">
             <div class="lang line" style="margin-left:2%;">
@@ -56,26 +58,29 @@
         <section class="one tovar line">
             <!-- slider -->
             <div class="galery">
-                <div class="foto-add" mod="">+</div>
+                <div class="foto-add" mod=""> ➕ </div>
                 <div class="swiper-container swiperTovar swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events" style="--swiper-navigation-color:#fff;--swiper-pagination-color:#fff;">
-                    <div class="swiper-wrapper swiperTovarWraper" id="swiper-wrapper-a8413de5336bda35" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
-                        <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 1" style="width: 627px; margin-right: 10px;">
-                            <img class="tovar-img galery-foto" src="../img/load/test.png" mod="">
+                    <div class="swiper-wrapper swiperTovarWraper" id="swiper-wrapper-b5279443910f8a01f" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
+                        <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 1" style="width: 471px; margin-right: 10px;">
+                            <img class="galery-foto" src="http://194.61.0.15/img/load/зображення_viber_2021-08-25_13-16-48-80616298866692171630123451614.jpeg" mod="">
                         </div>
                     </div>
-                    <div class="swiper-button-next swiper-button-disabled" tabindex="-1" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-a8413de5336bda35" aria-disabled="true"></div>
-                    <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-a8413de5336bda35" aria-disabled="true"></div>
+                    <div class="swiper-button-next swiper-button-disabled" tabindex="-1" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-b5279443910f8a01f" aria-disabled="true"></div>
+                    <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-b5279443910f8a01f" aria-disabled="true"></div>
                 <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+                <!--mini slider-->
                 <div thumbsslider="" class="swiper-container swiperTovarMini swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events swiper-container-free-mode swiper-container-thumbs">
-                    <div class="swiper-wrapper miniContainer" id="swiper-wrapper-f637b13c6e8c888f" aria-live="polite">
-                        
+                    <div class="swiper-wrapper miniContainer" id="swiper-wrapper-81cba8ef3a49b89e" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
+                        <img class="galery-foto" src="../img/none.jpg" mod="">
+                        <img class="galery-foto" src="../img/none.jpg" mod="">
+                        <img class="galery-foto" src="../img/none.jpg" mod="">
                     </div>
                 <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
             </div>
 
             <!-- tovar info -->
             <div class="bodyGalery">
-                <h2 class="info name-tovar" mod="">55 мм скрытого монтажа алюминиевый</h2>
+                <h2 class="info name-tovar" mod="">55 мм скрытого монтажа алюминиевый плинтус анодированный</h2>
                 <p class="info articul" mod="">Код товара: 080636</p>
                 <p class="info" mod="">Модель: S551</p>
                 <p class="info" id="info" mod="">Цвет:</p>
@@ -133,17 +138,18 @@
             <h2>С этим товаром также покупают:</h2>
 
             <div #swiperref="" class="swiper-container bottom-swipe swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events">
-                <div class="swiper-wrapper" id="swiper-wrapper-c101e8e7a411b932e" aria-live="polite" style="transition-duration: 0ms; transform: translate3d(607.333px, 0px, 0px);">
-                    <div class="swiper-slide swiper-slide-active" mod="" role="group" aria-label="1 / 4" style="width: 577.333px; margin-right: 30px;">Slide 1</div>
-                    <div class="swiper-slide swiper-slide-next" mod="" role="group" aria-label="2 / 4" style="width: 577.333px; margin-right: 30px;">Slide 2</div>
-                    <div class="swiper-slide" mod="" role="group" aria-label="3 / 4" style="width: 577.333px; margin-right: 30px;">Slide 3</div>
-                    <div class="swiper-slide" mod="" role="group" aria-label="4 / 4" style="width: 577.333px; margin-right: 30px;">Slide 4</div>
+                <div class="swiper-wrapper" id="swiper-wrapper-4ea771010e8699afe5" aria-live="polite" style="transition-duration: 0ms; transform: translate3d(458.333px, 0px, 0px);">
+                    <div class="swiper-slide swiper-slide-active" id=":0" mod="" style="width: 428.333px; margin-right: 30px;" role="group" aria-label="1 / 4">Slide 1</div>
+                    <div class="swiper-slide swiper-slide-next" id=":1" mod="" style="width: 428.333px; margin-right: 30px;" role="group" aria-label="2 / 4">Slide 2</div>
+                    <div class="swiper-slide" id=":2" mod="" style="width: 428.333px; margin-right: 30px;" role="group" aria-label="3 / 4">Slide 3</div>
+                    <div class="swiper-slide" id=":3" mod="" role="group" aria-label="4 / 4" style="width: 428.333px; margin-right: 30px;">Slide 4</div>
                 </div>
-                <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-c101e8e7a411b932e" aria-disabled="false"></div>
-                <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-c101e8e7a411b932e" aria-disabled="true"></div>
+                <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-4ea771010e8699afe5" aria-disabled="false"></div>
+                <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-4ea771010e8699afe5" aria-disabled="true"></div>
                 <div class="swiper-pagination swiper-pagination-fraction"><span class="swiper-pagination-current">1</span> / <span class="swiper-pagination-total">4</span></div>
             <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
         </section>
+
         <section>
             <div style="padding-left: 40%;">
                 <h2 style="padding-left:1%;">Остались вопросы?</h2>
@@ -174,8 +180,7 @@
         <section class="coop">ТОВ Алюминка - производство алюминиевых профилей © 2021</section>
     </footer>
 
-    
-    <script src="../modules/tovar.js"></script>
-    <script src="../modules/bay.js"></script><div class="tingle-modal modal" style="display: none;"><button type="button" class="tingle-modal__close"><span class="tingle-modal__closeIcon"><svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><path d="M.3 9.7c.2.2.4.3.7.3.3 0 .5-.1.7-.3L5 6.4l3.3 3.3c.2.2.5.3.7.3.2 0 .5-.1.7-.3.4-.4.4-1 0-1.4L6.4 5l3.3-3.3c.4-.4.4-1 0-1.4-.4-.4-1-.4-1.4 0L5 3.6 1.7.3C1.3-.1.7-.1.3.3c-.4.4-.4 1 0 1.4L3.6 5 .3 8.3c-.4.4-.4 1 0 1.4z" fill="#000" fill-rule="nonzero"></path></svg></span><span class="tingle-modal__closeLabel">Закрыть</span></button><div class="tingle-modal-box"><div class="tingle-modal-box__content"></div><div class="tingle-modal-box__footer"></div></div></div>
-    <script src="../modules/engine.js"></script><div class="tingle-modal modal modal-window" style="display: none;"><button type="button" class="tingle-modal__close"><span class="tingle-modal__closeIcon"><svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><path d="M.3 9.7c.2.2.4.3.7.3.3 0 .5-.1.7-.3L5 6.4l3.3 3.3c.2.2.5.3.7.3.2 0 .5-.1.7-.3.4-.4.4-1 0-1.4L6.4 5l3.3-3.3c.4-.4.4-1 0-1.4-.4-.4-1-.4-1.4 0L5 3.6 1.7.3C1.3-.1.7-.1.3.3c-.4.4-.4 1 0 1.4L3.6 5 .3 8.3c-.4.4-.4 1 0 1.4z" fill="#000" fill-rule="nonzero"></path></svg></span><span class="tingle-modal__closeLabel">Закрыть</span></button><div class="tingle-modal-box"><div class="tingle-modal-box__content"></div><div class="tingle-modal-box__footer"></div></div></div>
+    <script src="../modules/bay.js"></script>
+    <script src="../modules/shop.js"></script>
+    <script src="../modules/engine.js"></script>
 </body>

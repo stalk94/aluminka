@@ -1,15 +1,40 @@
-const listTovar = document.querySelector(".list-tovar");
-const story = document.querySelector("aside.story");
-window.user = JSON.parse(window.localStorage.getItem("user"))
+if(window.user && window.user.permision==="admin" && !window.partials) window.partials = new Partials()
 var storys = window.localStorage.getItem("story")===null ? null : JSON.parse(window.localStorage.getItem("story"))
+
 
 
 function goTo(elem) {
     let category = elem.id.split("_")[0]
     let id = elem.id.split("_")[1]
-    
-    if(window.user.permision==="admin"){
-        console.log(elem.innerHTML)
+
+    if(window.user && window.user.permision==="admin"){
+        if(elem.parentElement.className==="list-render"){
+            let selected = elem.parentElement.querySelector(".selected")
+            if(selected) selected.classList.remove("selected")
+            
+            const clone =()=> { 
+                elem.classList.toggle("selected")
+                let clon = elem.cloneNode(true)
+                let img = clon.querySelector("img.tovar-img")
+                let txt = clon.querySelector(".p-1.info")
+                let div = document.createElement("div")
+                img.className = "story-img"
+                img.removeAttribute("mod")
+                txt.removeAttribute("mod")
+                div.appendChild(img)
+                div.appendChild(txt)
+                storySelect.style.display = "grid"
+                storySelect.style["margin-left"] = "3px"
+                storySelect.style["margin-right"] = "3px"
+                storySelect.style["background-color"] = "rgba(128, 128, 128, 0.2)"
+                txt.style.color = "white"
+                storySelect.innerHTML = div.innerHTML
+                storySelect.id = clon.id
+                storySelect.onclick = clon.onclick
+                storySelect.ondblclick = clon.ondblclick
+            }
+            if(storySelect) clone()
+        }
     }
     else document.location.href = document.location.origin+"/"+category+"/"+id+".html"
 }
@@ -27,8 +52,10 @@ function dblclTo(elem) {
 
 
 
+
 function addTovar(nameTovar, category) {
-    listTovar.innerHTML += `
+    let listTovar = document.querySelector(".list-tovar")
+    let list = `
         <div class="tovar-cart line" onClick="goTo(this)" ondblclick="dblclTo(this)" id="${category}_${listTovar.children.length}">
             <img class="tovar-img" src="../img/load/test.png" mod></img>
             <div class="tovar-right">
@@ -55,22 +82,18 @@ function addTovar(nameTovar, category) {
         password: window.user.password, 
         category: category, 
         id: listTovar.children.length-1,
-    }, "POST").then((res)=> console.log(res))
+        list: list
+    }, "POST").then((res)=> {
+        document.querySelector(".list-tovar").innerHTML = ''
+        if(res) document.querySelector(".list-tovar").innerHTML = res
+    });
 }
 
 
 
-const swypeList = new Swiper(".swypeList", {
-    pagination: {
-        el: ".swiper-paginations",
-        clickable: true,
-        renderBullet: function(index, className){
-            return '<span class="' + className + '">' + (index + 1) + "</span>";
-        },
-    },
-});
+
 if(storys!==null){
-    const root = document.querySelector('.story')
+    let root = document.querySelector('.story')
     root.innerHTML = ''
     root.innerHTML += '<div class="head-blok story-blok">Избранное</div>'
 

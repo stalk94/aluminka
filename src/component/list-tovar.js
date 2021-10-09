@@ -1,0 +1,85 @@
+import React, { useState, useEffect } from "react";
+import {useLocalstorageState} from "rooks";
+import { useSend } from "./engine";
+import Page from "./page";
+import ReactDOM from "react-dom";
+
+
+const Tovar =(props)=> {
+    return(
+        <div className="list-tovar">
+            <div className="tovar-cart line"
+                onClick={()=> props.click(props)}
+            >
+                <img className="tovar-img" src={props.src} />
+                <div className="tovar-right">
+                    <div className="p-1 opisanie-div info">
+                        { props.name }
+                    </div>
+                <div className="line">
+                    <div className="column price" style={{marginTop:"2%"}}>
+                        <div className="price-old info">{ props.price }₴</div>
+                        <div className="price-new info">{ props.minPrice }₴</div>
+                    </div>
+                    <div className="column" style={{flex:"1",marginTop:"2%",paddingLeft:"15%"}}>
+                        <div className="fiolet-button" 
+                            id="sell" 
+                            style={{height:"65%",marginBottom:"2%"}}
+                            onClick={()=> props.click(props)}
+                        > 
+                            Купить 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    );
+}
+
+
+const Shop =(props)=> {
+    const [data, setData] = useLocalstorageState(props.url, [])
+    const [view, setView] = useState("nav")
+
+    useEffect(()=> {
+        useSend("tovars", {type:props.url}, (val)=> setData(val))
+    })
+
+    return(
+        <>
+            {view==="nav"
+                ? data.map((tovar, index)=> {
+                    return(
+                        <Tovar
+                            key={index} 
+                            src={tovar[0][0]} 
+                            name={tovar[1]} 
+                            price={tovar[12]} 
+                            minPrice={tovar[13]} 
+                            click={()=> setView(index)}
+                        />
+                    )
+                })
+                : <Page 
+                    images={data[view][0]}
+                    name={data[view][1]}
+                    id={data[view][2]}
+                    model={data[view][3]}
+                    priceMin={data[view][13]}
+                    description={data[view][5]}
+                    material={data[view][6]}
+                    dop={data[view][7]}
+                    width={data[view][8]}
+                    vusota={data[view][9]}
+                    height={data[view][10]}
+                    colors={data[view][11]}
+                    onEnd={()=> setView("nav")}
+                />
+            }
+        </>
+    );
+}
+
+
+ReactDOM.render(<Shop url={document.body.getAttribute("root")} />, document.querySelector(".list-tovar"))
