@@ -2,8 +2,6 @@ require('dotenv').config()
 const express = require("express");
 const log4js = require('log4js');
 const path = require("path");
-const fs = require("fs");
-const ba64 = require("ba64")
 const LiqPay = require('./server/liqpay');
 const { Bay, loadAllTovar, loadFile, addCart } = require("./server/model");
 const bodyParser = require("body-parser");
@@ -61,30 +59,7 @@ app.post("/question", jsonParser, (req, res)=> {
         res.send("<div>Мы свяжемся с вами в ближайшее время</div>")
     }
 });
-app.post("/readSite", jsonParser, (req, res)=> {
-    if(adminVerify(req.body.login, req.body.password)) fs.writeFile(__dirname+`/src/${req.body.url}`, req.body.data, (err)=> {
-        if(err) res.send(err)
-        else {
-            log.info("[📝]:readSite: "+req.body.url)
-            res.send('completed')
-        }
-    });
-});
-app.post("/loadCart", jsonParser, (req, res)=> {
-    if(adminVerify(req.body.login, req.body.password)){
-        let data = {}
-
-        loadAllTovar((k, v)=> {
-            let key = k.split("/")
-            let kkey = key[key.length-1].split(".")[0]
-            data[kkey] = v
-        });
-
-        setTimeout(()=> res.send(data), 2000)
-    }
-    else res.send('error.html')
-});
-app.post("/toPay", jsonParser, (req, res)=> {
+app.post("/payCart", jsonParser, (req, res)=> {
     let user;
     if(verify.isLogin(req.body.login) && db.has("user."+req.body.login)) user = db.get("user."+req.body.login)
     else user = {login: 'anonimys'}
@@ -123,20 +98,6 @@ app.post("/readProfile", jsonParser, (req, res)=> {
     }
     else res.send('error')
 });
-app.post("/loadImg", jsonParser, (req, res)=> {
-    if(adminVerify(req.body.login, req.body.password)){
-        let fileName = req.body.name.split(".");
-        let name = Date.now();
-        
-        ba64.writeImage("src/img/load/"+fileName[0]+name, req.body.src, (err)=> {
-            if(err) console.log(err)
-            if(fileName[1]==="jpg") fileName[1] = "jpeg";
-            
-            res.send("img/load/"+fileName[0]+name+"."+fileName[1])
-        });
-    }
-    else res.send('error')
-});
 app.post("/create", jsonParser, (req, res)=> {
     if(adminVerify(req.body.login, req.body.password)!==undefined){
         log.info("[✒️🛒]:addTovar: shop/"+req.body.type)
@@ -149,7 +110,10 @@ app.post("/create", jsonParser, (req, res)=> {
     }
 });
 app.post("/tovars", jsonParser, (req, res)=> {
-    res.send(db.get("tovars."+req.body.type))
+    console.log(req.body.type)
+
+    if(db.get("tovars."+req.body.type)) res.send(db.get("tovars."+req.body.type))
+    else res.send([])
 });
 
 

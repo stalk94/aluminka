@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {useLocalstorageState} from "rooks";
+import { useLocalstorageState } from "rooks";
 import { useSend } from "./engine";
 import Page from "./page";
+import Bay from "./bay";
 import ReactDOM from "react-dom";
 
 
@@ -43,24 +44,22 @@ const Shop =(props)=> {
     const [view, setView] = useState("nav")
 
     useEffect(()=> {
-        useSend("tovars", {type:props.url}, (val)=> setData(val))
-    })
+        useSend("tovars", {type:props.url}, (val)=> {console.log(val); setData(val)})
+    }, [])
 
     return(
         <>
-            {view==="nav"
-                ? data.map((tovar, index)=> {
-                    return(
-                        <Tovar
-                            key={index} 
-                            src={tovar[0][0]} 
-                            name={tovar[1]} 
-                            price={tovar[12]} 
-                            minPrice={tovar[13]} 
-                            click={()=> setView(index)}
-                        />
-                    )
-                })
+            {view === "nav"
+                ? data.length>0 ? data.map((tovar, index)=> (
+                    <Tovar
+                        key={index} 
+                        src={tovar[0][0]} 
+                        name={tovar[1]} 
+                        price={tovar[12]} 
+                        minPrice={tovar[13]} 
+                        click={()=> setView(index)}
+                    />
+                )) : <var>пока товаров нет</var>
                 : <Page 
                     images={data[view][0]}
                     name={data[view][1]}

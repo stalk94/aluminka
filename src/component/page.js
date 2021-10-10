@@ -4,9 +4,11 @@ import { Button, Input } from '@nextui-org/react';
 
 
 
+
 export default function Page(props) {
     const [display, setDisplay] = useState("block")
     const [count, setCount] = useState(0)
+    
     const onCount =(mod="add")=> {
         setCount((count)=> mod==="add"?(count+=1):(count-=1))
     }
@@ -14,8 +16,8 @@ export default function Page(props) {
         setDisplay("none")
         props.onEnd()
     }
-    const toPay =()=> {
-        EVENT.emit("add", count, props)
+    const toBay =()=> {
+        EVENT.emit("add", {count:count, tovar:props})
         setCount(0)
     }
     
@@ -46,7 +48,7 @@ export default function Page(props) {
                         <div>{ count }</div>
                         <button onClick={()=> onCount("add")}> + </button>
 
-                        <button onClick={toPay}> В корзину </button>
+                        <button onClick={toBay}> В корзину </button>
                     </div>
                 </div>
             </section>

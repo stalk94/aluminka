@@ -2,10 +2,8 @@ const glob = require('glob');
 const fs = require("fs");
 const log4js = require('log4js');
 const { guard } = require("./guard");
-const redis = require('redis');
-const cache = redis.createClient()
 const cheerio = require("cheerio");
-const log = log4js.getLogger("sys")
+const log = log4js.getLogger("sys");
 
 
 exports.Bay = class {

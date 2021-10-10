@@ -1,105 +1,75 @@
-import React from 'react';
-import { send } from "./engine";
-import { useLocalstorageState } from "rooks";
-import { Button, Card } from '@nextui-org/react';
-
-const txt = ` 
-С 2015 года наша компания занимается продажей напольных плинтусов из алюминия, дверных профилей и профилей теневого шва. 
-В нашем каталоге вы сможете найти именно тот профиль, который больше всего подходит для решения ваших задач. 
-Алюминиевый профиль имеет различные формы, размеры и предназначение. Давайте поговорим об этом подробнее. 
-Самый первый раздел каталога это плоский плинтус. Плоский плинтус имеет классическую форму Л-образную, имеет плавный переход от стены к полу, 
-при этом плинтус не выглядит громоздким, так как имеет небольшую толщину. 
-Так как плинтус плоский размещение каких-либо проводов за плинтусом не представляется возможным. 
-Плинтус имеет различную высоту от 40 до 100 мм и различную ширину по полу от 11 до 18 мм. 
-Монтаж такого плинтуса осуществляется на жидкие гвозди, жидкие гвозди наносятся на заднюю поверхность плинтуса и прижимается к стене.
-Данный плинтус идет в классическом анодированном светло-сером цвете. Также данные плинтуса могут быть покрашены по желанию заказчика в любой цвет по каталогу RAL.
-`
+import React, {useState} from 'react';
+import { useSend } from "./engine";
+import ReactDOM from "react-dom";
 
 
+const Call =()=> (
+    <svg 
+        width="24" 
+        height="24" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg"
+        style={{marginRight:"3px",marginTop:"3px"}}
+    >
+        <path d="M23.3832 17.7016L20.3996 14.718C19.577 13.8955 18.2386 13.8955 17.4161 14.718L16.0599 16.0742C15.4368 16.6973 14.4228 16.6971 13.7998 16.0744L7.92169 10.1912C7.29708 9.56664 7.29699 8.55568 7.92169 7.93098C8.14013 7.71254 8.76737 7.0853 9.27784 6.57484C10.0968 5.75593 10.1082 4.42163 9.27704 3.59054L6.29428 0.617157C5.47172 -0.205359 4.1333 -0.205359 3.31293 0.615001C2.69906 1.22353 2.50106 1.41985 2.22581 1.69271C-0.740448 4.65891 -0.740448 9.48531 2.22567 12.4514L11.5394 21.77C14.5126 24.7432 19.3248 24.7435 22.2982 21.77L23.3832 20.6851C24.2057 19.8625 24.2057 18.5241 23.3832 17.7016ZM4.30528 1.61166C4.57945 1.33749 5.02552 1.33744 5.30058 1.61241L8.28334 4.58579C8.55816 4.86062 8.55816 5.30541 8.28334 5.58029L7.78604 6.07754L3.81056 2.10207L4.30528 1.61166ZM12.5341 20.7756L3.22031 11.457C0.925399 9.16206 0.799258 5.55854 2.83237 3.11293L6.79632 7.07687C5.75475 8.2576 5.79816 10.0568 6.92696 11.1856L12.8049 17.0685C12.805 17.0685 12.805 17.0686 12.8051 17.0687C13.9327 18.1963 15.7318 18.2425 16.914 17.1995L20.878 21.1636C18.4402 23.1932 14.8448 23.0863 12.5341 20.7756ZM22.3887 19.6906L21.8914 20.1879L17.9134 16.2098L18.4106 15.7125C18.6848 15.4383 19.1309 15.4383 19.4051 15.7125L22.3887 18.6961C22.6629 18.9703 22.6629 19.4164 22.3887 19.6906Z" fill="#D53429"/>
+    </svg>
+);
+const Chat =()=> (
+    <svg 
+        width="24" 
+        height="24" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg"
+        style={{marginRight:"3px",marginTop:"3px"}}
+    >
+        <path d="M9.75003 9.75003C10.371 9.75003 10.875 9.24678 10.875 8.62503C10.875 8.00404 10.371 7.50002 9.75003 7.50002C9.129 7.50002 8.62502 8.00404 8.62502 8.62503C8.62499 9.24674 9.129 9.75003 9.75003 9.75003ZM14.25 9.75003C14.871 9.75003 15.375 9.24678 15.375 8.62503C15.375 8.00404 14.871 7.50002 14.25 7.50002C13.629 7.50002 13.125 8.00404 13.125 8.62503C13.125 9.24674 13.629 9.75003 14.25 9.75003ZM7.60199 17.0527C8.18548 17.1473 9.51073 17.25 10.125 17.25C15.51 17.25 19.125 13.2427 19.125 8.53123C19.125 3.81972 14.6078 0 10.125 0C4.73251 0 0.375 3.81976 0.375 8.53123C0.375 11.2605 1.41525 13.578 3.37501 15.2468V19.5L7.60199 17.0527ZM1.875 8.62499C1.875 4.68974 5.43974 1.5 10.125 1.5C13.8548 1.5 17.625 4.68974 17.625 8.62499C17.625 12.5602 14.6812 15.75 10.125 15.75C9.45526 15.75 8.05798 15.6735 7.43475 15.5437L4.87501 17.25V14.592C3.04575 13.1078 1.875 11.1247 1.875 8.62499ZM20.5867 6.85351C20.601 7.06876 20.625 7.28177 20.625 7.50002C20.625 7.97703 20.5792 8.44427 20.5117 8.90555C21.5212 10.0875 22.125 11.5433 22.125 13.125C22.125 15.6248 20.631 17.8208 18.375 19.092V21.75L15.8152 20.0438C15.192 20.1735 14.5448 20.25 13.875 20.25C11.9325 20.25 10.9005 19.6665 9.49052 18.696C9.08178 18.7291 8.66852 18.7501 8.25002 18.7501C7.95153 18.7501 7.65901 18.7283 7.365 18.7118C9.15001 20.4578 10.9868 21.5625 13.875 21.5625C14.4893 21.5625 15.0885 21.507 15.6713 21.4118L19.875 24V19.746C22.1542 18.1845 23.625 15.7605 23.625 13.0305C23.625 10.5975 22.455 8.40826 20.5867 6.85351ZM5.25001 9.75003C5.871 9.75003 6.37502 9.24678 6.37502 8.62503C6.37502 8.00404 5.871 7.50002 5.25001 7.50002C4.62899 7.50002 4.12501 8.00404 4.12501 8.62503C4.12501 9.24674 4.62899 9.75003 5.25001 9.75003Z" fill="#D53429"/>
+    </svg>
+);
+const Burger =()=> (
+    <svg xmlns="http://www.w3.org/2000/svg" 
+        width="32" 
+        height="32" 
+        viewBox="0 0 122 103"
+        style={{marginRight:"3px",marginTop:"3px"}}
+        onClick={()=> authorize()}
+    >
+        <g>
+            <path fill="red"
+                d="M10.368,0h102.144c5.703,0,10.367,4.665,10.367,10.367v0 c0,5.702-4.664,10.368-10.367,10.368H10.368C4.666,20.735,0,16.07,0,10.368v0C0,4.665,4.666,0,10.368,0L10.368,0z M10.368,82.875 h102.144c5.703,0,10.367,4.665,10.367,10.367l0,0c0,5.702-4.664,10.367-10.367,10.367H10.368C4.666,103.609,0,98.944,0,93.242l0,0 C0,87.54,4.666,82.875,10.368,82.875L10.368,82.875z M10.368,41.438h102.144c5.703,0,10.367,4.665,10.367,10.367l0,0 c0,5.702-4.664,10.368-10.367,10.368H10.368C4.666,62.173,0,57.507,0,51.805l0,0C0,46.103,4.666,41.438,10.368,41.438 L10.368,41.438z" />
+        </g>
+    </svg>
+);
 
-export default function Nav(props) {
-    const [dir, setDir] = useLocalstorageState("Nav", "index")
 
+
+const Title =(props)=> {
     return(
-        <section className="one">
-            <div className="grid">
-                <div className="nav-cart">
-                    <h3 style="color:black;padding-left:3px;">ПЛИНТУСА</h3>
-                    <div className="line">
-                        <div onClick={()=> setDir("plintus")} className="fiolet-button cat" url="shop/plintus.html">Смотреть все</div>
-                        <img className="nav-img" height="125px" width="110px" src="img/category/1.png"/>
-                    </div>
-                </div>
-                <div className="nav-cart">
-                    <h3 style="color:black;padding-left:3px;">ФУРНИТУРА К ПЛИНТУСАМ</h3>
-                    <div className="line">
-                        <div onClick={()=> setDir("detail-plintus")} className="fiolet-button cat" url="shop/detail-plintus.html">Смотреть все</div>
-                        <img className="nav-img" height="125px" width="110px" src="img/category/2.png"/>
-                    </div>
-                </div>
-                <div className="nav-cart">
-                    <h3 style="color:black;padding-left:3px;">ДВЕРНЫЕ ПРОФИЛЯ</h3>
-                    <div className="line">
-                        <div onClick={()=> setDir("door-profile")} className="fiolet-button cat" url="shop/door-profile.html">Смотреть все</div>
-                        <img className="nav-img" height="125px" width="110px" src="img/category/3.png"/>
-                    </div>
-                </div>
-                <div className="nav-cart">
-                    <h3 style="color:black;padding-left:3px;">ФУРНИТУРА</h3>
-                    <div className="line">
-                        <div onClick={()=> setDir("fyrnityra")} className="fiolet-button cat" url="shop/fyrnityra.html">Смотреть все</div>
-                        <img className="nav-img" height="125px" width="110px" src="img/category/4.png"/>
-                    </div>
-                </div>
-                <div className="nav-cart">
-                    <h3 style="color:black;padding-left:3px;">ПРОФИЛЯ ТЕНЕВОГО ШВА</h3>
-                    <div className="line">
-                        <div onClick={()=> setDir("shadow-profile")} className="fiolet-button cat" url="shop/shadow-profile.html">Смотреть все</div>
-                        <img className="nav-img" height="125px" src="img/category/5.png"/>
-                    </div>
-                </div>
-                <div className="nav-cart">
-                    <h3 style="color:black;padding-left:3px;">НУЖНА ПОМОЩЬ?</h3>
-                    <div className="line">
-                        <div onClick={()=> setDir("help")} className="fiolet-button">Смотреть все</div>
-                        <img className="nav-img" height="125px" width="110px" src="img/category/6.png"/>
-                    </div>
-                </div>
+        <nav className="one-nav line">
+            <div className="lang line" style={{marginLeft:"2%"}}>
+                <p className="language" id="ru">рус </p>
+                <p> | </p>
+                <p className="language" id="ua">укр</p>
             </div>
-
-            <div className="line" style="margin-left:30%;">
-                <div className="button" onClick={()=> setDir("price")}>Прайс на алюминевый плинтус</div>
-                <div className="red-button" style="margin-left:3%;">Прайс на дверной профиль</div>
-            </div>
-        </section>
-    );
-}
-
-
-export function Promo(props) {
-    const [text, setText] = useLocalstorageState("Promo", txt)
-
-    return(
-        <section className="two">
-            <h3>Вас приветсвует!</h3> 
-            <h3 style="margin-top:-15px;">Производитель ТОВ АЛЮМИНКА</h3>
-            <div className="prom-blok">
-                <h5 className="info" style="width:65%;">
-                   { text }
-                </h5>
-                <img src="img/title.png" className="prom-img"/>
-            </div>
-            <div className="button">Смотреть еще</div>
-        </section>
-    );
-}
-
-
-export function Parthers(props) {
-    return(
-        <section class="three">
-            <h2>Наши партнеры:</h2>
             
-        </section>
-    )
+            <div className="email line">
+                <Chat/>
+                <p> aluminka.com@gmail.com </p>
+            </div>
+            
+            <div className="call line">
+                <Call/>
+                <p>+38(093) 237 58 55;</p> 
+                <p>+38(097) 814 68 64</p>
+            </div>
+
+            <div className="main line">
+                <Burger/>
+            </div>
+        </nav>
+    );
 }
+
+
+ReactDOM.render(<Title/>, document.querySelector(".Titles"))

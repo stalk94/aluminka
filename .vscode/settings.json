@@ -16,7 +16,6 @@
         "wmr.config.mjs": true,
         "src\\modules/manifes.json": true,
         ".cache": true,
-        "dist": true,
         ".gitignore": true,
         "src/html": true,
         "error.html": true,
@@ -36,7 +35,12 @@
         "server/liqpay.js": true,
         "src/popper.min.js": true,
         "test/types.js": true,
-        ".babelrc.json": true
+        ".babelrc.json": true,
+        "slick.min.js": true,
+        "src/slick.min.js": true,
+        "src/prices.xlsx": true,
+        "src/store.legacy.min.js": true,
+        "yarn.lock": true
     },
     "explorerExclude.backup": null
 }

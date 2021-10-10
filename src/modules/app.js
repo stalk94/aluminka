@@ -1,6 +1,5 @@
-const gurl = 'http://194.61.0.15/'
+const gurl = 'http://localhost:3000/'
 let urls = document.location.href.split("/")
-if(window.localStorage.getItem("user")) window.user = JSON.parse(window.localStorage.getItem("user"))
 
 
 function URL() {

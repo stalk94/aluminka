@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Input } from '@nextui-org/react';
 import { useSend } from "./engine";
 import OffCanvas from "react-aria-offcanvas";
@@ -10,24 +10,23 @@ const options = [{value: 'nov', label: 'Новой почтой'}]
 const options2 = [{value: 'naloj', label: 'Наложенный платеж'},{value: 'cart', label: 'LiqPay'}]
 
 
-export const PanelBays =(props)=> {
+
+export default function PanelBays(props) {
     const [state, setState] = useState({
-        name:user.name??"",
-        familua:user.familua??"",
-        phone:user.phone??"",
-        city:user.city??"",
-        adres:user.adres??""
+        name: user.name??"",
+        familua: user.familua??"",
+        phone: user.phone??"",
+        city: user.city??"",
+        adres: user.adres??""
     })
     const [type, setType] = useState()
     const [typePay, setTypePay] = useState()
     const [view, setView] = useState("bay")
-    const [isOpen, setOpen] = useState(false)
+    const [isOpen, setOpen] = useState(props.open?props.open:false)
     const [total, setTotal] = useState(0)
     const [bays, setBays] = useLocalstorageState("bays", [])
-    const onView =(mod)=> {
-        setView(mod)
-    }
-    const onSell =(mod)=> {
+
+    const onSell =()=> {
         if(typePay==="cart") useSend("payCart", {...state, total:total, delivery:type, bays:bays}, (data)=> "")
         else useSend("payNaloj", {...state, total:total, bays:bays, delivery:type}, (data)=> "")
     }
@@ -40,7 +39,7 @@ export const PanelBays =(props)=> {
 
     return(
         <>
-            {view==="bay"
+            {view === "bay"
                 ? <OffCanvas
                     labelledby="Корзина"
                     height="100%"
@@ -56,12 +55,12 @@ export const PanelBays =(props)=> {
                                 <img width="100%" src={tovar.src} style={{maxHeight:"50px"}}/>
                                 <var>{ tovar.name }</var>
                                 <h5>{ tovar.count }</h5>
-                                <h5>{ tovar.priceMin*tovar.count }₴{setTotal(total+tovar.priceMin)}</h5>
-                                <h4>-</h4>
+                                <h5>{ tovar.priceMin*tovar.count }₴{ setTotal(total+tovar.priceMin) }</h5>
+                                <h4> - </h4>
                             </div>
                         ))}
                     </div>
-                    <Button onClick={()=> onView("delivery")}> Оформить Покупку </Button>
+                    <Button onClick={()=> setView("delivery")}> Оформить Покупку </Button>
                     <div>Всего: {total}₴</div>
                 </OffCanvas>
                 : <OffCanvas
@@ -79,8 +78,12 @@ export const PanelBays =(props)=> {
                         <Input placeholder="город" onChange={(e)=> onState("city",e.value)} value={state.city}/>
                         <Select placeholder={type} onChange={(e)=> setType(e.value)} options={options} value={type}/>
                         <Select placeholder={typePay} onChange={(e)=> setTypePay(e.value)} options={options2} value={typePay}/>
-                        <Input placeholder={type==="nov"?"отделение":"адресс"} onChange={(e)=> onState(type,e.value)} value={type==="nov"?"":state.adres}/>
-                        {typePay==="naloj"
+                        <Input 
+                            placeholder={type==="nov"?"отделение":"адресс"} 
+                            onChange={(e)=> onState(type,e.value)} 
+                            value={type==="nov"?"":state.adres}
+                        />
+                        {typePay === "naloj"
                             ? <Button onClick={onSell}> Оформить </Button>
                             : <Button onClick={onSell}> Оплата {total}₴ </Button>
                         }

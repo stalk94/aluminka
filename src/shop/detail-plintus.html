@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../css/shop-list.css">
     <link rel="stylesheet" href="../css/tingle.min.css">
 
+    <script src="../store.legacy.min.js"></script>
     <script src="../jquery-3.6.0.min.js"></script>
     <script src="../swiper-bundle.min.js"></script>
     <script src="../tingle.min.js"></script>
@@ -16,49 +17,24 @@
 
     <title>Aluminka</title>
     <meta class="meta-tag" name="description" content=""/>
-
-    <ctx></ctx>
 </head>
 
 
-<body root="shop">
-    <header>
-        <nav class="one-nav line">
-            <div class="lang line" style="margin-left:2%;">
-                <p class="language" id="ru">рус </p>
-                <p> | </p>
-                <p class="language" id="ua">укр</p>
-            </div>
-            
-            <div class="email line">
-                <img src="../img/chat.svg" style="margin-right:3px;"></img>
-                <p>aluminka.com@gmail.com</p>
-            </div>
-            
-            <div class="call line">
-                <img src="../img/call.svg" style="margin-right:3px;"></img>
-                <p>+38(093) 237 58 55;</p> 
-                <p>+38(097) 814 68 64</p>
-            </div>
-            <div class="main line">
-                <img src="../img/icon/main-icon.svg" width="32" style="margin-right:3px;"></img>
-            </div>
-        </nav>
+<body root="detail-plintus">
+    <div class="Modal"></div>
+    <div class="Admin-add"></div>
 
-        <nav class="two-nav line" style="z-index:2;position:relative;">
-            <p class="navigation" to="glav">Главная</p>
-            <p class="navigation" to="catalog">Каталог</p>
-            <p class="navigation" to="pay">Оплата и доставка</p>
-            <p class="navigation" to="uslugi">Услуги</p>
-            <p class="navigation" to="contact">Контакты</p>
-        </nav>
+    <header>
+        <div class="Titles"></div>
+        <div class="Nav"></div>
         
-        <img width="100%" src="../img/foot_fon.png" style="margin-top:-72px;" mod></img>  
+        <div class="top-img">
+            <img class="img-top" src="../img/foot_fon.png">
+        </div>
     </header>
 
 
     <main>
-        <!-- info section -->
         <section class="one">
             <h5 class="info" mod>
                 Алюминиевый профиль имеет различные формы, размеры и предназначение. Давайте поговорим об этом подробнее. 
@@ -84,10 +60,7 @@
                     <div class="tool-add" mod="">➕</div>
                 </div>
 
-                
-                <div class="list-tovar">
-                    
-                </div>
+                <div class="list-tovar"></div>
             </div>
         </section>
 
@@ -123,24 +96,13 @@
     </main>
     
 
-    <footer>
-        <section class="line">
-            <ul class="column">
-                <li>Контакты</li>
-                <li>Возврат товара</li>
-                <li>Условия и договор</li>
-            </ul>
-            <ul class="column" style="margin-left: 20%;">
-                <li>Каталог</li>
-                <li>Производители</li>
-                <li>Акции</li>
-            </ul>
-        </section>
-        <section class="coop">ТОВ Алюминка - производство алюминиевых профилей © 2021</section>
-    </footer>
+    <footer></footer>
 
 
-    <script src="../modules/bay.js"></script>
-    <script src="../modules/shop.js"></script>
+    <script src="../dist/nav.ce572f91.js"></script>
     <script src="../modules/engine.js"></script>
+    <script src="../dist/list-tovar.ae38c12d.js"></script>
+    <script src="../dist/add.8fe46a61.js"></script>
+    <script src="../dist/navigation.67a1a802.js"></script>
+    <script src="../dist/footer.ef929a17.js"></script>
 </body>

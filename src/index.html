@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="css/tingle.min.css">
     <script src="../node_modules/image-to-base64/image-to-base64.min.js"></script>
 
-    <script src="popper.min.js"></script>
+
+    <script src="store.legacy.min.js"></script>
     <script src="jquery-3.6.0.min.js"></script>
     <script src="tingle.min.js"></script>
     <script src="./swiper-bundle.min.js"></script>
@@ -20,38 +21,10 @@
 </head>
 
 
-<body root="index" cz-shortcut-listen="true">
+<body root="index">
     <header>
-        <nav class="one-nav line">
-            <div class="lang line" style="margin-left:2%;">
-                <p class="language" id="ru">рус </p>
-                <p> | </p>
-                <p class="language" id="ua">укр</p>
-            </div>
-            
-            <div class="email line">
-                <img src="img/chat.svg" style="margin-right:3px;">
-                <p>aluminka.com@gmail.com</p>
-            </div>
-            
-            <div class="call line">
-                <img src="img/call.svg" style="margin-right:3px;">
-                <p>+38(093) 237 58 55;</p> 
-                <p>+38(097) 814 68 64</p>
-            </div>
-            <div class="main line">
-                <img src="img/icon/main-icon.svg" width="32" style="margin-right:3px;">
-            </div>
-        </nav>
-
-        <nav class="two-nav line" style="z-index:2;position:relative;">
-            <img class="logo" width="70px" src="img/logo.svg">
-            <p class="navigation" to="glav" info="Главная">Главная</p>
-            <p class="navigation" to="catalog" info="Каталог">Каталог</p>
-            <p class="navigation" to="pay" info="Оплата и доставка">Оплата и доставка</p>
-            <p class="navigation" to="uslugi" info="Услуги">Услуги</p>
-            <p class="navigation" to="contact" info="Контакты">Контакты</p>
-        </nav>
+        <div class="Titles"></div>
+        <div class="Nav"></div>
         
         <div class="top-img">
             <img class="img-top" src="img/top_fon.png" mod="">
@@ -106,30 +79,14 @@
                 </div>
             </div>
 
+
             <div class="line" style="margin-left:30%;">
                 <div class="button" onclick="toPrices()">Прайс на алюминевый плинтус</div>
                 <div class="red-button" style="margin-left:3%;">Прайс на дверной профиль</div>
             </div>
         </section>
 
-        <section class="two">
-            <h3>Вас приветсвует!</h3> 
-            <h3 style="margin-top:-15px;">Производитель ТОВ АЛЮМИНКА</h3>
-            <div class="prom-blok">
-                <h5 class="info" style="width:65%;" mod="">
-                    С 2015 года наша компания занимается продажей напольных плинтусов из алюминия, дверных профилей и профилей теневого шва. 
-                    В нашем каталоге вы сможете найти именно тот профиль, который больше всего подходит для решения ваших задач. 
-                    Алюминиевый профиль имеет различные формы, размеры и предназначение. Давайте поговорим об этом подробнее. 
-                    Самый первый раздел каталога это плоский плинтус. Плоский плинтус имеет классическую форму Л-образную, имеет плавный переход от стены к полу, 
-                    при этом плинтус не выглядит громоздким, так как имеет небольшую толщину. 
-                    Так как плинтус плоский размещение каких-либо проводов за плинтусом не представляется возможным. 
-                    Плинтус имеет различную высоту от 40 до 100 мм и различную ширину по полу от 11 до 18 мм. 
-                    Монтаж такого плинтуса осуществляется на жидкие гвозди, жидкие гвозди наносятся на заднюю поверхность плинтуса и прижимается к стене.
-                    Данный плинтус идет в классическом анодированном светло-сером цвете. Также данные плинтуса могут быть покрашены по желанию заказчика в любой цвет по каталогу RAL. <br><br>Условный текст</h5>
-                <img src="img/title.png" class="prom-img">
-            </div>
-            <div class="button">Смотреть еще</div>
-        </section>
+        <div class="Promo"></div>
 
         <section class="three">
             <h2>Наши партнеры:</h2>
@@ -161,24 +118,13 @@
     </main>
     
 
-    <footer>
-        <section class="line">
-            <ul class="column">
-                <li>Контакты</li>
-                <li>Возврат товара</li>
-                <li>Условия и договор</li>
-            </ul>
-            <ul class="column" style="margin-left: 20%;">
-                <li>Каталог</li>
-                <li>Производители</li>
-                <li>Акции</li>
-            </ul>
-        </section>
-        <section class="coop">ТОВ Алюминка - производство алюминиевых профилей © 2021</section>
-    </footer>
+    <footer></footer>
 
-
-    <script src="./modules/bay.js"></script>
+    
+    <script src="./promo.a8155c39.js"></script>
+    <script src="./dist/nav.ce572f91.js"></script>
     <script src="./modules/index.js"></script>
     <script src="./modules/engine.js"></script>
+    <script src="./dist/navigation.67a1a802.js"></script>
+    <script src="./dist/footer.ef929a17.js"></script>
 </body>

@@ -1,7 +1,27 @@
-let storySelect;
-window.story = window.localStorage.getItem("story")===null ? [] : JSON.parse(window.localStorage.getItem("story"));
-window.bay = new Bay();
 let windowAdmin = document.querySelector('.svg-window')
+class EventEmmitter {
+    constructor() {
+      this.events = {};
+    }
+    on(eventName, fn) {
+      if(!this.events[eventName]) this.events[eventName] = [];
+      this.events[eventName].push(fn);
+      
+      return ()=> {
+        this.events[eventName] = this.events[eventName].filter(eventFn => fn !== eventFn);
+      }
+    }
+    emit(eventName, data) {
+      const event = this.events[eventName];
+      if(event){
+        event.forEach((fn)=> {
+          fn.call(null, data);
+        });
+      }
+    }
+}
+
+
 window.modal = new tingle.modal({
     footer: true,
     stickyFooter: false,
@@ -19,6 +39,8 @@ window.modal = new tingle.modal({
         return false;
     }
 });
+window.user = store.get("user")
+window.EVENT = new EventEmmitter()
 
 
 
@@ -26,18 +48,24 @@ const userForm =()=> {
     return(`
         <div class="user-form column">
             <div class="error"></div>
-            <input class="input-userForm" type="email" placeholder="email" value="${window.user.email??''}">
-            <input class="input-userForm" type="tel" placeholder="Телефон" value="${window.user.phone??''}">
-            <input class="input-userForm" type="text" placeholder="Город" value="${window.user.city??''}">
-            <input class="input-userForm" type="text" placeholder="Адрес" value="${window.user.adres??''}">
+            <input class="input-userForm" type="email" placeholder="email" value="${user?user.email:''}">
+            <input class="input-userForm" type="tel" placeholder="Телефон" value="${user?user.phone:''}">
+            <input class="input-userForm" type="text" placeholder="Город" value="${user?user.city:''}">
+            <input class="input-userForm" type="text" placeholder="Адрес" value="${user?user.adres:''}">
         </div>
     `);
 }
+function goTo(elem) {
+    let category = elem.id.split("_")[0]
+    let id = elem.id.split("_")[1]
 
-
-
+    if(window.user && window.user.permision==="admin"){
+        
+    }
+    else document.location.href = document.location.origin+"/"+category+"/"+id+".html"
+}
 async function authorize() {
-    if(window.user===null){
+    if(!user){
         window.modal.setContent(`
             <div class="error"></div>
             <div class="reg-title">Авторизация</div>
@@ -115,177 +143,12 @@ async function authorize() {
         window.modal.open()
     }
 }
-function metaTagForm() {
-    let content = $(".meta-tag").attr("content")
-
-    window.modal.setContent(`
-        <div style="color:black">meta tags:</div>
-        <input id="meta-content" name="meta" value="${content}">
-    `);
-    window.modal.setFooterContent("");
-    window.modal.addFooterBtn('Применить', 'tingle-btn tingle-btn--primary', ()=> {
-        $(".meta-tag").attr("content", $("#meta-content").val())
-        modal.close()
-    });
-    window.modal.addFooterBtn('Отмена', 'tingle-btn tingle-btn--danger', ()=> {
-        modal.close()
-    });
-    window.modal.open()
-}
-function admin() {
-    let ctx;
+EVENT.on("add", (data)=> {
+    let bays = store.get("bays")
+    bays.push(data)
     
-    document.querySelectorAll(".info").forEach((elem)=> {
-        elem.removeAttribute('contenteditable')
-    });
-    if(!document.querySelector(".admin")){
-        ctx = document.createElement("div")
-        ctx.className = 'admin'
-        document.body.appendChild(ctx)
-        createTool("close", 'exit', ()=> {
-            ctx.remove()
-            if(windowAdmin) windowAdmin.style.display = "none"
-        });
-        createTool("tag", 'meta', ()=> {
-            metaTagForm()
-        });
-    }
-}
-function createTool(name, type, clb) {
-    if(!document.querySelector(`.tool-${type}`)){
-        let tool = document.createElement("div")
-        tool.setAttribute("class", `tool-${type}`)
-        let ic = document.createElement("img")
-        ic.src = `../img/icon/${name}.svg`
-        ic.width = 70
-        tool.appendChild(ic)
-        tool.addEventListener("click", ()=> {
-            document.querySelectorAll(".info").forEach((elem)=> {
-                elem.removeAttribute('contenteditable')
-            });
-            if(clb) clb()
-            tool.remove()
-        });
-
-        document.querySelector(".admin").appendChild(tool)
-    }
-}
-function addStory(nameTovar, priceOld, priceNew, src, selector) {
-    let story = `
-        <div class="tovar-cart cart-story line" onClick="goToStory(${selector})">
-            <img class="tovar-img" src="${src}"></img>
-            <div class="tovar-right">
-                <b class="p-1">${nameTovar}</b>
-                <div class="line">
-                    <div class="column price" style="margin-top:2%;">
-                        <div class="price-old">${priceOld}</div>
-                        <div class="price-new">${priceNew}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    if(window.story.length < 10) window.story.unshift(story)
-    else {
-        window.story.unshift(story)
-        window.story.pop()
-    }
-
-    window.localStorage.setItem("story", JSON.stringify(window.story)) 
-}
-async function save() {
-    let url = document.location.href.replace(document.location.origin, '')
-    if(url==="/") url = 'index.html'
-    document.querySelector('.bay').remove()
-    document.querySelectorAll('.tingle-modal').forEach((elem)=> {
-        elem.remove()
-    });
-    if(windowAdmin) windowAdmin.remove()
-    
-    let res = await send("readSite", {
-        login: window.user.login, 
-        password: window.user.password,
-        url: url, 
-        data: $("html").html()
-    }, "POST")
-}
-function redact(elem) {
-    const okCall =()=> {
-        admin()
-        createTool("check", 'txt', ()=> {
-            document.querySelector(".admin").remove()
-            save()
-        });
-    }
-    let root = $('body').attr("root")
-    let clas = elem.classList
-    let tag = elem.tagName
-
-    if(clas.contains("swiper-slide") && URL()!=="index.html"){
-        windowAdmin.style.display = "block"
-        storySelect = elem
-        okCall()
-    }
-    else if(clas.contains("swiper-slide") && URL()==="index.html"){
-        let inp = document.createElement("input")
-        let img = document.createElement("img")
-        
-        inp.type = "file"
-        inp.click()
-
-        inp.onchange =()=> {
-            fileLoader(inp.files, (src)=> {
-                img.src = src
-                elem.innerHTML = ""
-                elem.appendChild(img)
-            });
-            okCall()
-        }
-    }
-    else if(clas.contains("img-top") || clas.contains("tovar-img")){
-        let inp = document.createElement("input")
-        inp.type = "file"
-        inp.click()
-
-        inp.onchange =()=> {
-            fileLoader(inp.files, (src)=> elem.src = src);
-            okCall()
-        }
-    }
-    else if(clas.contains("info")){
-        if(!elem.hasAttribute('contenteditable')) okCall()
-
-        elem.setAttribute('contenteditable', "true")
-    }
-    else if(clas.contains("tool-add")){
-        let url = urls[urls.length-1].replace('.html', '')
-        addTovar("Новый товар", url)
-    }
-    else if(clas.contains("foto-add")) {
-        let inps = document.createElement("input")
-        inps.type = "file"
-        inps.click()
-
-        inps.onchange =()=> {
-            fileLoader(inps.files, (src)=> {
-                $(".miniContainer").append(`<div class="swiper-slide"><img class="tovar-img" src="${src}" mod></img></div>`)
-            });
-            okCall()
-        }
-    }
-    else if(clas.contains("galery-foto") || tag==="IMG"){
-        let inp = document.createElement("input")
-        inp.type = "file"
-        inp.click()
-
-        inp.onchange =()=> {
-            fileLoader(inp.files, (src)=> {
-                elem.src = src
-            });
-            okCall()
-        }
-    }
-}
+    store.set("bays", bays)
+});
 
 
 
@@ -326,12 +189,8 @@ if(document.querySelector(".swiperTovar")) {
 window.onload =()=> {
     if(!window.user || window.user.permision!=="admin"){
         $(".tool-add").css("visibility", "hidden")
+        $(".tool-add").on("click", ()=> $(".Admin-add").css("display", "block"))
     }
-    $("body").on("click", (ev)=> {
-        if(ev.target.hasAttribute('mod') && window.user.permision==="admin"){
-            redact(ev.target)
-        }
-    });
     $(".two-nav").on("click", (ev)=> {
         let $root = $('body').attr("root")
         
@@ -350,31 +209,6 @@ window.onload =()=> {
                 break;
         }
     });
-    $(".main").on("click", (ev)=> {
-        authorize()
-    });
-    $("#sells").on("click", (ev)=> {
-        let $ = document.querySelector;
-        let data = {
-            name: $(".name-tovar").textContent,
-            articul: $(".articul").textContent,
-            src: $(".galery-foto").src,
-            price: $(".price").textContent,
-            count: +$("output").textContent===0 ? 1 : +$("output").textContent,
-            info:  $("#info"),
-            category: $('body').getAttribute("category"),
-            id: $('body').id
-        }
-
-        window.bay.add(data)
-    });
-    $("#special").on("click", (ev)=> {
-        let to = ev.target.getAttribute("to")
-        let elem = document.querySelector(`#${to}`)
-        let po = elem.querySelector(".price-old").textContent
-        let pn = elem.querySelector(".price-new").textContent
-        let src = elem.querySelector(".tovar-img").src
-
-        addStory(elem.querySelector("b.p-1").textContent, po, pn, src, to)
-    });
+    $(".tool-add").on("click", ()=> {$(".Admin-add").css("display", "block"); $(".Admin-add").css("z-index", "9999")})
+    $("#exit-admin").on("click", ()=> $("Admin-add").css("display", "none"))
 }

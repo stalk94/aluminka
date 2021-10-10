@@ -5,29 +5,6 @@ const ls = require('store/storages/localStorage');
 
 
 
-class EventEmmitter {
-    constructor() {
-      this.events = {};
-    }
-    on(eventName, fn) {
-      if(!this.events[eventName]) this.events[eventName] = [];
-      this.events[eventName].push(fn);
-      
-      return ()=> {
-        this.events[eventName] = this.events[eventName].filter(eventFn => fn !== eventFn);
-      }
-    }
-    emit(eventName, data) {
-      const event = this.events[eventName];
-      if(event){
-        event.forEach((fn)=> {
-          fn.call(null, data);
-        });
-      }
-    }
-}
-window.store = engine.createStore(ls, observe);
-window.EVENT = new EventEmmitter()
 
 export function fileLoader(file, clb) {
   console.log(file.name)
@@ -51,11 +28,11 @@ export function fileLoader(file, clb) {
 
 
 
-export async function send(url, data, metod) {
+function send(url, data, metod, clb) {
     let response;
 
     if(metod==="GET"){
-        response = await fetch(gurl + url, {
+        response = fetch(gurl + url, {
             method: "GET",
             mode: 'cors',
             cache: 'no-cache',
@@ -67,7 +44,7 @@ export async function send(url, data, metod) {
             referrerPolicy: 'no-referrer'
         });
     }
-    else response = await fetch(gurl + url, {
+    else response = fetch(gurl + url, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -80,10 +57,8 @@ export async function send(url, data, metod) {
       body: JSON.stringify(data)
     });
 
-    return response.json()
+    response.then((data)=> data.json().then((val)=> clb(val)))
 }
 export const useSend =(path, data, clb)=> {
-  send(path, data, "POST").then((res)=> {
-      res.json().then(val=> clb(val))
-  })
+  send(path, data, "POST", clb)
 }

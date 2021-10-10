@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../css/shop-list.css">
     <link rel="stylesheet" href="../css/tingle.min.css">
 
+    <script src="../store.legacy.min.js"></script>
     <script src="../jquery-3.6.0.min.js"></script>
     <script src="../swiper-bundle.min.js"></script>
     <script src="../tingle.min.js"></script>
@@ -16,49 +17,24 @@
 
     <title>Aluminka</title>
     <meta class="meta-tag" name="description" content="">
-
-    </head><body root="shop" cz-shortcut-listen="true"><ctx></ctx>
-
+</head>
 
 
+<body root="plintus">
+    <div class="Modal"></div>
+    <div class="Admin-add"></div>
 
     <header>
-        <nav class="one-nav line">
-            <div class="lang line" style="margin-left:2%;">
-                <p class="language" id="ru">рус </p>
-                <p> | </p>
-                <p class="language" id="ua">укр</p>
-            </div>
-            
-            <div class="email line">
-                <img src="../img/chat.svg" style="margin-right:3px;">
-                <p>aluminka.com@gmail.com</p>
-            </div>
-            
-            <div class="call line">
-                <img src="../img/call.svg" style="margin-right:3px;">
-                <p>+38(093) 237 58 55;</p> 
-                <p>+38(097) 814 68 64</p>
-            </div>
-            <div class="main line">
-                <img src="../img/icon/main-icon.svg" width="32" style="margin-right:3px;">
-            </div>
-        </nav>
-
-        <nav class="two-nav line" style="z-index:2;position:relative;">
-            <p class="navigation" to="glav">Главная</p>
-            <p class="navigation" to="catalog">Каталог</p>
-            <p class="navigation" to="pay">Оплата и доставка</p>
-            <p class="navigation" to="uslugi">Услуги</p>
-            <p class="navigation" to="contact">Контакты</p>
-        </nav>
+        <div class="Titles"></div>
+        <div class="Nav"></div>
         
-        <img width="100%" src="../img/foot_fon.png" style="margin-top:-72px;" mod="">  
+        <div class="top-img">
+            <img class="img-top" src="../img/foot_fon.png">
+        </div>
     </header>
 
 
     <main>
-        <!-- info section -->
         <section class="one">
             <h5 class="info" mod="">
                 Алюминиевый профиль имеет различные формы, размеры и предназначение. Давайте поговорим об этом подробнее. 
@@ -82,49 +58,8 @@
                     <div class="tool-add" mod="">➕</div>
                 </div>
 
-                <div class="list-tovar">
-                    <div class="tovar-cart line" onclick="goTo(this)" ondblclick="dblclTo(this)" id="plintus_0">
-                        <img class="tovar-img" src="http://194.61.0.15/img/load/test_31630124540621.png" mod="">
-                        <div class="tovar-right">
-                            <b class="p-1 info" mod="">Тесcт</b>
-                            <div class="p-1 opisanie-div info" mod="">
-                                Заполните описание...
-                            </div>
-                            <div class="line">
-                                <div class="column price" style="margin-top:2%;">
-                                    <div class="price-old info" mod="">200₴</div>
-                                    <div class="price-new info" mod="">100₴</div>
-                                </div>
-                                <div class="column" style="flex:1;margin-top:2%;padding-left:15%;">
-                                    <div class="fiolet-button" id="sell" to="plintus_0" style="height:65%;margin-bottom:2%;">Купить</div>
-                                    <div class="green-button" id="special" to="plintus_0">В закладки</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                
-                
-        <div class="tovar-cart line" onclick="goTo(this)" ondblclick="dblclTo(this)" id="plintus_1">
-            <img class="tovar-img" src="../img/load/test.png" mod="">
-            <div class="tovar-right">
-                <b class="p-1 info" mod="">Новый товар</b>
-                <div class="p-1 opisanie-div info" mod="">
-                    Заполните описание...
-                </div>
-                <div class="line">
-                    <div class="column price" style="margin-top:2%;">
-                        <div class="price-old info" mod="">200₴</div>
-                        <div class="price-new info" mod="">100₴</div>
-                    </div>
-                    <div class="column" style="flex:1;margin-top:2%;padding-left:15%;">
-                        <div class="fiolet-button" id="sell" to="plintus_1" style="height:65%;margin-bottom:2%;">Купить</div>
-                        <div class="green-button" id="special" to="plintus_1">В закладки</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-            </div>
+
+                <div class="list-tovar"></div>
         </section>
 
 
@@ -159,23 +94,12 @@
     </main>
     
 
-    <footer>
-        <section class="line">
-            <ul class="column">
-                <li>Контакты</li>
-                <li>Возврат товара</li>
-                <li>Условия и договор</li>
-            </ul>
-            <ul class="column" style="margin-left: 20%;">
-                <li>Каталог</li>
-                <li>Производители</li>
-                <li>Акции</li>
-            </ul>
-        </section>
-        <section class="coop">ТОВ Алюминка - производство алюминиевых профилей © 2021</section>
-    </footer>
+    <footer></footer>
 
-    <script src="../modules/bay.js"></script>
-    <script src="../modules/shop.js"></script>
+    <script src="../dist/nav.ce572f91.js"></script>
     <script src="../modules/engine.js"></script>
+    <script src="../dist/list-tovar.ae38c12d.js"></script>
+    <script src="../dist/add.8fe46a61.js"></script>
+    <script src="../dist/navigation.67a1a802.js"></script>
+    <script src="../dist/footer.ef929a17.js"></script>
 </body>

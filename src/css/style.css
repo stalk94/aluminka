@@ -10,7 +10,6 @@ body {
     margin: 0px;
     width: 100%;
     height: 100%;
-
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background-color: rgba(28, 29, 30, 1);
     color:white;
@@ -18,9 +17,22 @@ body {
 main {
     padding-top: 1%;
 }
+#exit-admin:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+.Admin-add {
+    position: fixed;
+    display: none;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(28, 29, 30, 1);
+}
 .Modal {
     position: fixed;
-    display: hidden;
+    display: none;
     top: 0px;
     left: 0px;
     width: 100%;
@@ -32,7 +44,7 @@ main {
     margin-bottom: 5px;
 }
 .Form {
-    margin-left: 50px;
+    margin-left: 20%;
     background-color: rgb(71, 71, 71);
     width: 60%;
     height: 90%;
@@ -40,9 +52,13 @@ main {
     flex-direction: column;
 }
 .files {
+    background-color: #575656;
     width: 100%;
     height: 15%;
     border: 1px dotted brown;
+}
+.files:hover {
+    opacity: 0.8;
 }
 .files-dropzone {
     cursor: pointer;
@@ -493,7 +509,7 @@ hr {
 /* bay module */
 .form {
     border: 1px solid rgb(124, 123, 123);
-    background-color: aliceblue;
+    background-color: rgba(161, 199, 233, 0.774);
     display: flex;
     color: #030303;
     border-radius: 5px;

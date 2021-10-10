@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { send } from "./engine";
-import Carousel from "react-gallery-carousel";
-
-
 
 
 
