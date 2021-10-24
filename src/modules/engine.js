@@ -1,4 +1,5 @@
 let windowAdmin = document.querySelector('.svg-window')
+window.gurl = "http://localhost:3000/"
 class EventEmmitter {
     constructor() {
       this.events = {};
@@ -21,7 +22,7 @@ class EventEmmitter {
     }
 }
 
-
+if(!store.get("user")) store.set("user", {})
 window.modal = new tingle.modal({
     footer: true,
     stickyFooter: false,
@@ -39,7 +40,7 @@ window.modal = new tingle.modal({
         return false;
     }
 });
-window.user = store.get("user")
+window.user = store.get("user")??{}
 window.EVENT = new EventEmmitter()
 
 
@@ -65,7 +66,7 @@ function goTo(elem) {
     else document.location.href = document.location.origin+"/"+category+"/"+id+".html"
 }
 async function authorize() {
-    if(!user){
+    if(Object.keys(user).length<1){
         window.modal.setContent(`
             <div class="error"></div>
             <div class="reg-title">Авторизация</div>
@@ -143,13 +144,8 @@ async function authorize() {
         window.modal.open()
     }
 }
-EVENT.on("add", (data)=> {
-    let bays = store.get("bays")
-    bays.push(data)
-    
-    store.set("bays", bays)
-});
 
+window.URL.createObjectURL = webkitURL.createObjectURL
 
 
 let swiperForvard = new Swiper(".bottom-swipe", {
@@ -187,7 +183,7 @@ if(document.querySelector(".swiperTovar")) {
 
 
 window.onload =()=> {
-    if(!window.user || window.user.permision!=="admin"){
+    if(Object.keys(window.user).length===0 || window.user.permision!=="admin"){
         $(".tool-add").css("visibility", "hidden")
         $(".tool-add").on("click", ()=> $(".Admin-add").css("display", "block"))
     }

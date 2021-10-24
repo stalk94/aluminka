@@ -1,3 +1,20 @@
+::-webkit-scrollbar-track {
+    background-color:#2a2a2b85
+}
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background-color:#dedfdf;
+    border: #333 1px solid;
+}
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color:#adadad;
+}
+::-webkit-scrollbar{
+  width: 5px;
+}
 .clearfix:before, .clearfix:after {
     content: " ";
     display: table;
@@ -24,6 +41,8 @@ main {
 .Admin-add {
     position: fixed;
     display: none;
+    overflow-y: auto;
+    overflow-x: auto;
     top: 0px;
     left: 0px;
     width: 100%;
@@ -181,6 +200,7 @@ section.three {
 
 /* buttons */
 .button {
+    text-align: center;
     cursor: pointer;
     border: 1px solid white;
     border-radius: 5px;
@@ -189,6 +209,9 @@ section.three {
     padding: 5px;
     text-align: center;
     box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.35);
+}
+.Bays {
+    position: fixed;
 }
 .button:hover {
     border: 1px solid rgb(161, 10, 10);
@@ -201,6 +224,7 @@ section.three {
     box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.35);
 }
 .red-button {
+    text-align: center;
     cursor: pointer;
     background-color: brown;
     color: white;
@@ -223,6 +247,7 @@ section.three {
     box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.35);
 }
 .fiolet-button {
+    text-align: center;
     cursor: pointer;
     width: 50%;
     height: 4%;
@@ -510,9 +535,13 @@ hr {
 .form {
     border: 1px solid rgb(124, 123, 123);
     background-color: rgba(161, 199, 233, 0.774);
+    overflow-y: auto;
     display: flex;
     color: #030303;
     border-radius: 5px;
+}
+.Form {
+    overflow-y:scroll;
 }
 .title {
     background-color: #151616;

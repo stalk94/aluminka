@@ -20,6 +20,7 @@ log4js.configure({
     categories: { default: { appenders: ["sys"], level: "info" }, error: {appenders: ["sys"], level: "error"} }
 });
 const log = log4js.getLogger("sys")
+const time =()=> new Date().getDay()+":"+new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds();
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -80,10 +81,6 @@ app.post("/payCart", jsonParser, (req, res)=> {
         res.send(html)
     });
 });
-app.post("/loadDir", jsonParser, (req, res)=> {
-    let dir = req.body.dir.split(".")[0]
-    res.send(sincDir(dir))
-});
 app.post("/readProfile", jsonParser, (req, res)=> {
     let user;
 
@@ -104,7 +101,8 @@ app.post("/create", jsonParser, (req, res)=> {
         let data = db.get("tovars."+req.body.type)??[]
 
         if(req.body.type){
-            data.unshift(req.body.data)
+            req.body.state.unshift(req.body.files)
+            data.push(req.body.state)
             db.set("tovars."+req.body.type, data)
         }
     }
@@ -114,6 +112,18 @@ app.post("/tovars", jsonParser, (req, res)=> {
 
     if(db.get("tovars."+req.body.type)) res.send(db.get("tovars."+req.body.type))
     else res.send([])
+});
+app.post("/new", jsonParser, (req, res)=> {
+    let lids = db.get("lids")??[]
+
+    req.body.time = time()
+    lids.push(req.body)
+    db.set("lids", lids)
+});
+app.post("/load", jsonParser, (req, res)=> {
+    if(adminVerify(req.body.login, req.body.password)!==undefined){
+        res.send(db.get("lids"))
+    }
 });
 
 

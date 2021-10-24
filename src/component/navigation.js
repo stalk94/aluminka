@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Bay from "./bay";
 import ReactDOM from "react-dom";
 import { RiShoppingBasketLine } from 'react-icons/ri';
 
@@ -9,7 +8,6 @@ const root = document.body.getAttribute("root")
 
 const Nav =(props)=> {
     const style = {zIndex:"2", position:"relative"}
-    const [open, setOpen] = useState(false)
 
     return(
         <>
@@ -21,14 +19,14 @@ const Nav =(props)=> {
                 <p className="navigation" to="uslugi" info="Услуги">Услуги</p>
                 <p className="navigation" to="contact" info="Контакты">Контакты</p>
                 
-                <p className="navigation" onClick={()=> setOpen(open?false:true)}>
+                <p className="navigation" onClick={()=> EVENT.emit("bay.open", true)}>
                     <RiShoppingBasketLine/>
                 </p>
             </nav>
-            <Bay open={open} />
         </>
     );
 }
+
 
 
 ReactDOM.render(<Nav/>, document.querySelector(".Nav"))

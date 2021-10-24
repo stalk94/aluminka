@@ -1,11 +1,3 @@
-const gurl = "http://localhost:3000/";
-const engine = require('store/src/store-engine');
-const observe = require('store/plugins/observe');
-const ls = require('store/storages/localStorage');
-
-
-
-
 export function fileLoader(file, clb) {
   console.log(file.name)
   
@@ -28,11 +20,11 @@ export function fileLoader(file, clb) {
 
 
 
-function send(url, data, metod, clb) {
+function sends(url, data, metod, clb) {
     let response;
 
     if(metod==="GET"){
-        response = fetch(gurl + url, {
+        response = fetch(window.gurl + url, {
             method: "GET",
             mode: 'cors',
             cache: 'no-cache',
@@ -60,5 +52,5 @@ function send(url, data, metod, clb) {
     response.then((data)=> data.json().then((val)=> clb(val)))
 }
 export const useSend =(path, data, clb)=> {
-  send(path, data, "POST", clb)
+  sends(path, data, "POST", clb)
 }

@@ -1,4 +1,3 @@
-const gurl = 'http://localhost:3000/'
 let urls = document.location.href.split("/")
 
 

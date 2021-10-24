@@ -2,21 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useLocalstorageState } from "rooks";
 import { useSend } from "./engine";
 import Page from "./page";
-import Bay from "./bay";
 import ReactDOM from "react-dom";
 
 
-const Tovar =(props)=> {
-    return(
-        <div className="list-tovar">
-            <div className="tovar-cart line"
-                onClick={()=> props.click(props)}
-            >
-                <img className="tovar-img" src={props.src} />
-                <div className="tovar-right">
-                    <div className="p-1 opisanie-div info">
-                        { props.name }
-                    </div>
+const Tovar =(props)=> (
+    <div className="list-tovar">
+        <div className="tovar-cart line"
+            onClick={()=> props.click(props)}
+        >
+            <img className="tovar-img" src={props.src} />
+            <div className="tovar-right">
+                <div className="p-1 opisanie-div info">
+                    { props.name }
+                </div>
                 <div className="line">
                     <div className="column price" style={{marginTop:"2%"}}>
                         <div className="price-old info">{ props.price }₴</div>
@@ -34,9 +32,8 @@ const Tovar =(props)=> {
                 </div>
             </div>
         </div>
-        </div>
-    );
-}
+    </div>
+);
 
 
 const Shop =(props)=> {
@@ -44,13 +41,13 @@ const Shop =(props)=> {
     const [view, setView] = useState("nav")
 
     useEffect(()=> {
-        useSend("tovars", {type:props.url}, (val)=> {console.log(val); setData(val)})
+        useSend("tovars", {type:props.url}, (val)=> setData(val))
     }, [])
 
     return(
         <>
             {view === "nav"
-                ? data.length>0 ? data.map((tovar, index)=> (
+                ? (data.length > 0 ? data.map((tovar, index)=> (
                     <Tovar
                         key={index} 
                         src={tovar[0][0]} 
@@ -59,12 +56,13 @@ const Shop =(props)=> {
                         minPrice={tovar[13]} 
                         click={()=> setView(index)}
                     />
-                )) : <var>пока товаров нет</var>
+                )) : <var>пока товаров нет</var>)
                 : <Page 
                     images={data[view][0]}
                     name={data[view][1]}
                     id={data[view][2]}
                     model={data[view][3]}
+                    price={data[view][12]}
                     priceMin={data[view][13]}
                     description={data[view][5]}
                     material={data[view][6]}

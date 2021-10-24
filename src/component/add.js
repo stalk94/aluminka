@@ -1,18 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Button, Input } from '@nextui-org/react';
-import Select from 'react-select';
 import { useSend, fileLoader } from "./engine";
-import Files from "react-files";
 import ReactDOM from "react-dom";
-
-
-const options = [
-    { value: 'plintus', label: 'Плинтуса' },
-    { value: 'detail-plintus', label: 'Фурнитура к плинтусам' },
-    { value: 'door-profile', label: 'Дверные профиля' },
-    { value: 'fyrnityra', label: 'Фурнитура' },
-    { value: 'shadow-profile', label: 'Профиля теневого шва' }
-]
+import Files from "react-files";
 
 
 /** 
@@ -29,9 +19,11 @@ export default function Add(props) {
         setState(state)
     }
     const onSend =()=> {
-        useSend("create", {files:files,state:state,type:type})
+        let user = store.get("user")
+        useSend("create", {login:user.login,password:user.password,files:files,state:state,type:type})
     }
     const onFile =(filess)=> {
+        console.log(filess)
         let filesCopy = files
         setPrev(filess)
 
@@ -53,7 +45,7 @@ export default function Add(props) {
                     {prev?prev.map((f, i)=> <img key={i} width="70px" src={f.preview.url}/>):""}
                     <Files
                         className='files-dropzone'
-                        onChange={onFile}
+                        onChange={(e)=> onFile(e)}
                         onError={console.log}
                         accepts={['image/*']}
                         multiple
@@ -82,12 +74,13 @@ export default function Add(props) {
                 <Input className="wrap" labelPlaceholder="цена акционная" onChange={(e)=> save(12, e.target.value)}  value={state[12]}/>
                 
                 <h5>Категория: {document.body.getAttribute("root")}</h5>
-                <Button 
+                <button 
                     onClick={onSend} 
                     className="button"
+                    style={{backgroundColor:"#61a7e0", width:"80%", border:"1px solid blue", color:"red"}}
                 > 
                     создать товарную позицию 
-                </Button>
+                </button>
             </div>
         </>
     );

@@ -3,6 +3,11 @@ import { useLocalstorageState } from "rooks";
 import ReactDOM from "react-dom";
 
 
+
+
+
+
+
 function Promo(props) {
     const txt = `
         С 2015 года наша компания занимается продажей напольных плинтусов из алюминия, дверных профилей и профилей теневого шва. 
