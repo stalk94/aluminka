@@ -30,7 +30,7 @@ export default function Page(props) {
             </header>
 
             <section>
-                <div style={{display:"flex", flexDirection:"row",background:"rgb(20, 20, 20)",maxHeight:"50%"}}>
+                <div style={{display:"flex", flexDirection:"row",background:"rgb(20, 20, 20)",width:"25%",height:"50%"}}>
                     {props.images.map((img, id)=> <img key={id} src={img}/>)}
                 </div>
 

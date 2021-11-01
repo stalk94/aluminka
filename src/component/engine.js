@@ -20,7 +20,7 @@ export function fileLoader(file, clb) {
 
 
 
-function sends(url, data, metod, clb) {
+export function sends(url, data, metod, clb) {
     let response;
 
     if(metod==="GET"){

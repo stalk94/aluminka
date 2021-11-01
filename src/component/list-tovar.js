@@ -3,13 +3,24 @@ import { useLocalstorageState } from "rooks";
 import { useSend } from "./engine";
 import Page from "./page";
 import ReactDOM from "react-dom";
+import { EditList } from "./editor"
 
 
+let indexOpen = 0
+const permision =()=> store.get("user").permision
 const Tovar =(props)=> (
     <div className="list-tovar">
-        <div className="tovar-cart line"
-            onClick={()=> props.click(props)}
-        >
+        <div className="tovar-cart line">
+            <svg onClick={()=>props.openEditor(props.index)} 
+                className="Edit" 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="20" 
+                height="20" 
+                viewBox="0 0 20 20"
+                style={{visibility:permision()==="admin"?"visible":"hidden"}}
+            >
+                <path fill="#36c" d="M16.77 8l1.94-2a1 1 0 0 0 0-1.41l-3.34-3.3a1 1 0 0 0-1.41 0L12 3.23zm-5.81-3.71L1 14.25V19h4.75l9.96-9.96-4.75-4.75z"/>
+            </svg>
             <img className="tovar-img" src={props.src} />
             <div className="tovar-right">
                 <div className="p-1 opisanie-div info">
@@ -38,11 +49,13 @@ const Tovar =(props)=> (
 
 const Shop =(props)=> {
     const [data, setData] = useLocalstorageState(props.url, [])
+    const [open, setOpen] = useState(false)
     const [view, setView] = useState("nav")
 
     useEffect(()=> {
         useSend("tovars", {type:props.url}, (val)=> setData(val))
     }, [])
+    
 
     return(
         <>
@@ -50,11 +63,13 @@ const Shop =(props)=> {
                 ? (data.length > 0 ? data.map((tovar, index)=> (
                     <Tovar
                         key={index} 
+                        index={index}
                         src={tovar[0][0]} 
                         name={tovar[1]} 
                         price={tovar[12]} 
                         minPrice={tovar[13]} 
                         click={()=> setView(index)}
+                        openEditor={(ind)=> {setOpen(data[ind]);indexOpen=ind}}
                     />
                 )) : <var>пока товаров нет</var>)
                 : <Page 
@@ -74,6 +89,7 @@ const Shop =(props)=> {
                     onEnd={()=> setView("nav")}
                 />
             }
+            {open ? <EditList open={open} index={indexOpen} url={props.url} useOpen={setOpen}/> : ""}
         </>
     );
 }

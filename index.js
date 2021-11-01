@@ -45,7 +45,7 @@ app.post("/reg", jsonParser, (req, res)=> {
 });
 app.post("/auth", jsonParser, (req, res)=> {
     let result = authVerify(req.body.login, req.body.password)
-    res.send(result)
+    res.send(db.get("user."+req.body.login))
 });
 app.post("/question", jsonParser, (req, res)=> {
     let name = req.body.name
@@ -119,6 +119,16 @@ app.post("/new", jsonParser, (req, res)=> {
     req.body.time = time()
     lids.push(req.body)
     db.set("lids", lids)
+});
+app.post("/edit", jsonParser, (req, res)=> {
+    let user = adminVerify(req.body.login, req.body.password)
+
+    if(user && req.body.state){
+        let tovars = db.get("tovars."+req.body.type)
+        tovars[req.body.id] = req.body.state
+        db.set("tovars."+req.body.type, tovars)
+        res.send(tovars)
+    }
 });
 app.post("/load", jsonParser, (req, res)=> {
     if(adminVerify(req.body.login, req.body.password)!==undefined){

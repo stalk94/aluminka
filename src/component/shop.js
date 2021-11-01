@@ -12,7 +12,7 @@ export default function Catalog(props) {
         send("tovar", {dir:store.Nav}, "POST").then((data)=> {
             setData(data)
         });
-    })
+    }, [])
 
     return(
         <div className="swiper-containers">

@@ -28,8 +28,7 @@ function saveSite(data) {
     });
 }
 
-exports.adminVerify = function(login, password) {
-    
+exports.adminVerify = function(login, password) { 
     if(login && password){
         let user = db.get("user."+login)
         if(user.password===password && user.permision==="admin") return user
