@@ -23,6 +23,13 @@
     clear: both;
 }
 
+.notify {
+    position: fixed;
+    z-index: 99999;
+}
+.RedactImage:hover {
+    border: 1px solid red;
+}
 body {
     margin: 0px;
     width: 100%;

@@ -1,5 +1,3 @@
-let windowAdmin = document.querySelector('.svg-window')
-window.gurl = "http://localhost:3000/"
 class EventEmmitter {
     constructor() {
       this.events = {};
@@ -21,8 +19,12 @@ class EventEmmitter {
       }
     }
 }
+//let windowAdmin = document.querySelector('.svg-window')
+window.URL.createObjectURL = webkitURL.createObjectURL
+window.gurl = "http://localhost:3000/"
+window.EVENT = new EventEmmitter()
 
-if(!store.get("user")) store.set("user", {})
+
 window.modal = new tingle.modal({
     footer: true,
     stickyFooter: false,
@@ -40,10 +42,13 @@ window.modal = new tingle.modal({
         return false;
     }
 });
+
+
+if(!store.get("user")) store.set("user", {})
 window.user = store.get("user")??{}
-window.EVENT = new EventEmmitter()
-
-
+function toCat(his) {
+    document.location.href = document.location.href+"/"+his.getAttribute("url")
+}
 
 const userForm =()=> {
     return(`
@@ -55,15 +60,6 @@ const userForm =()=> {
             <input class="input-userForm" type="text" placeholder="Адрес" value="${user?user.adres:''}">
         </div>
     `);
-}
-function goTo(elem) {
-    let category = elem.id.split("_")[0]
-    let id = elem.id.split("_")[1]
-
-    if(window.user && window.user.permision==="admin"){
-        
-    }
-    else document.location.href = document.location.origin+"/"+category+"/"+id+".html"
 }
 async function authorize() {
     if(Object.keys(user).length<1){
@@ -116,6 +112,7 @@ async function authorize() {
         window.modal.setContent(userForm())
         window.modal.setFooterContent(`
             <div class="tingle-btn tingle-btn--primary">Изменить</div>
+            <div style="margin-left:60%;" class="tingle-btn tingle-btn--danger">Выход</div>
         `)
         let $error = document.querySelector(".error")
         document.querySelector(".tingle-btn--primary").addEventListener("click", async()=> {
@@ -141,70 +138,54 @@ async function authorize() {
                 setTimeout(()=> {$error.style.display = 'none'}, 3000)
             }
         });
+        document.querySelector(".tingle-btn--danger").addEventListener("click", async()=> {
+            localStorage.clear()
+            window.modal.close()
+            window.location.reload()
+        });
         window.modal.open()
     }
 }
 
-window.URL.createObjectURL = webkitURL.createObjectURL
 
-
-let swiperForvard = new Swiper(".bottom-swipe", {
-	slidesPerView: 3,
-	centeredSlides: true,
-	spaceBetween: 30,
-	pagination: {
-		el: ".swiper-pagination",
-		type: "fraction",
-	},
-	navigation: {
-		nextEl: ".swiper-button-next",
-		prevEl: ".swiper-button-prev",
-	},
-});
-if(document.querySelector(".swiperTovar")) {
-    let swiperTovarMini = new Swiper(".swiperTovarMini", {
-        spaceBetween: 10,
+window.onload =()=> {
+    let swiperForvard = new Swiper(".bottom-swipe", {
         slidesPerView: 3,
-        freeMode: true,
-        watchSlidesVisibility: true,
-        watchSlidesProgress: true
-    });
-    let swiperTovar = new Swiper(".swiperTovar", {
-        spaceBetween: 10,
+        centeredSlides: true,
+        spaceBetween: 30,
+        pagination: {
+            el: ".swiper-pagination",
+            type: "fraction",
+        },
         navigation: {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
         },
-        thumbs: {
-            swiper: swiperTovarMini,
-        }
     });
-}
+    if(document.querySelector(".swiperTovar")) {
+        let swiperTovarMini = new Swiper(".swiperTovarMini", {
+            spaceBetween: 10,
+            slidesPerView: 3,
+            freeMode: true,
+            watchSlidesVisibility: true,
+            watchSlidesProgress: true
+        });
+        let swiperTovar = new Swiper(".swiperTovar", {
+            spaceBetween: 10,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            thumbs: {
+                swiper: swiperTovarMini,
+            }
+        });
+    }
 
-
-window.onload =()=> {
     if(Object.keys(window.user).length===0 || window.user.permision!=="admin"){
         $(".tool-add").css("visibility", "hidden")
         $(".tool-add").on("click", ()=> $(".Admin-add").css("display", "block"))
     }
-    $(".two-nav").on("click", (ev)=> {
-        let $root = $('body').attr("root")
-        
-        switch(ev.target.getAttribute("to")){
-            case "glav": document.location.href = gurl
-                break;
-            case "catalog": if($root!=='index' && $root!=='shop'){
-                document.location.href = gurl+"shop/"+urls[urls.length-2]+".html"
-            }
-                break;
-            case "pay": document.location.href = gurl
-                break;
-            case "uslugi": document.location.href = gurl
-                break;
-            case "contact": document.location.href = gurl
-                break;
-        }
-    });
     $(".tool-add").on("click", ()=> {$(".Admin-add").css("display", "block"); $(".Admin-add").css("z-index", "9999")})
     $("#exit-admin").on("click", ()=> $("Admin-add").css("display", "none"))
 }

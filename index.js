@@ -1,41 +1,60 @@
-require('dotenv').config()
+require('dotenv').config();
+const fs = require("fs");
 const express = require("express");
-const log4js = require('log4js');
 const path = require("path");
 const LiqPay = require('./server/liqpay');
-const { Bay, loadAllTovar, loadFile, addCart } = require("./server/model");
 const bodyParser = require("body-parser");
 const favicon = require('serve-favicon');
 const db = require("quick.db");
-const { adminVerify, authVerify, regVerify, setPasswordHash, verify } = require("./server/func");
-const app = express()
+const pinoms = require('pino-multi-stream');
+const app = express();
+const { adminVerify, authVerify, regVerify, verify, tokenGeneration } = require("./server/func");
+const { index } = require("./server/view/index");
+const cookieParser = require('cookie-parser');
 
 
+///////////////////////////////////////////////////////////////////////////////////////////
+app.production = false;
+app.TOKEN = tokenGeneration().generate();
 app.use(bodyParser.json({limit: "100mb"}));
 app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit: 50000}));
 const jsonParser = bodyParser.json();
 const liqpay = new LiqPay(process.env.test_key, process.env.test_private_key);
-log4js.configure({
-    appenders: { sys: { type: "file", filename: "log.log" } },
-    categories: { default: { appenders: ["sys"], level: "info" }, error: {appenders: ["sys"], level: "error"} }
-});
-const log = log4js.getLogger("sys")
+const prettyStream = pinoms.prettyStream();
+const streams = [{stream: fs.createWriteStream('log.log')}, {stream: prettyStream}];
+const log = pinoms(pinoms.multistream(streams));
 const time =()=> new Date().getDay()+":"+new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds();
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////
-
-
 app.get("/", (req, res)=> {
-    res.sendFile(__dirname+"/src/index.html")
+    res.send(index())
+});
+app.get("/shadow-profile", (req, res)=> {
+    res.send(require("./server/view/shadow-profile")())
+});
+app.get("/detail-plintus", (req, res)=> {
+    res.send(require("./server/view/detail-plintus")())
+});
+app.get("/door-profile", (req, res)=> {
+    res.send(require("./server/view/door-profile")())
+});
+app.get("/furnityra", (req, res)=> {
+    res.send(require("./server/view/furnityra")())
+});
+app.get("/plintus", (req, res)=> {
+    res.send(require("./server/view/plintus")())
 });
 
+///////////////////////////////////////////////////////////////////////////////////////////
 
 app.post("/reg", jsonParser, (req, res)=> {
     let result = regVerify(req.body.login, req.body.password)
 
-    if(result===true){
+    if(result){
         db.set("user."+req.body.login, {
             login: req.body.login,
-            password: setPasswordHash(req.body.password),
+            password: req.body.password,
             phone: req.body.phone
         });
         
@@ -45,7 +64,11 @@ app.post("/reg", jsonParser, (req, res)=> {
 });
 app.post("/auth", jsonParser, (req, res)=> {
     let result = authVerify(req.body.login, req.body.password)
-    res.send(db.get("user."+req.body.login))
+
+    if(!result.error && process.env.password_admin===req.body.password){
+        res.cookie("token", app.TOKEN)
+    }
+    res.send(result)
 });
 app.post("/question", jsonParser, (req, res)=> {
     let name = req.body.name
@@ -104,8 +127,11 @@ app.post("/create", jsonParser, (req, res)=> {
             req.body.state.unshift(req.body.files)
             data.push(req.body.state)
             db.set("tovars."+req.body.type, data)
+            res.send(data)
         }
+        else res.send({error:"catalog error"})
     }
+    else res.send({error:"admin error verify"})
 });
 app.post("/tovars", jsonParser, (req, res)=> {
     console.log(req.body.type)
@@ -123,20 +149,36 @@ app.post("/new", jsonParser, (req, res)=> {
 app.post("/edit", jsonParser, (req, res)=> {
     let user = adminVerify(req.body.login, req.body.password)
 
-    if(user && req.body.state){
+    if(user && req.body.state && req.body.type){
         let tovars = db.get("tovars."+req.body.type)
-        tovars[req.body.id] = req.body.state
+        let state = req.body.state
+        tovars[req.body.id] = state
+        
         db.set("tovars."+req.body.type, tovars)
-        res.send(tovars)
+        res.send(tovars[req.body.id])
+    }
+    else res.send({error:"ошибка в данных"})
+});
+app.post("/state.get", jsonParser, (req, res)=> {
+    if(req.headers.login&&req.headers.login!=="root"){
+        if(req.body.arg==="files") res.send()
     }
 });
-app.post("/load", jsonParser, (req, res)=> {
-    if(adminVerify(req.body.login, req.body.password)!==undefined){
-        res.send(db.get("lids"))
+app.post("/state.set", jsonParser, (req, res)=> {
+    if(req.headers.login&&req.headers.login!=="root"){
+        app.locals[req.headers.login] = req.body
     }
 });
 
 
+//admin
+app.post("/file", jsonParser, (req, res)=> {
+    console.log(req.cookies['token'])
+    if(req.cookies['token'] && req.cookies['token']===app.TOKEN) fs.writeFile(`db/${req.body.path}/files.json`, req.body, (err)=> {
+        if(!err) res.send("save")
+        else res.send({error:err})
+    });
+});
 // test
 app.post("/testPay", jsonParser, (req, res)=> {
     let user;
@@ -162,5 +204,6 @@ app.post("/testPay", jsonParser, (req, res)=> {
 
 
 app.use('/', express.static(path.join(__dirname, './src')));
+app.use('/', express.static(path.join(__dirname, './dist')));
 app.use(favicon(path.join(__dirname, 'src', 'favicon.ico')));
-app.listen(3000, ()=> log.info("start server"))
+app.listen(3001, ()=> log.info("start server"));

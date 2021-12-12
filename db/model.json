@@ -1,0 +1,24 @@
+{
+    "images": [
+        "https://www.google.com.ua/images/branding/googlelogo/1x/googlelogo_light_color_272x92dp.png", 
+        "https://images.ua.prom.st/1052718093_w640_h640_1052718093.jpg"
+    ],
+    "name": "плинтус",
+    "category": "plintus",
+    "type": ["annod", "none", "wrap", "marble"],
+    "model": ["led", "shadow", "naklad"],
+    "price": {
+        "standart":[100, 1000], 
+        "action":[80, 800]
+    },
+    "size": {
+        "width": 40,
+        "wucota": 10,
+        "height": 100
+    },
+    "description": "описание",
+    "colors": [
+        "red", 
+        "green"
+    ]
+}

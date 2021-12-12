@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Button, Input } from '@nextui-org/react';
+import { Input } from '@nextui-org/react';
 import { useSend, fileLoader } from "./engine";
 import ReactDOM from "react-dom";
 import Files from "react-files";
+import "image-to-base64"
 
 
-/** 
- * создатель товаров
- */
 export default function Add(props) {
     const [prev, setPrev] = useState()
     const [files, setFiles] = useState([])
@@ -18,20 +16,43 @@ export default function Add(props) {
         state[index] = value
         setState(state)
     }
+    const verify =()=> {
+        let rezult = true
+        state.forEach((e, i)=> {
+            if(e[i].length < 4){
+                EVENT.emit("error", `в поле ${i} менее 4х символов заполнено`)
+                rezult = false
+            }
+        })
+        return rezult
+    }
     const onSend =()=> {
         let user = store.get("user")
-        useSend("create", {login:user.login,password:user.password,files:files,state:state,type:type})
-    }
-    const onFile =(filess)=> {
-        console.log(filess)
-        let filesCopy = files
-        setPrev(filess)
 
-        filess.forEach((element, index)=> {
-            fileLoader(element, (data)=> {filesCopy[index] = data; setFiles(filesCopy);})
+        useSend("create", {
+            login: user.login,
+            password: user.password,
+            files: files,
+            state: state,
+            type: type
+        }, (res)=> {
+            if(!res.error) EVENT.emit("sucess", `${state[0]} create`) 
+            else EVENT.emit("error", `${res.error}`)
+        });
+    }
+    const onFile =(fileLoad)=> {
+        let filesCopy = files
+        setPrev(fileLoad)
+
+        fileLoad.forEach((element, index)=> {
+            fileLoader(element, (data)=> {
+                filesCopy[index] = data 
+                setFiles(filesCopy)
+            })
         });
     }
 
+    
     return(
         <>
             <img id="exit-admin" 
@@ -75,7 +96,7 @@ export default function Add(props) {
                 
                 <h5>Категория: {document.body.getAttribute("root")}</h5>
                 <button 
-                    onClick={onSend} 
+                    onClick={()=> onSend()} 
                     className="button"
                     style={{backgroundColor:"#61a7e0", width:"80%", border:"1px solid blue", color:"red"}}
                 > 

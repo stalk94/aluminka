@@ -14,6 +14,7 @@ export default function Catalog(props) {
         });
     }, [])
 
+    
     return(
         <div className="swiper-containers">
             <div className="head-blok line">

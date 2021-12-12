@@ -61,6 +61,7 @@ const Pays =(props)=> {
     )
 }
 
+
 function PanelBays(props) {
     const [view, setView] = useState(false)
     const [isOpen, setOpen] = useState(false)
@@ -68,9 +69,7 @@ function PanelBays(props) {
 
     const total =()=> {
         let tot = 0
-        bays.forEach((tovar, i)=> {
-                tot += tovar.tovar.priceMin*tovar.count
-        })
+        bays.forEach((tovar, i)=> tot += tovar.tovar.priceMin*tovar.count)
         return tot
     }
     useEffect(()=> {
@@ -102,18 +101,17 @@ function PanelBays(props) {
                         К странице
                     </Button>
                     <div style={{marginTop:"5%"}}>
-                        {bays.length>0 ? bays.map((val, index)=> {
-                            return(
-                                <div style={{display:"flex",flexDirection:"row"}} key={index}>
-                                    <img width="30%" src={val.tovar.images[0]} style={{maxHeight:"80px"}}/>
-                                    <div style={{marginTop:"5%",color:"black"}}>{ val.tovar.name }</div>
-                                    <h5>{ val.count }</h5>
-                                    <h5>{ (val.tovar.priceMin*val.count) }₴</h5>
-                                    <h4 style={{marginTop:"5%",color:"red"}}> x </h4>
-                                </div>
-                        )}):""}
+                        {(bays.length > 0) && bays.map((val, index)=> (
+                            <div style={{display:"flex",flexDirection:"row"}} key={index}>
+                                <img width="30%" src={val.tovar.images[0]} style={{maxHeight:"80px"}}/>
+                                <div style={{marginTop:"5%",color:"black"}}>{ val.tovar.name }</div>
+                                <h5>{ val.count }</h5>
+                                <h5>{ val.tovar.priceMin * val.count }₴</h5>
+                                <h4 style={{marginTop:"5%",color:"red"}}> x </h4>
+                            </div>
+                        ))}
                     </div>
-                    {bays.length>0 
+                    {bays.length > 0 
                         ? <Button onClick={()=> <Pays total={total()} setOpen={setView} onOpen={view} />}> Оформить Покупку </Button> 
                         : <var>корзина пуста</var>
                     }

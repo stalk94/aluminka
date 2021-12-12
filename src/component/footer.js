@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from "react-dom";
 
 
 
-
-
-const Footer =(props)=> {
-    
-
+function Footer(props) {
     return(
         <>
             <section className="line">
@@ -28,6 +24,7 @@ const Footer =(props)=> {
         </>
     );
 }
+
 
 
 ReactDOM.render(<Footer/>, document.querySelector("footer"))

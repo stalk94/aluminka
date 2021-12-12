@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useLocalstorageState } from "rooks";
-import { useSend } from "./engine";
 import Page from "./page";
 import ReactDOM from "react-dom";
-import { EditList } from "./editor"
+import { EditList } from "./editor";
 
 
 let indexOpen = 0
 const permision =()=> store.get("user").permision
+const parseState =(st)=> JSON.parse(st);
+
+
 const Tovar =(props)=> (
     <div className="list-tovar">
         <div className="tovar-cart line">
-            <svg onClick={()=>props.openEditor(props.index)} 
+            <svg onClick={()=> props.openEditor(props.index)} 
                 className="Edit" 
                 xmlns="http://www.w3.org/2000/svg" 
                 width="20" 
@@ -48,14 +49,11 @@ const Tovar =(props)=> (
 
 
 const Shop =(props)=> {
-    const [data, setData] = useLocalstorageState(props.url, [])
+    const [data, setData] = useState(parseState(props.states), [])
     const [open, setOpen] = useState(false)
     const [view, setView] = useState("nav")
-
-    useEffect(()=> {
-        useSend("tovars", {type:props.url}, (val)=> setData(val))
-    }, [])
     
+    useEffect(()=> setData(parseState(props.states)), [props.states])
 
     return(
         <>
@@ -69,9 +67,12 @@ const Shop =(props)=> {
                         price={tovar[12]} 
                         minPrice={tovar[13]} 
                         click={()=> setView(index)}
-                        openEditor={(ind)=> {setOpen(data[ind]);indexOpen=ind}}
+                        openEditor={(ind)=> {
+                            setOpen(data[ind]);
+                            indexOpen = ind;
+                        }}
                     />
-                )) : <var>пока товаров нет</var>)
+                )) : <var> Пока товаров нет </var>)
                 : <Page 
                     images={data[view][0]}
                     name={data[view][1]}
@@ -89,10 +90,10 @@ const Shop =(props)=> {
                     onEnd={()=> setView("nav")}
                 />
             }
-            {open ? <EditList open={open} index={indexOpen} url={props.url} useOpen={setOpen}/> : ""}
+            {open && <EditList open={open} index={indexOpen} url={props.url} useOpen={setOpen}/>}
         </>
     );
 }
 
 
-ReactDOM.render(<Shop url={document.body.getAttribute("root")} />, document.querySelector(".list-tovar"))
+ReactDOM.render(<Shop states={document.body.getAttribute("state")} url={document.body.getAttribute("root")} />, document.querySelector(".list-tovar"))

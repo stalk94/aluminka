@@ -40,7 +40,16 @@
         "src/slick.min.js": true,
         "src/prices.xlsx": true,
         "src/store.legacy.min.js": true,
-        "yarn.lock": true
+        "yarn.lock": true,
+        "babel.config.js": true,
+        "src\\modules/img64.min.js": true,
+        "server/model": true,
+        "src/shop": true,
+        ".parcel-cache": true,
+        "src/index.html": true
     },
-    "explorerExclude.backup": null
+    "explorerExclude.backup": null,
+    "editor.fontSize": 13.2,
+    "editor.fontWeight": "1",
+    "regexhighlighter.stoppingRegexHighlighting": true
 }

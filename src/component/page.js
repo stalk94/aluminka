@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Carousel from "react-gallery-carousel";
 import { Button, Input } from '@nextui-org/react';
+import { Carousel } from "react-responsive-carousel";
 
 
 const style = {padding:"5px", border:"1px solid grey"}
@@ -21,6 +21,12 @@ export default function Page(props) {
         EVENT.emit("add", {count:count, tovar:props})
         setCount(0)
     }
+    const onChange =(ev)=> {
+        console.log(ev)
+    }
+    const onClickItem =(ev)=> {
+        console.log(ev)
+    }
     
 
     return(
@@ -30,10 +36,9 @@ export default function Page(props) {
             </header>
 
             <section>
-                <div style={{display:"flex", flexDirection:"row",background:"rgb(20, 20, 20)",width:"25%",height:"50%"}}>
+                <Carousel showArrows={true} onChange={onChange} onClickItem={onClickItem}>
                     {props.images.map((img, id)=> <img key={id} src={img}/>)}
-                </div>
-
+                </Carousel>
                 <div className="bodyGalery">
                     <h2 style={{paddingLeft:"10px"}} className="name-tovar">{ props.name }</h2>
                     <p className="articul">Код товара: { props.id }</p>

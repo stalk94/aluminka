@@ -84,8 +84,8 @@ section.one {
 .tovar-img {
     flex: 1;
     border-radius: 5px;
-    max-height: 100%;
-    max-width: 100%;
+    max-height: 100px;
+    max-width: 200px;
 }
 .foto-add {
     padding-top: 1%;

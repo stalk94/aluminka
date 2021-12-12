@@ -3,7 +3,7 @@ let urls = document.location.href.split("/")
 
 function URL() {
  	let url = document.location.href.replace(document.location.origin, '')
-    if(url==="/") url = 'index.html'
+  if(url==="/") url = 'index.html'
 	console.log(url)
 	
 	return url

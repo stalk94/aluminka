@@ -1,24 +1,10 @@
+const TokenGenerator = require('uuid-token-generator');
 const db = require("quick.db");
 const fs = require("fs");
-const CryptoJS = require('crypto-js');
 
-const master = "qwerty"
 
-function setPasswordHash(pass) {
-    return CryptoJS.AES.encrypt(pass, master).toString()
-}
-function getPasswordHash(hashPass) {
-    return CryptoJS.AES.decrypt(hashPass, master).toString(CryptoJS.enc.Utf8)
-}
 function tokenGeneration(login, pass) {
-    return CryptoJS.AES.encrypt(login+'&'+TIME, pass).toString()
-}
-function tokenDecriptor(token, pass) {
-    let rez = CryptoJS.AES.decrypt(token, pass).toString(CryptoJS.enc.Utf8)
-
-    return rez === '' 
-        ? '[❌]: error token'
-        : rez
+    return new TokenGenerator()
 }
 
 
@@ -54,23 +40,26 @@ function regVerify(login, password) {
 function authVerify(login, password) {
     const p =()=> {
         if(password.length>5 && password.length<38){
-            if((/[^(\w)|(\@)|(\.)|(\-)]/).test(password)) return 'error password wrong'
+            if((/[^(\w)|(\@)|(\.)|(\-)]/).test(password)) return {error:'error password wrong'}
             else {
                 let user = db.get("user."+login)
 
-                if(user.password!==setPasswordHash(password)) return 'error password wrong'
+                if(user.password!==password) return {error:'error password wrong'}
                 else return true
             }
         }
-        else return 'error password max or min simbol'
+        else return {error:'error password max or min simbol'}
     }
 
     if(login.length>4 && login.length<38){
-        if((/[^(\w)|(\@)|(\.)|(\-)]/).test(login)) return 'error login wrong'
-        else if(db.has("user."+login)) return db.get("user."+login)
-        else return 'error login not find'
+        if((/[^(\w)|(\@)|(\.)|(\-)]/).test(login)) return {error:'error login wrong'}
+        else if(db.has("user."+login)){
+            if(p()===true) return db.get("user."+login)
+            else return p()
+        }
+        else return {error:'error login not find'}
     }
-    else return 'error login max or min simbol'
+    else return {error:'error login max or min simbol'}
 }
 const verify = {
     isEmail(email) {
@@ -78,9 +67,6 @@ const verify = {
     },
     isTel(phone) {
         return (/^\d[\d\(\)\ -]{4,14}\d$/).test(phone)
-    },
-    isLogin(login) {
-        return 
     }
 }
 
@@ -91,5 +77,4 @@ exports.regVerify = regVerify
 exports.verify = verify
 exports.authVerify = authVerify
 exports.saveSite = saveSite
-exports.setPasswordHash = setPasswordHash
-exports.getPasswordHash = getPasswordHash
+exports.tokenGeneration = tokenGeneration
