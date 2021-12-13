@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import FileManager, { Permissions, ItemView } from 'devextreme-react/file-manager';
 import 'devextreme/dist/css/dx.light.css';
-import ReactDOM from 'react-dom';
 import dir from "../img/icon/dir.png";
 import file from "../img/icon/file.svg";
 import fileImg from "../img/icon/img-file.svg";
@@ -9,7 +8,7 @@ import fileXml from "../img/icon/xml.png";
 
 
 
-const FileManagers =(props)=> {
+export default function FileManagers(props) {
     const [state, setState] = useState({})
 
     const onOptionChanged =(e)=> {
@@ -40,6 +39,3 @@ const FileManagers =(props)=> {
         </FileManager>
     );
 }
-
-
-ReactDOM.render(<FileManagers/>, document.querySelector(".FileManager"))

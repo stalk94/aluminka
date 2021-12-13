@@ -19,10 +19,9 @@ exports.Nav =(props)=> {
         let data = ""
         urls.map((url, i)=> {
             data += navCart({
-                category: category[i], 
+                category: `${category[i]}`, 
                 src: `img/category/${i+1}.png`,
-                url: url
-            })
+                url: `${url}`})
         });
         return data
     };

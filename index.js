@@ -1,4 +1,5 @@
 require('dotenv').config();
+var AES = require("crypto-js/aes");
 const fs = require("fs");
 const express = require("express");
 const path = require("path");
@@ -6,82 +7,85 @@ const LiqPay = require('./server/liqpay');
 const bodyParser = require("body-parser");
 const favicon = require('serve-favicon');
 const db = require("quick.db");
-const pinoms = require('pino-multi-stream');
 const app = express();
-const { adminVerify, authVerify, regVerify, verify, tokenGeneration } = require("./server/func");
-const { index } = require("./server/view/index");
+const session = require("express-session");
 const cookieParser = require('cookie-parser');
+const { midlevarePassport, time, scheme } = require("./server/midlevare");
+const dist = require("./dist");
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 app.production = false;
-app.TOKEN = tokenGeneration().generate();
+const log = logger;
 app.use(bodyParser.json({limit: "100mb"}));
 app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit: 50000}));
 const jsonParser = bodyParser.json();
 const liqpay = new LiqPay(process.env.test_key, process.env.test_private_key);
-const prettyStream = pinoms.prettyStream();
-const streams = [{stream: fs.createWriteStream('log.log')}, {stream: prettyStream}];
-const log = pinoms(pinoms.multistream(streams));
-const time =()=> new Date().getDay()+":"+new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds();
-
+const authenticate = midlevarePassport(session({secret:process.env.private_key,resave:false,saveUninitialized:false}), app);
+const useAdminVerify =(userData)=> {
+    if(userData.id===0 && userData.permision==='admin') return userData;
+    else return false;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-app.get("/", (req, res)=> {
-    res.send(index())
+app.get("/", (req, res) => {
+    res.send(dist.index)
 });
+
 app.get("/shadow-profile", (req, res)=> {
-    res.send(require("./server/view/shadow-profile")())
+    res.send(dist['shadow-profile'])
 });
 app.get("/detail-plintus", (req, res)=> {
-    res.send(require("./server/view/detail-plintus")())
+    res.send(dist['detail-plintus'])
 });
 app.get("/door-profile", (req, res)=> {
-    res.send(require("./server/view/door-profile")())
+    res.send(dist['door-profile'])
 });
 app.get("/furnityra", (req, res)=> {
-    res.send(require("./server/view/furnityra")())
+    res.send(dist['furnityra'])
 });
 app.get("/plintus", (req, res)=> {
-    res.send(require("./server/view/plintus")())
+    res.send(dist['plintus'])
 });
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-
-app.post("/reg", jsonParser, (req, res)=> {
-    let result = regVerify(req.body.login, req.body.password)
-
-    if(result){
-        db.set("user."+req.body.login, {
-            login: req.body.login,
-            password: req.body.password,
-            phone: req.body.phone
-        });
-        
-        res.send(db.get("user."+req.body.login))
-    }
-    else res.send(result)
+app.post('/auth', authenticate, (req, res)=> {
+    const isAuthenticated = !!req.user;
+    if(isAuthenticated) console.log(`auth: ${req.session.id}`);
+    // отдаем state
+    res.send(isAuthenticated ? req.user : {error:'заполните форму авторизации'});
 });
-app.post("/auth", jsonParser, (req, res)=> {
-    let result = authVerify(req.body.login, req.body.password)
-
-    if(!result.error && process.env.password_admin===req.body.password){
-        res.cookie("token", app.TOKEN)
+app.post('/reg', jsonParser, (req, res)=> {
+    if(scheme.login.test(req.body.login) && scheme.password.test(req.body.password)){
+        if(!db.has("user."+req.body.login)){
+            db.set("user."+req.body.login, {
+                login: req.body.login,
+                password: AES.encrypt(req.body.password, req.body.login).toString(),
+                id: Object.keys(db.get("user")).length ?? 0
+            });
+            res.send({sucess:'Успешно.'});
+        }
+        else res.send({error:"логин занят"});
     }
-    res.send(result)
+    else res.send({error:"используйте только цифры и буквы а также '_','-'"});
+});
+app.post("/logout", (req, res)=> {
+    logger.info(`[] logout: ${req.session.id}`);
+
+    req.logout();
+    res.cookie("connect.sid", "", {expires: new Date()});
+    res.redirect("/");
 });
 app.post("/question", jsonParser, (req, res)=> {
-    let name = req.body.name
-    let email = req.body.email
-    let text = req.body.text
-
-    if(!email) res.send("error email")
-    else if(!name) res.send("error name")
-    else if(!text) res.send("error text")
-    else {
-        db.push("questions", {name: name, email: email, text: text})
-        res.send("<div>Мы свяжемся с вами в ближайшее время</div>")
+    if(scheme.text.test(req.body.text) && scheme.login.test(req.body.name) && scheme.email.test(req.body.email)){
+        db.push("questions", {
+            name: req.body.name, 
+            email:req.body.email, 
+            text: req.body.text
+        });
+        res.send("Мы свяжемся с вами в ближайшее время");
     }
+    else res.send({error: "validation failed"});
 });
 app.post("/payCart", jsonParser, (req, res)=> {
     let user;
@@ -104,52 +108,33 @@ app.post("/payCart", jsonParser, (req, res)=> {
         res.send(html)
     });
 });
-app.post("/readProfile", jsonParser, (req, res)=> {
-    let user;
+app.post("/create", jsonParser, authenticate, (req, res)=> {
+    const isAuthenticated = !!req.user;
 
-    if(verify.isLogin(req.body.login) && db.has("user."+req.body.login)) {
-        user = db.get("user."+req.body.login)
-        Object.keys(req.body).forEach((key)=> {
-            user[key] = req.body[key]
-        });
-
-        db.set("user."+req.body.login, user)
-        res.send(user)
-    }
-    else res.send('error')
-});
-app.post("/create", jsonParser, (req, res)=> {
-    if(adminVerify(req.body.login, req.body.password)!==undefined){
-        log.info("[✒️🛒]:addTovar: shop/"+req.body.type)
-        let data = db.get("tovars."+req.body.type)??[]
-
-        if(req.body.type){
-            req.body.state.unshift(req.body.files)
-            data.push(req.body.state)
-            db.set("tovars."+req.body.type, data)
-            res.send(data)
+    if(req.body && isAuthenticated && useAdminVerify(req.user)){
+        logger.info("[✒️🛒]:addTovar: shop/"+req.body.type)
+        if(req.body && req.body.type){
+            db.push("tovars."+req.body.type, req.body)
+            res.send({sucess: req.body.name})
         }
         else res.send({error:"catalog error"})
     }
     else res.send({error:"admin error verify"})
 });
-app.post("/tovars", jsonParser, (req, res)=> {
-    console.log(req.body.type)
+app.post(/hook/, jsonParser, (req, res)=> {
+    let p = new URL(req.url, `http://${request.headers.host}`);
+    let urls = p.pathname.replace('/', '.')
+    if(!db.has(urls)) db.set(urls, []);
 
-    if(db.get("tovars."+req.body.type)) res.send(db.get("tovars."+req.body.type))
-    else res.send([])
+    if(req.body && req.body.hook){
+        req.body.hook.time = time()
+        db.push(urls, req.body.hook)        //! not clean
+    }
 });
-app.post("/new", jsonParser, (req, res)=> {
-    let lids = db.get("lids")??[]
+app.post("/edit", jsonParser, authenticate, (req, res)=> {
+    const isAuthenticated = !!req.user;
 
-    req.body.time = time()
-    lids.push(req.body)
-    db.set("lids", lids)
-});
-app.post("/edit", jsonParser, (req, res)=> {
-    let user = adminVerify(req.body.login, req.body.password)
-
-    if(user && req.body.state && req.body.type){
+    if(req.body && isAuthenticated && useAdminVerify(req.user)){
         let tovars = db.get("tovars."+req.body.type)
         let state = req.body.state
         tovars[req.body.id] = state
@@ -158,16 +143,6 @@ app.post("/edit", jsonParser, (req, res)=> {
         res.send(tovars[req.body.id])
     }
     else res.send({error:"ошибка в данных"})
-});
-app.post("/state.get", jsonParser, (req, res)=> {
-    if(req.headers.login&&req.headers.login!=="root"){
-        if(req.body.arg==="files") res.send()
-    }
-});
-app.post("/state.set", jsonParser, (req, res)=> {
-    if(req.headers.login&&req.headers.login!=="root"){
-        app.locals[req.headers.login] = req.body
-    }
 });
 
 
@@ -206,4 +181,4 @@ app.post("/testPay", jsonParser, (req, res)=> {
 app.use('/', express.static(path.join(__dirname, './src')));
 app.use('/', express.static(path.join(__dirname, './dist')));
 app.use(favicon(path.join(__dirname, 'src', 'favicon.ico')));
-app.listen(3001, ()=> log.info("start server"));
+app.listen(3000, ()=> logger.info("start server"));

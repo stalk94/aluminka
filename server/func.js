@@ -1,23 +1,16 @@
 const TokenGenerator = require('uuid-token-generator');
 const db = require("quick.db");
-const fs = require("fs");
+
 
 
 function tokenGeneration(login, pass) {
     return new TokenGenerator()
 }
 
-
-function saveSite(data) {
-    fs.writeFile("src/"+data.name+".html", data.html, (err)=> {
-        if(err) console.log(err)
-    });
-}
-
-exports.adminVerify = function(login, password) { 
-    if(login && password){
-        let user = db.get("user."+login)
-        if(user.password===password && user.permision==="admin") return user
+const useAdminVerifyToken =(login, token)=> { 
+    if(scheme.login.test(login) && scheme.token.test(token)){
+        let user = db.get("user."+login);
+        if(app.TOKEN===token && user.permision==="admin") return user
     }
 }
 function regVerify(login, password) {
@@ -69,7 +62,6 @@ const verify = {
         return (/^\d[\d\(\)\ -]{4,14}\d$/).test(phone)
     }
 }
-
 
 
 

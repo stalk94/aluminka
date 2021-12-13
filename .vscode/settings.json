@@ -46,7 +46,8 @@
         "server/model": true,
         "src/shop": true,
         ".parcel-cache": true,
-        "src/index.html": true
+        "src/index.html": true,
+        "src\\component/editor.js": true
     },
     "explorerExclude.backup": null,
     "editor.fontSize": 14,

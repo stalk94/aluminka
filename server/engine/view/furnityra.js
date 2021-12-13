@@ -1,34 +1,33 @@
 const db = require("quick.db");
+const { Slider } = require("../slider");
 const { images } = require("./index");
 
 
 /** 
  * bd: `SYS.furnityra`
 */
-module.exports =(state)=> (`
+module.exports = (`
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=IANAcharset">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
 
-        <link rel="stylesheet" href="css/swiper-bundle.min.css"/>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/tovar-cart.css">
-        <link rel="stylesheet" href="css/shop-list.css">
-        <link rel="stylesheet" href="css/tingle.min.css">
+        <link rel="stylesheet" href="../css/swiper-bundle.min.css"/>
+        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/tovar-cart.css">
+        <link rel="stylesheet" href="../css/shop-list.css">
+        <link rel="stylesheet" href="../css/tingle.min.css">
 
-        <script src="store.legacy.min.js"></script>
-        <script src="jquery-3.6.0.min.js"></script>
         <script src="swiper-bundle.min.js"></script>
         <script src="tingle.min.js"></script>
-        <script src="modules/app.js"></script>
+        <script src="../modules/app.js"></script>
 
         <title>Aluminka</title>
         <meta class="meta-tag" name="description" content="${db.get("SYS.meta")}"/>
     </head>
 
 
-    <body state="${state}" root="fyrnityra">
+    <body root="fyrnityra">
         <div style="z-index: 9;" class="Bays"></div>
         <div class="Modal"></div>
         <div class="Admin-add"></div>
@@ -38,14 +37,14 @@ module.exports =(state)=> (`
             <div class="Nav"></div>
             
             <div class="top-img">
-                <img class="img-top" src="${images.foot}">
+                <img class="img-top" src="../img/foot_fon.png"/>
             </div>
         </header>
 
         <main>
             <section class="one">
                 <h5 class="info" mod>
-                    ${db.get("SYS.furnityra")}
+                    ${db.get("SYS.furnityra")??''}
                 </h5>
             </section>
 

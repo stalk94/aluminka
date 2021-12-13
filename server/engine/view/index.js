@@ -1,6 +1,6 @@
 const db = require("quick.db");
-const { Slider } = require("../component/slider");
-const { Nav, FeedBack } = require("../component/nav");
+const { Slider } = require("../slider");
+const { Nav, FeedBack } = require("../nav");
 
 
 exports.images = {
@@ -19,7 +19,7 @@ const Butons = (`
 `);
 
 
-exports.index =(state)=> (`
+module.exports = (`
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=IANAcharset">
@@ -29,10 +29,7 @@ exports.index =(state)=> (`
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/canvas.css">
         <link rel="stylesheet" href="css/tingle.min.css">
-        <link rel="stylesheet" href="app.ea5511b2.css">
 
-        <script src="store.legacy.min.js"></script>
-        <script src="jquery-3.6.0.min.js"></script>
         <script src="tingle.min.js"></script>
         <script src="swiper-bundle.min.js"></script>
         <script src="modules/app.js"></script>

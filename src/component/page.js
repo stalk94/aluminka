@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Input } from '@nextui-org/react';
 import { Carousel } from "react-responsive-carousel";
-
-
 const style = {padding:"5px", border:"1px solid grey"}
+
 
 
 export default function Page(props) {

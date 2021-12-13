@@ -19,7 +19,8 @@ class EventEmmitter {
       }
     }
 }
-//let windowAdmin = document.querySelector('.svg-window')
+
+
 window.URL.createObjectURL = webkitURL.createObjectURL
 window.gurl = "http://localhost:3000/"
 window.EVENT = new EventEmmitter()
@@ -44,12 +45,9 @@ window.modal = new tingle.modal({
 });
 
 
-if(!store.get("user")) store.set("user", {})
-window.user = store.get("user")??{}
 function toCat(his) {
     document.location.href = document.location.href+"/"+his.getAttribute("url")
 }
-
 const userForm =()=> {
     return(`
         <div class="user-form column">

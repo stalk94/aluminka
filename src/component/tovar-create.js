@@ -48,7 +48,7 @@ export function PhotoLoader(props) {
 }
 
 
-export default function AdminFormCreate(props) {
+export function AdminFormCreate(props) {
     const [formData, setFormData] = React.useState(null);
     const [images, setImages] = React.useState([])
 

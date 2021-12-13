@@ -1,26 +1,24 @@
 const db = require("quick.db");
-const { Slider } = require("../component/slider");
+const { Slider } = require("../slider");
 const { images } = require("./index");
 
 
 /** 
  * bd: `SYS.detail_plintus`
 */
-module.exports =(state)=> (`
+const str =()=> (`
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=IANAcharset">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
         
-        <link rel="stylesheet" href="css/swiper-bundle.min.css"/>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/tovar-cart.css">
-        <link rel="stylesheet" href="css/shop-list.css">
-        <link rel="stylesheet" href="css/tingle.min.css">
+        <link rel="stylesheet" href="../css/swiper-bundle.min.css"/>
+        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/tovar-cart.css">
+        <link rel="stylesheet" href="../css/shop-list.css">
+        <link rel="stylesheet" href="../css/tingle.min.css">
 
         <script src="https://polyfill.io/v3/polyfill.js"></script>
-        <script src="store.legacy.min.js"></script>
-        <script src="jquery-3.6.0.min.js"></script>
         <script src="swiper-bundle.min.js"></script>
         <script src="tingle.min.js"></script>
         <script src="modules/app.js"></script>
@@ -29,7 +27,7 @@ module.exports =(state)=> (`
         <meta class="meta-tag" name="description" content="${db.get("SYS.meta")}"/>
     </head>
 
-    <body state="${state}" root="detail-plintus">
+    <body root="detail-plintus">
         <div style="z-index: 9;" class="Bays"></div>
         <div class="Modal"></div>
         <div class="Admin-add"></div>
@@ -39,7 +37,7 @@ module.exports =(state)=> (`
             <div class="Nav"></div>
             
             <div class="top-img">
-                <img class="img-top" src="${images.foot}">
+                <img class="img-top" src="../img/foot_fon.png">
             </div>
         </header>
 
@@ -95,3 +93,8 @@ module.exports =(state)=> (`
         <script src="app.58b78e72.js" defer></script>
     </body>
 `);
+
+
+
+
+module.exports = str

@@ -4,7 +4,7 @@ import Gallery from 'devextreme-react/gallery';
 
 
 
-export const Galery =(props)=> {
+export function PhotoGalery(props) {
     return(
         <Gallery
             id="gallery"

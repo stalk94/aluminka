@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from "react-dom";
+
 
 
 const Call =()=> (
@@ -43,7 +43,7 @@ const Burger =()=> (
 
 
 
-const Title =(props)=> {
+export default function Title(props) {
     return(
         <nav className="one-nav line">
             <div className="lang line" style={{marginLeft:"2%"}}>
@@ -69,6 +69,3 @@ const Title =(props)=> {
         </nav>
     );
 }
-
-
-ReactDOM.render(<Title/>, document.querySelector(".Titles"))

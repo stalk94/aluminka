@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { CModal,CModalHeader,CModalBody,CModalFooter,CButton,CModalTitle } from "@coreui/react/dist/index";
 import { useDidMount } from "rooks";
-import ReactDOM from "react-dom";
+
 
 
 /**
@@ -11,7 +11,7 @@ import ReactDOM from "react-dom";
  *  `child`: JSX     
  *  `size`: 'sm' | 'lg' | 'xl' | ''
  */
-const Modal =()=> {
+export default function Modal() {
     const [child, setChildren] = useState()
     const [title, setTitle] = useState('')
     const [btnTitle, setBtnTitle] = useState('click')
@@ -44,12 +44,4 @@ const Modal =()=> {
             </CModal>
         </>
     );
-}
-
-
-window.onload =()=> {
-    const divModal = document.createElement('div')
-    divModal.className = 'Modal'
-    document.appendChild(divModal)
-    ReactDOM.render(<Modal/>, document.querySelector(".Modal"))
 }

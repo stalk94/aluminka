@@ -1,9 +1,4 @@
-import React from 'react';
-import ReactDOM from "react-dom";
-
-
-
-const Promo =(props)=> (
+export default Promo =(props)=> (
     <section className="two">
         <h3> Вас приветсвует! </h3> 
         <h3 style={{marginTop:"-15px"}}> Производитель ТОВ АЛЮМИНКА </h3>
@@ -16,7 +11,3 @@ const Promo =(props)=> (
         <div className="button"> Смотреть еще </div>
     </section>
 );
-
-
-
-ReactDOM.render(<Promo />, document.querySelector(".Promo"))

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { send } from "./engine";
 import { CCard,CCardBody,CCardImage,CCardText,CCardTitle, CRow, CCol } from "@coreui/react/dist/index";
 import not from "../img/not-cart.png";
@@ -31,7 +31,7 @@ export const Cart =(props)=> (
 );
 
 
-export default function Catalog(props) {
+export function Catalog(props) {
     const [data, setData] = useState([])
     const [curent, setCurent] = useState()
 

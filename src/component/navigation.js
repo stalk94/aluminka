@@ -1,12 +1,10 @@
 import React from 'react';
-import ReactDOM from "react-dom";
 import { RiShoppingBasketLine } from 'react-icons/ri';
-
-
 const root = document.body.getAttribute("root")
 
 
-const Nav =(props)=> {
+
+export default function Nav(props) {
     const style = {zIndex:"2", position:"relative"}
 
     return(
@@ -26,7 +24,3 @@ const Nav =(props)=> {
         </>
     );
 }
-
-
-
-ReactDOM.render(<Nav/>, document.querySelector(".Nav"))
