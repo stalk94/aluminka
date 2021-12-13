@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import FileManager, { Permissions, ItemView } from 'devextreme-react/file-manager';
-import 'devextreme/dist/css/dx.light.css';
 import dir from "../img/icon/dir.png";
 import file from "../img/icon/file.svg";
 import fileImg from "../img/icon/img-file.svg";

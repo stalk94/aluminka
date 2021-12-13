@@ -1,27 +1,20 @@
 const db = require("quick.db");
 const { Slider } = require("../slider");
-const { images } = require("./index");
 
 
 /** 
  * bd: `SYS.detail_plintus`
 */
-const str =()=> (`
+module.exports =()=> (`
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=IANAcharset">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
-        
-        <link rel="stylesheet" href="../css/swiper-bundle.min.css"/>
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/tovar-cart.css">
         <link rel="stylesheet" href="../css/shop-list.css">
-        <link rel="stylesheet" href="../css/tingle.min.css">
 
-        <script src="https://polyfill.io/v3/polyfill.js"></script>
-        <script src="swiper-bundle.min.js"></script>
-        <script src="tingle.min.js"></script>
-        <script src="modules/app.js"></script>
+        <script src="global.js"></script>
 
         <title>Aluminka</title>
         <meta class="meta-tag" name="description" content="${db.get("SYS.meta")}"/>
@@ -82,19 +75,24 @@ const str =()=> (`
             </section>
         </main>
         
-        <footer></footer>
+        <footer>
+            <section class="line">
+                <ul class="column">
+                    <li>Контакты</li>
+                    <li>Возврат товара</li>
+                    <li>Условия и договор</li>
+                </ul>
+                <ul class="column" style="margin-left:"20%">
+                    <li>Каталог</li>
+                    <li>Производители</li>
+                    <li>Акции</li>
+                </ul>
+            </section>
+            <section class="coop">
+                ТОВ Алюминка - производство алюминиевых профилей © 2021
+            </section>
+        </footer>
 
-        <script src="modules/engine.js"></script>
-        <script src="app.287afcf5.js" defer></script>
-        <script src="app.4613b083.js" defer></script>
-        <script src="app.2063a7d1.js" defer></script>
-        <script src="app.62549705.js" defer></script>
-        <script src="app.30fb701b.js" defer></script>
-        <script src="app.58b78e72.js" defer></script>
+        <script src="index.379dd93c.js"></script>
     </body>
 `);
-
-
-
-
-module.exports = str

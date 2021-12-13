@@ -1,3 +1,4 @@
+const fs = require("fs");
 const db = require("quick.db");
 const { Slider } = require("../slider");
 const { Nav, FeedBack } = require("../nav");
@@ -22,23 +23,20 @@ const Butons = (`
 module.exports = (`
     <head>
         <meta charset="utf-8">
+        <meta name="description" content="${db.get("SYS.meta")}">
         <meta http-equiv="Content-Type" content="text/html; charset=IANAcharset">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
 
-        <link rel="stylesheet" href="css/swiper-bundle.min.css">
+        <link rel="stylesheet" href="css/dx.light.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/canvas.css">
-        <link rel="stylesheet" href="css/tingle.min.css">
 
-        <script src="tingle.min.js"></script>
-        <script src="swiper-bundle.min.js"></script>
-        <script src="modules/app.js"></script>
-
+        <script src="global.js"></script>
         <title>Aluminka</title>
-        <meta name="description" content="${db.get("SYS.meta")}">
     </head>
 
     <body root="index">
+        <div class="Modal"></div>
         <div style="z-index: 9;" class="Bays"></div>
 
         <header>
@@ -59,23 +57,31 @@ module.exports = (`
 
             <section class="three">
                 <h2>Наши партнеры:</h2>
-                ${Slider("index")}
+                <div class="Slider"></div>
             </section>
             <section>
                 ${FeedBack()}
             </section>
         </main>
 
-        <footer></footer>
+        <footer>
+            <section class="line">
+                <ul class="column">
+                    <li>Контакты</li>
+                    <li>Возврат товара</li>
+                    <li>Условия и договор</li>
+                </ul>
+                <ul class="column" style="margin-left:"20%">
+                    <li>Каталог</li>
+                    <li>Производители</li>
+                    <li>Акции</li>
+                </ul>
+            </section>
+            <section class="coop">
+                ТОВ Алюминка - производство алюминиевых профилей © 2021
+            </section>
+        </footer>
 
-        <script src="modules/engine.js"></script>
-        <script src="app.287afcf5.js" defer></script>
-        <script src="app.b9d84a4f.js" defer></script>
-        <script src="app.4613b083.js" defer></script>
-        <script src="app.d6b4c067.js" defer></script>
-        <script src="app.2063a7d1.js" defer></script>
-        <script src="app.62549705.js" defer></script>
-        <script src="app.30fb701b.js" defer></script>
-        <script src="app.58b78e72.js" defer></script>
+        <script src="index.379dd93c.js"></script>
     </body>
 `);

@@ -1,20 +1,4 @@
-export function fileLoader(file, callable) {
-	let img = document.createElement("img")
-	img.classList.add("obj")
-	img.file = file
-	let reader = new FileReader()
-  
-
-  	reader.onload =((aImg)=> { 
-		return (e)=> { 
-			aImg.src = e.target.result
-			callable(aImg.src)
-		}
-  	})(img)
-
-  	reader.readAsDataURL(file)
-}
-export function sends(url, data, metod, clb) {
+export function send(url, data, metod, clb) {
     let response;
 
     if(metod==="GET"){
@@ -45,12 +29,6 @@ export function sends(url, data, metod, clb) {
 
     response.then((data)=> data.json().then((val)=> clb(val)))
 }
-export const useSend =(path, data, clb)=> sends(path, data, "POST", clb)
 
-
+export const useSend =(path, data, clb)=> send(path, data, "POST", clb)
 window.useApi =(path, data, clb)=> useSend(path, data, clb)
-window.document.useState =(param, clb)=> {
-  useSend("./state.get", {arg:param}, (state)=> {
-    clb(state)
-  });
-}

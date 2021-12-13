@@ -28,7 +28,7 @@ const useAdminVerify =(userData)=> {
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-app.get("/", (req, res) => {
+app.get("/", (req, res)=> {
     res.send(dist.index)
 });
 
@@ -144,6 +144,9 @@ app.post("/edit", jsonParser, authenticate, (req, res)=> {
     }
     else res.send({error:"ошибка в данных"})
 });
+app.post("/bay", jsonParser, (req, res)=> {
+    
+});
 
 
 //admin
@@ -178,7 +181,7 @@ app.post("/testPay", jsonParser, (req, res)=> {
 
 
 
-app.use('/', express.static(path.join(__dirname, './src')));
-app.use('/', express.static(path.join(__dirname, './dist')));
+app.use('/', express.static(path.join(__dirname, '/src')));
+app.use('/', express.static(path.join(__dirname, '/dist')));
 app.use(favicon(path.join(__dirname, 'src', 'favicon.ico')));
 app.listen(3000, ()=> logger.info("start server"));

@@ -1,4 +1,4 @@
-const Form = JSONSchemaForm.default;
+//const Form = JSONSchemaForm.default;
 const adminForms = globalThis.__$schemes__.admin
 
 

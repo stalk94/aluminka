@@ -1,7 +1,6 @@
 import React from 'react';
 
 
-
 const Call =()=> (
     <svg 
         width="24" 

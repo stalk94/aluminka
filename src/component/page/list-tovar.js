@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Page from "./page";
+import Page from "../page";
 import ReactDOM from "react-dom";
-import { EditList } from "./editor";
+import { EditList } from "../editor";
 
 
 let indexOpen = 0

@@ -43,9 +43,9 @@ exports.Nav =(props)=> {
 
 exports.FeedBack =()=> {
     return(`
-        <div style="padding-left: 40%;">
+        <div style="padding-left: 30%;">
             <h2 style="padding-left:1%;">Остались вопросы?</h2>
-                <form class="column" method="POST" action="/question">
+                <form class="feedback" class="column" method="POST" action="/question">
                     <input type="text" name="name" placeholder="Ваше имя:">
                     <input type="email" name="email" placeholder="Ваш email:">
                     <input type="text" name="text" placeholder="Ваш вопрос:">

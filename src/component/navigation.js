@@ -1,26 +1,40 @@
 import React from 'react';
 import { RiShoppingBasketLine } from 'react-icons/ri';
-const root = document.body.getAttribute("root")
 
 
 
-export default function Nav(props) {
-    const style = {zIndex:"2", position:"relative"}
+export default function Navigation(props) { 
+    const [cat, setCat] = React.useState(getCat())
+
+    const useClickUrl =()=> {
+        setCat(getCat());
+
+        switch(cat){
+            case 'index': getRoot()!=='index' ? useClickUrl('') : ''
+                break;
+            case 'catalog': getRoot()!=='catalog' ? useClickUrl('catalog') : ''
+                break;
+            case 'payment': getRoot()!=='payment' ? useClickUrl('payment') : ''
+                break;
+            case 'services': getRoot()!=='services' ? useClickUrl('services') : ''
+                break;
+            case 'contact': getRoot()!=='contact' ? useClickUrl('contact') : ''
+                break;
+        }
+    }
 
     return(
-        <>
-            <nav className="two-nav line" style={style}>
-                <img className="logo" width="70px" src={root==="index"?"img/logo.svg":"../img/logo.svg"}/>
-                <p className="navigation" to="glav" info="Главная">Главная</p>
-                <p className="navigation" to="catalog" info="Каталог">Каталог</p>
-                <p className="navigation" to="pay" info="Оплата и доставка">Оплата и доставка</p>
-                <p className="navigation" to="uslugi" info="Услуги">Услуги</p>
-                <p className="navigation" to="contact" info="Контакты">Контакты</p>
+        <nav className="two-nav line" style={{zIndex:"2",position:"relative"}}>
+            <img className="logo" width="70px" src={getRoot()==="index"?"img/logo.svg":"../img/logo.svg"}/>
+            <div className="navigation" onClick={useUrl} info="Главная">Главная</div>
+            <div className="navigation" onClick={useUrl} info="Каталог">Каталог</div>
+            <div className="navigation" onClick={useUrl} info="Оплата и доставка">Оплата и доставка</div>
+            <div className="navigation" onClick={useUrl} info="Услуги">Услуги</div>
+            <div className="navigation" onClick={useUrl} info="Контакты">Контакты</div>
                 
-                <p className="navigation" onClick={()=> EVENT.emit("bay.open", true)}>
-                    <RiShoppingBasketLine/>
-                </p>
-            </nav>
-        </>
+            <p className="navigation" onClick={()=> EVENT.emit("bay.open", true)}>
+                <RiShoppingBasketLine/>
+            </p>
+        </nav>
     );
 }

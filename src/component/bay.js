@@ -3,7 +3,7 @@ import { Button, Input } from '@nextui-org/react';
 import { useSend } from "./engine";
 import OffCanvas from "react-aria-offcanvas";
 import Select from 'react-select';
-import ReactDOM from "react-dom";
+
 
 
 const options = [{value: 'nov', label: 'Новой почтой'}, {value: 'samo', label: 'Самовывоз'}]
@@ -58,11 +58,11 @@ const Pays =(props)=> {
                 <Button onClick={onSell}> Оформить </Button>
             </div>
         </OffCanvas>
-    )
+    );
 }
 
 
-function PanelBays(props) {
+export function PanelBays(props) {
     const [view, setView] = useState(false)
     const [isOpen, setOpen] = useState(false)
     const [bays, setBays] = useState(store.get("bays")??[])
@@ -113,13 +113,10 @@ function PanelBays(props) {
                     </div>
                     {bays.length > 0 
                         ? <Button onClick={()=> <Pays total={total()} setOpen={setView} onOpen={view} />}> Оформить Покупку </Button> 
-                        : <var>корзина пуста</var>
+                        : <var> корзина пуста </var>
                     }
-                    <div style={{marginTop:"5%"}}>Всего: {total()}₴</div>
+                    <div style={{marginTop:"5%"}}> Всего: {total()}₴ </div>
                 </OffCanvas>
         </>
     );
 }
-
-
-ReactDOM.render(<PanelBays/>, document.querySelector(".Bays"))

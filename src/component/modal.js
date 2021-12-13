@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import { CModal,CModalHeader,CModalBody,CModalFooter,CButton,CModalTitle } from "@coreui/react/dist/index";
+import React, { useState } from "react";
+import { CModal, CModalHeader, CModalBody, CModalFooter, CButton, CModalTitle } from "@coreui/react/dist/index";
 import { useDidMount } from "rooks";
 
 

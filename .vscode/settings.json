@@ -47,7 +47,14 @@
         "src/shop": true,
         ".parcel-cache": true,
         "src/index.html": true,
-        "src\\component/editor.js": true
+        "src\\component/editor.js": true,
+        "src\\component/catalog.js": true,
+        "webpack.config.js": true,
+        "src\\component/notification.js": true,
+        "src\\component/promo.js": true,
+        "src\\component/footer.js": true,
+        "src/deprecate.html": true,
+        "src\\component/nav.js": true
     },
     "explorerExclude.backup": null,
     "editor.fontSize": 14,

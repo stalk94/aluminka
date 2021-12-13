@@ -1,6 +1,8 @@
+import React from 'react';
+
 export default function Footer(props) {
     return(
-        <React.Fragment>
+        <>
             <section className="line">
                 <ul className="column">
                     <li>Контакты</li>
@@ -16,6 +18,6 @@ export default function Footer(props) {
             <section className="coop">
                 ТОВ Алюминка - производство алюминиевых профилей © 2021
             </section>
-        </React.Fragment>
+        </>
     );
 }

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormClose, StatusGood, StatusWarning, StatusCritical } from 'grommet-icons';
 import { Box, Button, Grommet, Layer } from 'grommet';
 
@@ -52,22 +52,22 @@ export default function NotificationLayer(props) {
                     responsive={false}
                     plain={true}
                 >
-                <Box
-                    align="center"
-                    direction="row"
-                    gap="small"
-                    justify="between"
-                    round="medium"
-                    elevation="medium"
-                    pad={{vertical:'xsmall', horizontal:'medium'}}
-                    background={status}
-                >
-                    <Box align="center" direction="row" gap="xsmall">
-                        { Status[status] }
-                        <var>{ text }</var>
+                    <Box
+                        align="center"
+                        direction="row"
+                        gap="small"
+                        justify="between"
+                        round="medium"
+                        elevation="medium"
+                        pad={{vertical:'xsmall', horizontal:'medium'}}
+                        background={status}
+                    >
+                        <Box align="center" direction="row" gap="xsmall">
+                            { Status[status] }
+                            <var>{ text }</var>
+                        </Box>
+                        <Button icon={<FormClose/>} onClick={()=> setOpen(undefined)} plain />
                     </Box>
-                    <Button icon={<FormClose/>} onClick={()=> setOpen(undefined)} plain />
-                </Box>
                 </Layer>
             }
         </Grommet>
