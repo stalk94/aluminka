@@ -3,7 +3,7 @@ import { FormClose, StatusGood, StatusWarning, StatusCritical } from 'grommet-ic
 import { Box, Button, Grommet, Layer } from 'grommet';
 
 
-const onStatus = {
+const Status = {
     "status-ok": <StatusGood/>,
     "status-warning": <StatusWarning/>,
     "status-error":  <StatusCritical/>,
@@ -20,7 +20,6 @@ export default function NotificationLayer(props) {
         setOpen(true)
         setTimeout(()=> setOpen(undefined), 4000);
     }
-    const onClose =()=> setOpen(undefined);
 
     useEffect(()=> {
         EVENT.on("payload", (txt)=> {
@@ -49,7 +48,7 @@ export default function NotificationLayer(props) {
                     position="bottom"
                     modal={false}
                     margin={{vertical:'medium',horizontal:'small'}}
-                    onEsc={onClose}
+                    onEsc={()=> setOpen(undefined)}
                     responsive={false}
                     plain={true}
                 >
@@ -64,10 +63,10 @@ export default function NotificationLayer(props) {
                     background={status}
                 >
                     <Box align="center" direction="row" gap="xsmall">
-                        { onStatus[status] }
+                        { Status[status] }
                         <var>{ text }</var>
                     </Box>
-                    <Button icon={<FormClose/>} onClick={onClose} plain />
+                    <Button icon={<FormClose/>} onClick={()=> setOpen(undefined)} plain />
                 </Box>
                 </Layer>
             }

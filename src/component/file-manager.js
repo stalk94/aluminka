@@ -6,32 +6,12 @@ import dir from "../img/icon/dir.png";
 import file from "../img/icon/file.svg";
 import fileImg from "../img/icon/img-file.svg";
 import fileXml from "../img/icon/xml.png";
-import { useIntervalWhen } from "rooks";
 
 
 
 const FileManagers =(props)=> {
-    const [permisions, setPermisions] = useState({
-        create:true,
-        copy:true,
-        move:true,
-        delete:true,
-        rename:true,
-        upload:true,
-        download:true
-    });
-    const [files, setFiles] = useState([])
     const [state, setState] = useState({})
 
-
-    useIntervalWhen(()=> window.document.useState("files", setFiles), 8000, true)
-    const onLoadFile =()=> {
-        return {
-            path: document.body.getAttribute("root"),
-            files: files,
-            token: store.get("token")
-        }
-    }
     const onOptionChanged =(e)=> {
         if(e.fullName==='itemView.mode') setState({itemViewMode: e.value});
     }
@@ -48,17 +28,14 @@ const FileManagers =(props)=> {
 
 
     return(
-        <FileManager height={450}
-            fileSystemProvider={files}
+        <FileManager height={props.height??450}
+            fileSystemProvider={globalThis.$fileManager}
             customizeThumbnail={customizeIcon}
             onOptionChanged={onOptionChanged}
-            onFileUploaded={()=> useApi("/file", onLoadFile(), (msg)=> {
-                if(!msg.error) EVENT.emit("sucess", msg)
-                else EVENT.emit("error", msg.error)
-            })}
+            onFileUploaded={()=> useEmit("file-manager.upload", onLoadFile())}
         >
             <ItemView mode={ state.itemViewMode }></ItemView>
-            <Permissions {...permisions} >
+            <Permissions {...globalThis.$permisions}>
             </Permissions>
         </FileManager>
     );

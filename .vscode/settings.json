@@ -49,7 +49,10 @@
         "src/index.html": true
     },
     "explorerExclude.backup": null,
-    "editor.fontSize": 13.2,
+    "editor.fontSize": 14,
     "editor.fontWeight": "1",
-    "regexhighlighter.stoppingRegexHighlighting": true
+    "sync.autoDownload": true,
+    "vsintellicode.features.python.deepLearning": "enabled",
+    "vscode-dependencies-autocomplete.built-in-modules": "always",
+    "vscode-exports-autocomplete.cacheSizeLimit": "100MB"
 }
