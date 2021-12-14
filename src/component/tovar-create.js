@@ -1,11 +1,11 @@
-//const Form = JSONSchemaForm.default;
-const adminForms = globalThis.__$schemes__.admin
+import React from 'react';
+import Form from "@rjsf/core";
 
 
 
 export function PhotoLoader(props) {
-    const [images, setReload] = React.useState(props.images)
     const inputRef = React.useRef(null)
+    const [images, setReload] = React.useState(props.images)
 
     const useDelete =(index, e)=> {
         let files = [...props.images]
@@ -52,30 +52,30 @@ export function AdminFormCreate(props) {
     const [formData, setFormData] = React.useState(null);
     const [images, setImages] = React.useState([])
 
-    const usePhoto =(e)=> images.length<=4 && setImages(e)
+    const usePhoto =(e)=> images.length<=4 && setImages(e);
 
     
     return(
         <React.Fragment>
             <PhotoLoader images={images} setImages={usePhoto} />
-            <Form formData={formData}
-                schema={adminForms[0]}
+            <Form liveValidate formData={formData}
+                schema={$schemes.admin[0]}
                 onChange={(e)=> setFormData(e.formData)}
                 onError={(e)=> useEmit('error', e)} 
             >
                 <Form formData={formData}
-                    schema={adminForms[1]}
+                    schema={$schemes.admin[1]}
                     onChange={(e)=> setFormData(e.formData)}
                     onError={(e)=> useEmit('error', e)} 
                 >
                     <Form formData={formData}
-                        schema={adminForms[2]}
+                        schema={$schemes.admin[2]}
                         onChange={(e)=> setFormData(e.formData)}
                         onSubmit={(e)=> useEmit('create', {...formData, images:images})}
                         onError={(e)=> useEmit('error', e)} 
                     >
                         <button style={{cursor:"pointer"}}> 
-                            { props.title } 
+                            { props.title??'none' } 
                         </button>
                     </Form>
                 </Form>

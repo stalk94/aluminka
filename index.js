@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const favicon = require('serve-favicon');
 const db = require("quick.db");
 const app = express();
+const pinoms = require('pino-multi-stream');
 const session = require("express-session");
 const cookieParser = require('cookie-parser');
 const { midlevarePassport, time, scheme } = require("./server/midlevare");
@@ -15,7 +16,7 @@ const dist = require("./dist");
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-app.production = false;
+global.logger = pinoms(pinoms.multistream([{stream: fs.createWriteStream('log.log')},{stream: pinoms.prettyStream()}]))
 const log = logger;
 app.use(bodyParser.json({limit: "100mb"}));
 app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit: 50000}));
@@ -49,7 +50,8 @@ app.get("/plintus", (req, res)=> {
 });
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-app.post('/auth', authenticate, (req, res)=> {
+app.post('/auth', jsonParser, authenticate, (req, res)=> {
+    log.info(req.user)
     const isAuthenticated = !!req.user;
     if(isAuthenticated) console.log(`auth: ${req.session.id}`);
     // отдаем state

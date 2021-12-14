@@ -1,4 +1,76 @@
-const scheme = {
+function send(url, data, metod, clb) {
+    let response;
+
+    if(metod==="GET"){
+        response = fetch(document.baseURI + url, {
+            method: "GET",
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            redirect: 'follow', 
+            referrerPolicy: 'no-referrer'
+        });
+    }
+    else response = fetch(document.baseURI + url, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      redirect: 'follow', 
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(data)
+    });
+
+    response.then((data)=> data.json().then((val)=> clb(val)))
+}
+class EventEmmitter {
+    constructor() {
+        this.events = {};
+        this.eventsOnces = {};
+    }
+    once(eventName, fn) {
+        if(!this.eventsOnces[eventName]) this.eventsOnces[eventName] = [];
+        this.eventsOnces[eventName].push(fn)
+    }
+    on(eventName, fn) {
+        console.log(this.events)
+        if(!this.events[eventName]) this.events[eventName] = [];
+        this.events[eventName].push(fn);
+      
+        return ()=> {
+            this.events[eventName] = this.events[eventName].filter((eventFn)=> fn!==eventFn);
+        }
+    }
+    emit(eventName, data) {
+        console.log('%c emit =>', 'color:red')
+        const event = this.events[eventName];
+
+        if(event) event.forEach((fn)=> {
+            fn.call(null, data)
+        });
+    }
+}
+
+
+globalThis.EVENT = new EventEmmitter()
+globalThis.$slides = {
+    index: [
+        'img/2.jpg', 
+        'img/1.jpg'
+    ],
+    "detail-plintus": [],
+    "door-profile": [],
+    furnityra: [],
+    plintus: [],
+    "shadow-profile": []
+}
+globalThis.$schemes = {
     admin: [{
         title: "Базовое",
         type: "object",
@@ -7,6 +79,7 @@ const scheme = {
             name: {
                 title: "имя: ",
                 type: "string",
+                minLength: 3
             },
             types: {
                 title: "опции: ",
@@ -37,6 +110,7 @@ const scheme = {
                 title: "цена: ",
                 type: "number",
                 default: 100,
+                minLength: 1
             }, 
             action:{
                 title: "акционная цена: ",
@@ -45,7 +119,8 @@ const scheme = {
             },
             description: {
                 type: "string", 
-                title: "Описание товарной позиции: "
+                title: "Описание товарной позиции: ",
+                default: "Описание отсутствует"
             }
         }
     },
@@ -57,90 +132,24 @@ const scheme = {
             width: {
                 type:"number", 
                 title:"ширина: ",
-                default: 80
+                default: 80,
+                minLength: 2
             },
             wucota: {
                 type:"number", 
                 title:" высота : ",
-                default: 80
+                default: 80,
+                minLength: 2
             },
             height: {
                 type:"number", 
                 title:"длинна : ",
-                default: 80
+                default: 80,
+                minLength: 2
             }
         }
     }]
-}
-class EventEmmitter {
-    constructor() {
-      this.events = {};
-    }
-    on(eventName, fn) {
-      if(!this.events[eventName]) this.events[eventName] = [];
-      this.events[eventName].push(fn);
-      
-      return ()=> {
-        this.events[eventName] = this.events[eventName].filter(eventFn => fn !== eventFn);
-      }
-    }
-    emit(eventName, data) {
-      const event = this.events[eventName];
-      if(event){
-        event.forEach((fn)=> {
-          fn.call(null, data);
-        });
-      }
-    }
-}
-async function send(url, data, metod) {
-    let response
-
-    if(metod==="GET"){
-        response = await fetch(gurl + url, {
-            method: "GET",
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-              'Content-Type': 'application/json;charset=utf-8'
-            },
-            redirect: 'follow', 
-            referrerPolicy: 'no-referrer'
-        });
-    }
-    else response = await fetch(gurl + url, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      redirect: 'follow', 
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify(data)
-    });
-
-    return await response.text();
-}
-
-
-window.URL.createObjectURL = webkitURL.createObjectURL
-window.gurl = "http://localhost:3000/"
-globalThis.$slides = {
-    index: [
-        'img/2.jpg', 
-        'img/1.jpg'
-    ],
-    "detail-plintus": [],
-    "door-profile": [],
-    furnityra: [],
-    plintus: [],
-    "shadow-profile": []
-}
-globalThis.__$schemes__ = scheme
-globalThis.EVENT = new EventEmmitter()
+};
 globalThis.$promoText = `
     С 2015 года наша компания занимается продажей напольных плинтусов из алюминия, дверных профилей и профилей теневого шва. 
     В нашем каталоге вы сможете найти именно тот профиль, который больше всего подходит для решения ваших задач. 
@@ -152,19 +161,48 @@ globalThis.$promoText = `
     Монтаж такого плинтуса осуществляется на жидкие гвозди, жидкие гвозди наносятся на заднюю поверхность плинтуса и прижимается к стене.
     Данный плинтус идет в классическом анодированном светло-сером цвете. Также данные плинтуса могут быть покрашены по желанию заказчика в любой цвет по каталогу RAL.
 `;
-globalThis.$permisions = {
-    create:true,
-    copy:true,
-    move:true,
-    delete:true,
-    rename:true,
-    upload:true,
-    download:true
+globalThis.$state = {
+    user: {},
+    permisions: {
+        create:true,
+        copy:true,
+        move:true,
+        delete:true,
+        rename:true,
+        upload:true,
+        download:true
+    },
+    files: [{
+        name: 'Documents',
+        isDirectory: true,
+        items:[]
+    }]
 }
 
 
-globalThis.getRoot =()=> document.body.getAttribute("root")
+globalThis.on = EVENT.on;
+globalThis.emit = EVENT.emit;
+globalThis.once = EVENT.once;
+globalThis.gurl = document.baseURI;
+globalThis.store = {
+    get(key) {
+        return globalThis.$state[key]
+    },
+    set(key, value) {
+        EVENT.emit(`store.${key}`, value)
+        globalThis.$state[key] = value
+    },
+    watch(key, listener) {
+        EVENT.on(`store.${key}`, listener)
+    },
+    unwatch(key) {
+        delete EVENT.events[key]
+    }
+}
+globalThis.getRoot =()=> document.body.getAttribute("root");
 globalThis.setUrl =(url)=> document.location.href = document.location.href+"/"+url;
+globalThis.toCat =(his)=> document.location.href = document.location.href+"/"+his.getAttribute("url");
+globalThis.useSend =(path, data, clb)=> send(path, data, "POST", clb);
 globalThis.useEmit =(path, e)=> {
     console.log(`%c ${path}:`, 'color:red')
     console.log(e)
@@ -182,15 +220,3 @@ globalThis.useReadFile =(input, clb)=> {
     }
     reader.onerror =()=> EVENT.emit("error", reader.error);
 }
-globalThis.toCat =(his)=> {
-    document.location.href = document.location.href+"/"+his.getAttribute("url")
-}
-globalThis.userForm =(user)=> {(`
-    <div class="user-form column">
-        <div class="error"></div>
-        <input class="input-userForm" type="email" placeholder="email" value="${user?user.email:''}">
-        <input class="input-userForm" type="tel" placeholder="Телефон" value="${user?user.phone:''}">
-        <input class="input-userForm" type="text" placeholder="Город" value="${user?user.city:''}">
-        <input class="input-userForm" type="text" placeholder="Адрес" value="${user?user.adres:''}">
-    </div>
-`)}

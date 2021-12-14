@@ -21,6 +21,7 @@ const Butons = (`
 
 
 module.exports = (`
+    <!DOCTYPE html>
     <head>
         <meta charset="utf-8">
         <meta name="description" content="${db.get("SYS.meta")}">
@@ -31,11 +32,12 @@ module.exports = (`
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/canvas.css">
 
-        <script src="global.js"></script>
         <title>Aluminka</title>
     </head>
 
     <body root="index">
+        <script src="global.js"></script>
+        <div class="app"></div>
         <div class="Modal"></div>
         <div style="z-index: 9;" class="Bays"></div>
 
@@ -84,4 +86,5 @@ module.exports = (`
 
         <script src="index.379dd93c.js"></script>
     </body>
+    </html>
 `);

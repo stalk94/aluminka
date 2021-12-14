@@ -8,7 +8,9 @@ import fileXml from "../img/icon/xml.png";
 
 
 export default function FileManagers(props) {
+    const ctx =  React.useContext(props.context)
     const [state, setState] = useState({})
+    
 
     const onOptionChanged =(e)=> {
         if(e.fullName==='itemView.mode') setState({itemViewMode: e.value});
@@ -26,15 +28,17 @@ export default function FileManagers(props) {
 
 
     return(
-        <FileManager height={props.height??450}
-            fileSystemProvider={globalThis.$fileManager}
-            customizeThumbnail={customizeIcon}
-            onOptionChanged={onOptionChanged}
-            onFileUploaded={()=> useEmit("file-manager.upload", onLoadFile())}
-        >
-            <ItemView mode={ state.itemViewMode }></ItemView>
-            <Permissions {...globalThis.$permisions}>
-            </Permissions>
-        </FileManager>
+        <div style={{visibility:props.visible}} className="FileManager">
+            <FileManager height={props.height??450}
+                fileSystemProvider={globalThis.$state.files}
+                customizeThumbnail={customizeIcon}
+                onOptionChanged={onOptionChanged}
+                onFileUploaded={()=> useEmit("file-manager.upload", onLoadFile())}
+            >
+                <ItemView mode={state}></ItemView>
+                <Permissions {...globalThis.$state.permisions}>
+                </Permissions>
+            </FileManager>
+        </div>
     );
 }

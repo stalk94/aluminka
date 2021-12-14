@@ -3,12 +3,10 @@ const CryptoJS = require("crypto-js");
 const db = require("quick.db");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const pinoms = require('pino-multi-stream');
 
 
 exports.time =()=> new Date().getDay()+":"+new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds();
 const wrap =(middleware)=> (expres, next)=> middleware(expres.request, {}, next);
-globalThis.logger = pinoms(pinoms.multistream([{stream: fs.createWriteStream('log.log')},{stream: pinoms.prettyStream()}]))
 process.on("uncaughtException", (err)=> logger.error(err));
 exports.scheme = {
     login: RegExp(/^[a-z0-9_-]{3,21}$/),

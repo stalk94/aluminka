@@ -3,6 +3,7 @@ const { Slider } = require("../slider");
 
 
 module.exports =()=> (`
+    <!DOCTYPE html>
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=IANAcharset">
@@ -12,13 +13,14 @@ module.exports =()=> (`
         <link rel="stylesheet" href="../css/tovar-cart.css">
         <link rel="stylesheet" href="../css/shop-list.css">
 
-        <script src="global.js"></script>
+        <script src="../global.js"></script>
 
         <title>Aluminka</title>
         <meta class="meta-tag" name="description" content="${db.get("meta")}"/>
     </head>
 
     <body root="shadow-profile">
+        <div class="app"></div>
         <div style="z-index: 9;" class="Bays"></div>
         <div class="Modal"></div>
         <div class="Admin-add"></div>
@@ -91,4 +93,5 @@ module.exports =()=> (`
         <script src="../modules/engine.js"></script>
         <script src="index.379dd93c.js"></script>
     </body>
+    </html>
 `)

@@ -57,7 +57,7 @@
         "src\\component/nav.js": true
     },
     "explorerExclude.backup": null,
-    "editor.fontSize": 14,
+    "editor.fontSize": 13.8,
     "editor.fontWeight": "1",
     "sync.autoDownload": true,
     "vsintellicode.features.python.deepLearning": "enabled",

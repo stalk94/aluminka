@@ -74,8 +74,8 @@ export function PanelBays(props) {
     }
     useEffect(()=> {
         if(!init){
-            EVENT.on("bay.open", (val)=> setOpen(val))
-            EVENT.on("add", (data)=> {
+            window.EVENT.on("bay.open", (val)=> setOpen(val))
+            window.EVENT.on("add", (data)=> {
                 let bayse = store.get("bays")??[]
                 bayse.push(data)
                 
