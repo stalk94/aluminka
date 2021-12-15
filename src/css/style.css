@@ -51,7 +51,6 @@ main {
     width: 100%;
     height: 100%;
     background-color: #000000a4;
-    border: 1px solid rgba(255, 0, 0, 0.363);
 }
 #exit-admin:hover {
     cursor: pointer;

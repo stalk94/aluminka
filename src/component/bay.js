@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Input } from '@nextui-org/react';
-import { useSend } from "./engine";
 import OffCanvas from "react-aria-offcanvas";
 import Select from 'react-select';
-
+import { useDidMount } from "rooks";
 
 
 const options = [{value: 'nov', label: 'Новой почтой'}, {value: 'samo', label: 'Самовывоз'}]
 const options2 = [{value: 'naloj', label: 'Наложенный платеж'}]
-let init = false
+
 let user = store.get("user")
 const stat = {
     name: user.name?user.name:"",
@@ -19,14 +18,14 @@ const stat = {
 }
 
 
-export const Pays =(props)=> {
+const Pays =(props)=> {
     const [state, setState] = useState(stat)
     const [type, setType] = useState()
     const [typePay, setTypePay] = useState()
 
     const onSell =()=> {
         //if(typePay==="cart") useSend("payCart", {...state, total:total, delivery:type, bays:bays}, (data)=> data)
-        useSend("new", {...state, total:total, bays:bays, delivery:type}, (data)=> data)
+        //useSend("new", {...state, total:total, bays:bays, delivery:type}, (data)=> data)
     }
     const onState =(name, value)=> {
         let copy = state
@@ -72,19 +71,21 @@ export function PanelBays(props) {
         bays.forEach((tovar, i)=> tot += tovar.tovar.priceMin*tovar.count);
         return tot;
     }
-    useEffect(()=> {
-        if(!init){
-            EVENT.on("bay.open", (val)=> setOpen(val))
-            EVENT.on("add", (data)=> {
-                let bayse = store.get("bays")??[]
-                bayse.push(data)
-                
-                store.set("bays", bayse)
-                setBays(bayse)
-            });
-            init = true
-        }
-    }, [view, isOpen])
+    useDidMount(()=> {
+        EVENT.on("bay.open", (val)=> {
+            setBays(store.get("user").bays)
+            setOpen(val)
+        });
+        EVENT.on("add", (data)=> {
+            let user = store.get("user")
+            let bayse = user.bays
+            bayse.push(data)
+            
+            user.bays = bayse
+            store.set("user", user)
+            setBays(user.bays)
+        });
+    });
 
 
     return(

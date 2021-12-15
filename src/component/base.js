@@ -13,12 +13,12 @@ const pallete = {
     secondary: {   
         color: '#9da5b1',  
         boxSizing: 'border-box',
-        border: '#9da5b1',
+        border: '1px solid #9da5b1',
         padding: '16px', 
         borderTopLeftRadius: '4px',
         borderTopRightRadius: '4px' 
     }, 
-    success: {    
+    sucess: {    
         color: '#2eb85c', 
         boxSizing: 'border-box',
         border: '1px solid #2eb85c',
@@ -95,9 +95,9 @@ export function Title(props) {
 }
 export function Body(props) {
     return(
-        <div style={{overflowY:'auto'}}>
+        <>
             { props.children }
-        </div>
+        </>
     )
 }
 export function Footer(props) {

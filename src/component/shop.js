@@ -17,7 +17,10 @@ import ListTovar from "./page/list-tovar";
 export default function ShopController(props) {
     return(
         <div className="head-blok line">
-            { $state.tovar.length > 0 ? <ListTovar states={$state.tovar} /> : <var>товаров пока нет</var> }
+            {$state.tovar.length > 0 
+                ? <ListTovar states={$state.tovar} /> 
+                : <var>товаров пока нет</var> 
+            }
         </div>     
     );
 }

@@ -2,7 +2,7 @@ function send(url, data, metod, clb) {
     let response;
 
     if(metod==="GET"){
-        response = fetch(document.baseURI + url, {
+        response = fetch("http://"+document.location.hostname + url, {
             method: "GET",
             mode: 'cors',
             cache: 'no-cache',
@@ -14,7 +14,7 @@ function send(url, data, metod, clb) {
             referrerPolicy: 'no-referrer'
         });
     }
-    else response = fetch(document.baseURI + url, {
+    else response = fetch("http://"+document.location.hostname + url, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -176,7 +176,11 @@ globalThis.$promoText = `
     Данный плинтус идет в классическом анодированном светло-сером цвете. Также данные плинтуса могут быть покрашены по желанию заказчика в любой цвет по каталогу RAL.
 `;
 globalThis.$state = {
-    user: {},
+    user: {
+        bays: [],
+        login: undefined,
+        password: undefined
+    },
     permisions: {
         create:true,
         copy:true,
@@ -214,7 +218,6 @@ globalThis.store = {
         delete EVENT.events[key]
     }
 }
-EVENT.on("close.modal", ()=> document.querySelector(".app").style.visibility = 'hidden')
 globalThis.getRoot =()=> document.body.getAttribute("root");
 globalThis.setUrl =(url)=> document.location.href = 'http://'+document.location.host+url;
 globalThis.toCat =(his)=> document.location.href = document.location.href+"/"+his.getAttribute("url");

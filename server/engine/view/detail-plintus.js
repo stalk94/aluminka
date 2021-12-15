@@ -14,6 +14,7 @@ module.exports =()=> (`
         
         <link rel="stylesheet" href="../css/dx.light.css">
         <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/admin.css">
         <link rel="stylesheet" href="../css/tovar-cart.css">
         <link rel="stylesheet" href="../css/shop-list.css">
 

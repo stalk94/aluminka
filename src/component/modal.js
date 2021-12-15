@@ -17,18 +17,8 @@ export default function Modal(props) {
     const [title, setTitle] = useState('')
     const [btnTitle, setBtnTitle] = useState('click')
     const [size, setSize] = useState(null)
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState(props.visible??false);
     
-    useDidMount(()=> {
-        EVENT.on("open.modal", (arg)=> {
-            document.querySelector(".app").style.visibility = 'visible'
-            setSize(arg.size ?? 'sm');
-            setChildren(arg.child ?? <var>null</var>)
-            setTitle(arg.title)
-            setBtnTitle(arg.buttonTitle)
-            setVisible(!visible);
-        });
-    });
 
     return(
         <div style={{position:'absolute',width:'100%',height:"100%",top:0,left:0,visibility:visible}}>

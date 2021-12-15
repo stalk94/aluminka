@@ -1,6 +1,6 @@
 import React from 'react';
 import Form from "@rjsf/core";
-
+import { Button } from "./base";
 
 
 export function PhotoLoader(props) {
@@ -22,8 +22,8 @@ export function PhotoLoader(props) {
 
 
     return(
-        <label style={{cursor:"pointer"}} className="custom-file-upload">
-            <div style={{display:"flex",flexDirection:"row",width:"100%",height:"30%",textAlight:"centr",border:"1px dotted red"}}>
+        <label style={{cursor:"pointer",maxHeight:"30%"}} className="custom-file-upload">
+            <div style={{display:"flex",flexDirection:"row",maxHeight:"30%",textAlight:"centr",border:"1px dotted red"}}>
                 {props.images.length < 1 
                     ? <var style={{marginLeft:"35%", marginTop:"5%",color:"gray"}}>
                         Для загрузки фото, нажмите на область
@@ -33,11 +33,12 @@ export function PhotoLoader(props) {
                 {images.map((img, i)=> (
                     <div key={i}>
                         <div className="btn-del" onClick={(e)=> useDelete(i, e)}>
-                            <img src={'../src/img/delete.png'}/>
+                            <img src={'../img/delete.png'}/>
                         </div>
                         <img className="photos" 
+                            height="150px"
                             src={img} 
-                            style={{width:(window.innerWidth/props.images.length)+"px",height:"100%"}}
+                            style={{maxWidth:(window.innerWidth/props.images.length)+"px"}}
                         />
                     </div>
                 ))}
@@ -47,7 +48,19 @@ export function PhotoLoader(props) {
     );
 }
 
-
+/**
+ * 
+ * useDidMount(()=> {
+        EVENT.on("open.modal", (arg)=> {
+            document.querySelector(".app").style.visibility = 'visible';
+            setVisible(!visible);
+            if(arg){
+                setBody(arg.body)
+                setFoot(arg.foot)
+            }
+        });
+    });
+ */
 export function AdminFormCreate(props) {
     const [formData, setFormData] = React.useState(null);
     const [images, setImages] = React.useState([])
@@ -56,7 +69,7 @@ export function AdminFormCreate(props) {
 
     
     return(
-        <>
+        <div style={{height:window.innerHeight-50,overflowY:"auto"}}>
             <PhotoLoader images={images} setImages={usePhoto} />
             <Form
                 formData={formData}
@@ -75,12 +88,13 @@ export function AdminFormCreate(props) {
                         onSubmit={(e)=> useEmit('create', {...formData, images:images})}
                         onError={(e)=> useEmit('error', e)} 
                     >
-                        <button style={{cursor:"pointer"}}> 
-                            { props.title??'сохранить' } 
-                        </button>
+                        <div></div>
                     </Form>
                 </Form>
             </Form>
-        </>
+            <Button color="sucess" onClick={()=> EVENT.emit("create.tovar", {...formData, images:images})}> 
+                { props.title??'сохранить' } 
+            </Button>
+        </div>
     );
 }
