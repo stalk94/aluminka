@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Page from "../page";
-import ReactDOM from "react-dom";
-import { EditList } from "../editor";
+import Page from "./page";
 
-
-let indexOpen = 0
-const parseState =(st)=> JSON.parse(st);
 
 
 const Tovar =(props)=> (
@@ -47,16 +42,16 @@ const Tovar =(props)=> (
 );
 
 
-const Shop =(props)=> {
-    const [data, setData] = useState(parseState(props.states), [])
+export default function ListTovar(props) {
+    const [data, setData] = useState(props.states, [])
     const [open, setOpen] = useState(false)
     const [view, setView] = useState("nav")
     
-    useEffect(()=> setData(parseState(props.states)), [props.states])
+    useEffect(()=> setData(props.states), [props.states])
 
     return(
         <>
-            {view === "nav"
+            {view==="nav"
                 ? (data.length > 0 ? data.map((tovar, index)=> (
                     <Tovar
                         key={index} 
@@ -89,10 +84,6 @@ const Shop =(props)=> {
                     onEnd={()=> setView("nav")}
                 />
             }
-            {open && <EditList open={open} index={indexOpen} url={props.url} useOpen={setOpen}/>}
         </>
     );
 }
-
-
-ReactDOM.render(<Shop states={document.body.getAttribute("state")} url={document.body.getAttribute("root")} />, document.querySelector(".list-tovar"))

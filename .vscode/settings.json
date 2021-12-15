@@ -54,7 +54,10 @@
         "src\\component/promo.js": true,
         "src\\component/footer.js": true,
         "src/deprecate.html": true,
-        "src\\component/nav.js": true
+        "src\\component/nav.js": true,
+        "src\\component/navigation.js": true,
+        "src\\component/modal.js": true,
+        "src\\component/tovar-create.js": true
     },
     "explorerExclude.backup": null,
     "editor.fontSize": 13.8,

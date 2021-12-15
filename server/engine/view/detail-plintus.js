@@ -11,6 +11,8 @@ module.exports =()=> (`
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=IANAcharset">
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+        
+        <link rel="stylesheet" href="../css/dx.light.css">
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/tovar-cart.css">
         <link rel="stylesheet" href="../css/shop-list.css">
@@ -30,22 +32,15 @@ module.exports =()=> (`
         <header>
             <div class="Titles"></div>
             <div class="Nav"></div>
-            
             <div class="top-img">
-                <img class="img-top" src="../img/foot_fon.png">
+                <img class="img-top" src="../img/foot_fon.png" mod>
             </div>
         </header>
 
         <main>
-            <section class="one">
-                <h5 class="info" mod>
-                    ${db.get("SYS.detail_plintus")}
-                </h5>
-            </section>
-
             <section class="two line">
                 <aside class="story">
-                    <div class="head-blok story-blok">Избранное</div>
+                    <div class="head-blok story-blok">Фильтры</div>
                 </aside>
                 
                 
@@ -61,7 +56,8 @@ module.exports =()=> (`
 
             <section class="three">
                 <h2>Выгодные предложения:</h2>
-                ${Slider("detail-plintus")}
+                <div class="Slider"></div>
+                <div></div>
             </section>
 
             <section>
@@ -95,7 +91,7 @@ module.exports =()=> (`
             </section>
         </footer>
 
-        <script src="index.379dd93c.js"></script>
+        <script src="../index.379dd93c.js"></script>
     </body>
     </html>
 `);

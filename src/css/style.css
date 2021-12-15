@@ -47,7 +47,7 @@ main {
     visibility: hidden;
     left: 0;
     top: 0;
-    z-index: 0;
+    z-index: 999;
     width: 100%;
     height: 100%;
     background-color: #000000a4;
@@ -71,11 +71,9 @@ main {
 .Modal {
     position: fixed;
     display: none;
-    top: 0px;
-    left: 0px;
+    z-index: 1;
     width: 100%;
     height: 100%;
-    background-color: rgba(28, 29, 30, 1);
 }
 .wrap {
     border:1px solid rgb(85, 85, 85);

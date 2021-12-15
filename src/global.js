@@ -49,6 +49,8 @@ class EventEmmitter {
     }
     emit(eventName, data) {
         console.log('%c emit =>', 'color:red')
+        console.log(eventName)
+        console.log(data)
         const event = this.events[eventName];
 
         if(event) event.forEach((fn)=> {
@@ -61,14 +63,26 @@ class EventEmmitter {
 globalThis.EVENT = new EventEmmitter()
 globalThis.$slides = {
     index: [
-        'img/2.jpg', 
-        'img/1.jpg'
+        'https://novostroyki.realt.ua/store/company/5804a174b036604e751374e7/logo/9559a88989a29efb23223aa343a489ae.jpg', 
+        'https://profidom.com.ua/images/2018/statti/sam-b-stroi-komp-8_w.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/3/3a/%D0%9B%D0%BE%D0%B3%D0%BE_%D0%A3%D0%BA%D1%80%D0%B1%D1%83%D0%B4.jpg'
     ],
-    "detail-plintus": [],
-    "door-profile": [],
-    furnityra: [],
-    plintus: [],
-    "shadow-profile": []
+    "detail-plintus": [
+        'https://profidom.com.ua/images/2018/statti/sam-b-stroi-komp-8_w.jpg'
+    ],
+    "door-profile": [
+        'https://profidom.com.ua/images/2018/statti/sam-b-stroi-komp-8_w.jpg'
+    ],
+    furnityra: [
+        'https://profidom.com.ua/images/2018/statti/sam-b-stroi-komp-8_w.jpg'
+    ],
+    plintus: [
+        'https://profidom.com.ua/images/2018/statti/sam-b-stroi-komp-8_w.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/3/3a/%D0%9B%D0%BE%D0%B3%D0%BE_%D0%A3%D0%BA%D1%80%D0%B1%D1%83%D0%B4.jpg'
+    ],
+    "shadow-profile": [
+        'https://profidom.com.ua/images/2018/statti/sam-b-stroi-komp-8_w.jpg'
+    ]
 }
 globalThis.$schemes = {
     admin: [{
@@ -176,7 +190,8 @@ globalThis.$state = {
         name: 'Documents',
         isDirectory: true,
         items:[]
-    }]
+    }],
+    tovar: []
 }
 
 
@@ -199,10 +214,26 @@ globalThis.store = {
         delete EVENT.events[key]
     }
 }
+EVENT.on("close.modal", ()=> document.querySelector(".app").style.visibility = 'hidden')
 globalThis.getRoot =()=> document.body.getAttribute("root");
-globalThis.setUrl =(url)=> document.location.href = document.location.href+"/"+url;
+globalThis.setUrl =(url)=> document.location.href = 'http://'+document.location.host+url;
 globalThis.toCat =(his)=> document.location.href = document.location.href+"/"+his.getAttribute("url");
 globalThis.useSend =(path, data, clb)=> send(path, data, "POST", clb);
+globalThis.authorize =()=> {
+    let login = globalThis.$state.user.login
+    let pass = globalThis.$state.user.password
+
+    if(login && pass){
+        send('auth', globalThis.$state.user, 'POST', (data)=> {
+            console.log(data)
+            if(!data.error){
+                globalThis.$state.user = data;
+                EVENT.emit("ok")
+            }
+            else EVENT.emit("error", data.error)
+        })
+    }
+}
 globalThis.useEmit =(path, e)=> {
     console.log(`%c ${path}:`, 'color:red')
     console.log(e)

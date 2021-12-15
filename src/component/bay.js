@@ -19,7 +19,7 @@ const stat = {
 }
 
 
-const Pays =(props)=> {
+export const Pays =(props)=> {
     const [state, setState] = useState(stat)
     const [type, setType] = useState()
     const [typePay, setTypePay] = useState()
@@ -68,14 +68,14 @@ export function PanelBays(props) {
     const [bays, setBays] = useState(store.get("bays")??[])
 
     const total =()=> {
-        let tot = 0
-        bays.forEach((tovar, i)=> tot += tovar.tovar.priceMin*tovar.count)
-        return tot
+        let tot = 0;
+        bays.forEach((tovar, i)=> tot += tovar.tovar.priceMin*tovar.count);
+        return tot;
     }
     useEffect(()=> {
         if(!init){
-            window.EVENT.on("bay.open", (val)=> setOpen(val))
-            window.EVENT.on("add", (data)=> {
+            EVENT.on("bay.open", (val)=> setOpen(val))
+            EVENT.on("add", (data)=> {
                 let bayse = store.get("bays")??[]
                 bayse.push(data)
                 

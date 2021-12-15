@@ -7,7 +7,9 @@ import fileXml from "../img/icon/xml.png";
 
 
 
+
 export default function FileManagers(props) {
+    const style = {position:'absolute',top:0,left:0}
     const ctx =  React.useContext(props.context)
     const [state, setState] = useState({})
     
@@ -28,7 +30,7 @@ export default function FileManagers(props) {
 
 
     return(
-        <div style={{visibility:props.visible}} className="FileManager">
+        <div style={{...style, visibility:props.visible}} className="FileManager">
             <FileManager height={props.height??450}
                 fileSystemProvider={globalThis.$state.files}
                 customizeThumbnail={customizeIcon}

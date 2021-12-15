@@ -56,9 +56,10 @@ export function AdminFormCreate(props) {
 
     
     return(
-        <React.Fragment>
+        <>
             <PhotoLoader images={images} setImages={usePhoto} />
-            <Form liveValidate formData={formData}
+            <Form
+                formData={formData}
                 schema={$schemes.admin[0]}
                 onChange={(e)=> setFormData(e.formData)}
                 onError={(e)=> useEmit('error', e)} 
@@ -75,11 +76,11 @@ export function AdminFormCreate(props) {
                         onError={(e)=> useEmit('error', e)} 
                     >
                         <button style={{cursor:"pointer"}}> 
-                            { props.title??'none' } 
+                            { props.title??'сохранить' } 
                         </button>
                     </Form>
                 </Form>
             </Form>
-        </React.Fragment>
+        </>
     );
 }

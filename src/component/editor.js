@@ -3,8 +3,6 @@ import { RiDeleteBin2Line } from "react-icons/ri";
 import { Button } from '@nextui-org/react';
 import OffCanvas from "react-aria-offcanvas";
 import { sends, fileLoader } from "./engine"
-import Files from "react-files";
-import "image-to-base64"
 
 
 
