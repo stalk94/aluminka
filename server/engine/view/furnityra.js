@@ -27,6 +27,7 @@ module.exports = (`
 
 
     <body root="fyrnityra">
+        <scrypt>window.$state = {tovar:${db.get('tovar.fyrnityra')}}</scrypt>
         <div class="app"></div>
         <div style="z-index: 9;" class="Bays"></div>
         <div class="Modal"></div>

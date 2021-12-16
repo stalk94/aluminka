@@ -43,6 +43,14 @@ const App =()=> {
             if(!res.error) EVENT.emit("sucess", res);
             else EVENT.emit("error", res.error);
         }));
+        EVENT.on("reg", (data)=> send("reg", data, "POST", (res)=> {
+            if(!res.error) EVENT.emit("sucess", res);
+            else EVENT.emit("error", res.error);
+        }));
+        EVENT.on("auth", (data)=> send("auth", data, "POST", (res)=> {
+            if(!res.error) EVENT.emit("sucess", res);
+            else EVENT.emit("error", res.error);
+        }));
     });
 
 

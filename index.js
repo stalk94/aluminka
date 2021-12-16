@@ -22,17 +22,20 @@ app.use(bodyParser.json({limit: "100mb"}));
 app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit: 50000}));
 const jsonParser = bodyParser.json();
 const liqpay = new LiqPay(process.env.test_key, process.env.test_private_key);
-const authenticate = midlevarePassport(session({secret:process.env.private_key,resave:false,saveUninitialized:false}), app);
+const authenticate = midlevarePassport(session({secret:process.env.private_key,resave:true,saveUninitialized:false}), app);
 const useAdminVerify =(userData)=> {
     if(userData.id===0 && userData.permision==='admin') return userData;
     else return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
+app.use((req, res, next)=> {
+    authenticate(req)
+    next()
+});
 app.get("/", (req, res)=> {
     res.send(dist.index)
 });
-
 app.get("/shadow-profile", (req, res)=> {
     res.send(dist['shadow-profile'])
 });
@@ -50,26 +53,19 @@ app.get("/plintus", (req, res)=> {
 });
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-app.post('/auth', jsonParser, authenticate, (req, res)=> {
-    log.info(req.user)
-    const isAuthenticated = !!req.user;
-    if(isAuthenticated) console.log(`auth: ${req.session.id}`);
-    // отдаем state
-    res.send(isAuthenticated ? req.user : {error:'заполните форму авторизации'});
+app.post('/auth', jsonParser, (req, res)=> {
+    console.log("auth:", req.body)
+    if(scheme.login.test(req.body.login) && scheme.password.test(req.body.password)){
+        autorize(req.body.login, req.body.password)
+    }
 });
 app.post('/reg', jsonParser, (req, res)=> {
-    if(scheme.login.test(req.body.login) && scheme.password.test(req.body.password)){
-        if(!db.has("user."+req.body.login)){
-            db.set("user."+req.body.login, {
-                login: req.body.login,
-                password: AES.encrypt(req.body.password, req.body.login).toString(),
-                id: Object.keys(db.get("user")).length ?? 0
-            });
-            res.send({sucess:'Успешно.'});
-        }
-        else res.send({error:"логин занят"});
+    console.log("reg:", req.body)
+    if(!db.has("user."+req.body.login)){
+        registration(req.body.login, req.body.password, (doc)=> {
+           
+        });
     }
-    else res.send({error:"используйте только цифры и буквы а также '_','-'"});
 });
 app.post("/logout", (req, res)=> {
     logger.info(`[] logout: ${req.session.id}`);
@@ -79,6 +75,7 @@ app.post("/logout", (req, res)=> {
     res.redirect("/");
 });
 app.post("/question", jsonParser, (req, res)=> {
+    console.log("questions:", req.body)
     if(scheme.text.test(req.body.text) && scheme.login.test(req.body.name) && scheme.email.test(req.body.email)){
         db.push("questions", {
             name: req.body.name, 
@@ -147,7 +144,7 @@ app.post("/edit", jsonParser, authenticate, (req, res)=> {
     else res.send({error:"ошибка в данных"})
 });
 app.post("/bay", jsonParser, (req, res)=> {
-    
+    console.log("bay:", req.body)
 });
 
 
