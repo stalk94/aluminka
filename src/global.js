@@ -57,10 +57,15 @@ class EventEmmitter {
             fn.call(null, data)
         });
     }
+    remote() {
+        delete this.events
+        delete this.eventsOnces
+        this.events = {};
+        this.eventsOnces = {};
+    }
 }
 
 
-globalThis.EVENT = new EventEmmitter()
 globalThis.$slides = {
     index: [
         'https://novostroyki.realt.ua/store/company/5804a174b036604e751374e7/logo/9559a88989a29efb23223aa343a489ae.jpg', 
@@ -175,30 +180,34 @@ globalThis.$promoText = `
     Монтаж такого плинтуса осуществляется на жидкие гвозди, жидкие гвозди наносятся на заднюю поверхность плинтуса и прижимается к стене.
     Данный плинтус идет в классическом анодированном светло-сером цвете. Также данные плинтуса могут быть покрашены по желанию заказчика в любой цвет по каталогу RAL.
 `;
+globalThis.$tovar = []           
 globalThis.$state = {
     user: {
         bays: [],
+        basket: [],
+        firsName: undefined,
+        lastName: undefined,
         login: undefined,
-        password: undefined
-    },
-    permisions: {
-        create:true,
-        copy:true,
-        move:true,
-        delete:true,
-        rename:true,
-        upload:true,
-        download:true
+        token: undefined,
+        permision: {
+            create:true,
+            copy:true,
+            move:true,
+            delete:true,
+            rename:true,
+            upload:true,
+            download:true
+        }
     },
     files: [{
         name: 'Documents',
         isDirectory: true,
         items:[]
-    }],
-    tovar: []
+    }]
 }
 
 
+globalThis.EVENT = new EventEmmitter();
 globalThis.on = EVENT.on;
 globalThis.emit = EVENT.emit;
 globalThis.once = EVENT.once;

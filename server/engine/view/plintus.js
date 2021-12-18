@@ -28,7 +28,7 @@ module.exports = (`
 
 
     <body root="plintus">
-        <script>window.$state = {tovar:${db.get('tovar.plintus')}}</script>
+        <script>window.$tovar = {${db.get('tovar.plintus')}}</script>
         <div class="app"></div>
         <div style="z-index: 9;" class="Bays"></div>
         <div class="Modal"></div>

@@ -38,7 +38,7 @@ export default function FileManagers(props) {
                 onFileUploaded={()=> useEmit("file-manager.upload", onLoadFile())}
             >
                 <ItemView mode={state}></ItemView>
-                <Permissions {...globalThis.$state.permisions}>
+                <Permissions {...globalThis.$state.user.permision}>
                 </Permissions>
             </FileManager>
         </div>

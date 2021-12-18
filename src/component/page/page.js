@@ -4,14 +4,24 @@ import { Carousel } from "react-responsive-carousel";
 const style = {padding:"5px", border:"1px solid grey"}
 
 
+const Colors =(props)=> (
+    <div style={{display:"flex",flexDirection:"row"}}>
+        {props.data.map((color, i)=> 
+            <div key={i} 
+                style={{border:(props.select===i?'1px solid red':''),backgroundColor:color,margin:"5px"}} 
+                onClick={()=> props.useSelect(i)}
+            />
+        )}
+    </div>
+);
+
+
 
 export default function Page(props) {
     const [display, setDisplay] = useState("block")
     const [count, setCount] = useState(0)
 
-    const onCount =(mod="add")=> {
-        setCount((count)=> mod==="add"?(count+=1):(count-=1))
-    }
+    const onCount =(mod="add")=> setCount((count)=> mod==="add"?(count+=1):(count-=1));
     const onEnd =()=> {
         setDisplay("none")
         props.onEnd()
@@ -31,7 +41,9 @@ export default function Page(props) {
     return(
         <div className="Modal" style={{display:display, overflow:"auto"}}>
             <header>
-                <Button flat color="primary" auto onClick={onEnd}>Назад</Button>
+                <Button flat color="primary" auto onClick={onEnd}>
+                    Назад
+                </Button>
             </header>
 
             <section>
@@ -42,9 +54,9 @@ export default function Page(props) {
                     <h2 style={{paddingLeft:"10px"}} className="name-tovar">{ props.name }</h2>
                     <p className="articul">Код товара: { props.id }</p>
                     <p>Модель: { props.model }</p>
-                    <div className="price" style={{backgroundColor:"rgb(20, 20, 20)",marginTop:"2%",display:"flex",flexDirection:"row"}}>
+                    <div className="price" style={{backgroundColor:"rgb(20,20,20)",marginTop:"2%",display:"flex",flexDirection:"row"}}>
                         Цена:
-                        <h2 style={{textDecoration:"line-through",color:"red"}}>{props.price}грн /</h2>
+                        <h2 style={{textDecoration:"line-through",color:"red"}}>{ props.price }грн /</h2>
                         <h2 style={{color:"green"}}> {props.priceMin} грн</h2>
                     </div>
                     <div className="line">
@@ -60,7 +72,9 @@ export default function Page(props) {
 
             <section className="two opisanie">
                 <nav className="line">
-                    <div id="opis"><b>Описание</b></div>
+                    <div id="opis">
+                        <b>Описание</b>
+                    </div>
                 </nav>
                 <hr align="left" width="7%" size="1" color="#2662c9"/>
                 
@@ -68,14 +82,14 @@ export default function Page(props) {
                     <h5 style={{marginLeft:"0px"}} className="info">
                         { props.description }
                     </h5>
-                    <h4>Характеристики:</h4>
 
-                    <p className="info">Материал: {props.material}</p>
-                    <p className="info">Покрытие: {props.dop}</p>
-                    <p className="info">Ширина: {props.width}</p>
-                    <p className="info">Высота: {props.vusota}</p>
-                    <p className="info">Длинна: {props.height}</p>
-                    <p className="info">Цвет: {props.colors}</p>
+                    <h4>Характеристики:</h4>
+                    <p className="info">Материал: { props.material }</p>
+                    <p className="info">Покрытие: { props.dop }</p>
+                    <p className="info">Ширина: { props.width }</p>
+                    <p className="info">Высота: { props.vusota }</p>
+                    <p className="info">Длинна: { props.height }</p>
+                    <p className="info">Цвет: { <Colors select={} useSelect={} data={props.colors}/> }</p>
                 </div>
             </section>
         </div>

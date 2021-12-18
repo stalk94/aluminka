@@ -119,8 +119,8 @@ app.post("/bay", jsonParser, (req, res)=> {
         });
         res.send({sucess: 'Ваш заказ оформлен и будет в ближайшее время рассмотрен'});
     }
-    else if(req.cookies['token'] && req.body.bay && app.tokens[userCopy.token]){
-        let user = app.tokens[userCopy.token];
+    else if(req.cookies['token'] && req.body.bay && app.tokens[req.cookies['token']]){
+        let user = app.tokens[req.cookies['token']];
         db.push("bays", {
             [user.login]: req.body.bay, 
             time: time()

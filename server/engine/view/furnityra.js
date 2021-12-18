@@ -27,7 +27,7 @@ module.exports = (`
 
 
     <body root="fyrnityra">
-        <script>window.$state = {tovar:${db.get('tovar.fyrnityra')}}</script>
+        <script>window.$tovar = {${db.get('tovar.fyrnityra')}}</script>
         <div class="app"></div>
         <div style="z-index: 9;" class="Bays"></div>
         <div class="Modal"></div>

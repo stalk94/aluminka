@@ -28,7 +28,7 @@ const Settings =(props)=> {
 /** events: `editor`, `events`, `settings` */ 
 export default function Admin(props) {
     const [body, setBody] = useState(<Statstics />)
-    const [foot, setFoot] = useState()
+    const [foot, setFoot] = useState('')
 
    
     const useDir =(dir)=> {
@@ -36,6 +36,9 @@ export default function Admin(props) {
         else if(dir==='fs') setBody(<FileManagers context={$state.files} visible={true} />);
         else if(dir==='setings') setBody(<Settings />);
         else setBody(<Statstics />);
+    }
+    const useFoot =()=> {
+
     }
     
 

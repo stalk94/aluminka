@@ -26,7 +26,7 @@ module.exports = (`
     </head>
 
     <body root="door-profile">
-        <script>window.$state = {tovar:${db.get('door-profile')}}</script>
+        <script>window.$tovar = {${db.get('tovar.door-profile')}}</script>
         <div class="app"></div>
         <div style="z-index: 9;" class="Bays"></div>
         <div class="Modal"></div>

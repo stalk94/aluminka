@@ -5,20 +5,22 @@ import { Tabs } from '@mantine/core';
 
 
 
-export default function User(props) {
+export default function User() {
+    const [state, setState] = React.useState(globalThis.$state.user)
+
     return(
         <div style={{backgroundColor:"rgba(28,29,30,1)"}}>
-        <Tabs>
-            <Tabs.Tab style={{color:"white"}} icon={<FaUserEdit />}>
-                
-            </Tabs.Tab>
-            <Tabs.Tab style={{color:"white"}} icon={<FiShoppingBag />}>
-                
-            </Tabs.Tab>
-            <Tabs.Tab style={{color:"white"}} icon={<FaUserCog />}>
-                
-            </Tabs.Tab>
-        </Tabs>
+            <Tabs>
+                <Tabs.Tab style={{color:"white"}} icon={<FaUserEdit />}>
+                    
+                </Tabs.Tab>
+                <Tabs.Tab style={{color:"white"}} icon={<FiShoppingBag />}>
+                    
+                </Tabs.Tab>
+                <Tabs.Tab style={{color:"white"}} icon={<FaUserCog />}>
+                    
+                </Tabs.Tab>
+            </Tabs>
         </div>
     );
 }

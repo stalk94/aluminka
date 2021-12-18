@@ -57,7 +57,10 @@
         "src\\component/nav.js": true,
         "src\\component/navigation.js": true,
         "src\\component/modal.js": true,
-        "src\\component/tovar-create.js": true
+        "src\\component/tovar-create.js": true,
+        "src\\component/shop.js": true,
+        "src\\component/base.js": true,
+        "src\\component/galery.js": true
     },
     "explorerExclude.backup": null,
     "editor.fontSize": 13.8,
