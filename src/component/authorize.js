@@ -19,7 +19,7 @@ export default function RegForm(props) {
                 <TextInput 
                     label="login"
                     placeholder="min 3, max 35"
-                    onChange={setLogin}
+                    onChange={(e)=> setLogin(e.target.value)}
                     required
                     
                 />
@@ -27,12 +27,12 @@ export default function RegForm(props) {
                     placeholder="min 6, max 35"
                     label="password"
                     required
-                    onChange={setPass}
+                    onChange={(e)=> setPass(e.target.value)}
                 />
-                <Button onClick={()=> EVENT.emit("auth", {login:login,password:pass})} color="green" variant="outline">
+                <Button onClick={()=> EVENT.emit("/auth", {login:login,password:pass})} color="green" variant="outline">
                     Авторизация
                 </Button>
-                <Button onClick={()=> EVENT.emit("reg", {login:login,password:pass})} color="yellow" variant="white">
+                <Button onClick={()=> EVENT.emit("/reg", {login:login,password:pass})} color="yellow" variant="white">
                     Регистрация
                 </Button>
             </Drawer>

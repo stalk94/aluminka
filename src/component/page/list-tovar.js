@@ -43,7 +43,7 @@ const Tovar =(props)=> (
 
 
 export default function ListTovar(props) {
-    const [data, setData] = useState(props.states, [])
+    const [data, setData] = useState(props.states??[])
     const [open, setOpen] = useState(false)
     const [view, setView] = useState("nav")
     
@@ -61,10 +61,7 @@ export default function ListTovar(props) {
                         price={tovar[12]} 
                         minPrice={tovar[13]} 
                         click={()=> setView(index)}
-                        openEditor={(ind)=> {
-                            setOpen(data[ind]);
-                            indexOpen = ind;
-                        }}
+                        openEditor={(ind)=> setOpen(data[ind])}
                     />
                 )) : <var> Пока товаров нет </var>)
                 : <Page 

@@ -1,5 +1,4 @@
 require('dotenv').config();
-var AES = require("crypto-js/aes");
 const fs = require("fs");
 const express = require("express");
 const path = require("path");
@@ -11,28 +10,32 @@ const app = express();
 const pinoms = require('pino-multi-stream');
 const session = require("express-session");
 const cookieParser = require('cookie-parser');
-const { midlevarePassport, time, scheme } = require("./server/midlevare");
+const { setPasswordHash, tokenGeneration } = require("./server/func");
+const { time, scheme } = require("./server/midlevare");
 const dist = require("./dist");
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 global.logger = pinoms(pinoms.multistream([{stream: fs.createWriteStream('log.log')},{stream: pinoms.prettyStream()}]))
 const log = logger;
+app.tokens = {}
 app.use(bodyParser.json({limit: "100mb"}));
 app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit: 50000}));
 const jsonParser = bodyParser.json();
 const liqpay = new LiqPay(process.env.test_key, process.env.test_private_key);
-const authenticate = midlevarePassport(session({secret:process.env.private_key,resave:true,saveUninitialized:false}), app);
+
 const useAdminVerify =(userData)=> {
     if(userData.id===0 && userData.permision==='admin') return userData;
     else return false;
 }
+const autorize =(login, password)=> {
+    let hash = setPasswordHash(password);
+    let user = db.get("user."+login);
+
+    if(user && user.password===hash) return user;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-app.use((req, res, next)=> {
-    authenticate(req)
-    next()
-});
 app.get("/", (req, res)=> {
     res.send(dist.index)
 });
@@ -54,37 +57,81 @@ app.get("/plintus", (req, res)=> {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 app.post('/auth', jsonParser, (req, res)=> {
-    console.log("auth:", req.body)
     if(scheme.login.test(req.body.login) && scheme.password.test(req.body.password)){
-        autorize(req.body.login, req.body.password)
+        let user = autorize(req.body.login, req.body.password);
+        if(user){
+            logger.info("[🗝️]authorization user :", req.body);
+            let userCopy = Object.assign({}, user);
+            delete userCopy.password;
+            app.tokens[userCopy.token] = userCopy;
+            userCopy.token = tokenGeneration(req.body.login, req.body.password);
+
+            res.cookie('token', userCopy.token);
+            res.send(userCopy);
+        }
+        else res.send({error: "проверьте правильность введенных данных"});
     }
+    else res.send({error: "используйте только символы [0-9], [_,-]"});
 });
 app.post('/reg', jsonParser, (req, res)=> {
-    console.log("reg:", req.body)
     if(!db.has("user."+req.body.login)){
-        registration(req.body.login, req.body.password, (doc)=> {
-           
-        });
+        if(scheme.login.test(req.body.login) && scheme.password.test(req.body.password)){
+            logger.info("[✔️]new registration:", req.body);
+
+            db.set("user."+req.body.login, {
+                login: req.body.login, 
+                password: setPasswordHash(req.body.password),
+                total: 0,
+                bays: [],
+                cupons: [],
+                basket: []
+            });
+            res.send({sucess: "Спасибо за регистрацию. Теперь авторизируйтесь"})
+        }
+        else res.send({error: "используйте только символы [0-9], [_,-]"})
     }
+    else res.send({error: "логин занят"})
 });
 app.post("/logout", (req, res)=> {
-    logger.info(`[] logout: ${req.session.id}`);
+    logger.info(`[🚪] logout: ${req.cookies['token']}`);
 
-    req.logout();
-    res.cookie("connect.sid", "", {expires: new Date()});
+    if(req.logOut) req.logout();
+    res.clearCookie('token');
     res.redirect("/");
 });
 app.post("/question", jsonParser, (req, res)=> {
-    console.log("questions:", req.body)
     if(scheme.text.test(req.body.text) && scheme.login.test(req.body.name) && scheme.email.test(req.body.email)){
+        logger.info("[🎫]new massage administration:", req.body);
         db.push("questions", {
             name: req.body.name, 
             email:req.body.email, 
             text: req.body.text
         });
-        res.send("Мы свяжемся с вами в ближайшее время");
+        res.send({sucess: "Мы свяжемся с вами в ближайшее время"});
     }
     else res.send({error: "validation failed"});
+});
+app.post("/bay", jsonParser, (req, res)=> {
+    if(!req.cookies['token'] && req.body.bay){
+        db.push("bays", {
+            anonim: req.body.bay, 
+            time: time()
+        });
+        res.send({sucess: 'Ваш заказ оформлен и будет в ближайшее время рассмотрен'});
+    }
+    else if(req.cookies['token'] && req.body.bay && app.tokens[userCopy.token]){
+        let user = app.tokens[userCopy.token];
+        db.push("bays", {
+            [user.login]: req.body.bay, 
+            time: time()
+        });
+        user.bays.push({[time()]: req.body.bay});
+
+        db.set("user."+user.login, user);
+        res.send({sucess: 'Ваш заказ оформлен и будет в ближайшее время рассмотрен'});
+    }
+    else if(!req.body.bay) res.send({error: 'ничего не оформлено'});
+    else logger.error(`[🔥] bay error: ${req.body.toString()}`);
 });
 app.post("/payCart", jsonParser, (req, res)=> {
     let user;
@@ -107,22 +154,9 @@ app.post("/payCart", jsonParser, (req, res)=> {
         res.send(html)
     });
 });
-app.post("/create", jsonParser, authenticate, (req, res)=> {
-    const isAuthenticated = !!req.user;
-
-    if(req.body && isAuthenticated && useAdminVerify(req.user)){
-        logger.info("[✒️🛒]:addTovar: shop/"+req.body.type)
-        if(req.body && req.body.type){
-            db.push("tovars."+req.body.type, req.body)
-            res.send({sucess: req.body.name})
-        }
-        else res.send({error:"catalog error"})
-    }
-    else res.send({error:"admin error verify"})
-});
 app.post(/hook/, jsonParser, (req, res)=> {
     let p = new URL(req.url, `http://${request.headers.host}`);
-    let urls = p.pathname.replace('/', '.')
+    let urls = p.pathname.replace('/', '.');
     if(!db.has(urls)) db.set(urls, []);
 
     if(req.body && req.body.hook){
@@ -130,31 +164,26 @@ app.post(/hook/, jsonParser, (req, res)=> {
         db.push(urls, req.body.hook)        //! not clean
     }
 });
-app.post("/edit", jsonParser, authenticate, (req, res)=> {
-    const isAuthenticated = !!req.user;
 
-    if(req.body && isAuthenticated && useAdminVerify(req.user)){
-        let tovars = db.get("tovars."+req.body.type)
-        let state = req.body.state
-        tovars[req.body.id] = state
-        
-        db.set("tovars."+req.body.type, tovars)
-        res.send(tovars[req.body.id])
-    }
-    else res.send({error:"ошибка в данных"})
-});
-app.post("/bay", jsonParser, (req, res)=> {
-    console.log("bay:", req.body)
-});
-
-
-//admin
+// admin
 app.post("/file", jsonParser, (req, res)=> {
     console.log(req.cookies['token'])
     if(req.cookies['token'] && req.cookies['token']===app.TOKEN) fs.writeFile(`db/${req.body.path}/files.json`, req.body, (err)=> {
         if(!err) res.send("save")
         else res.send({error:err})
     });
+});
+app.post("/create", jsonParser, (req, res)=> {
+    if(req.body && req.cookies['login']){
+        logger.info("[✒️🛒]:добавлен товар: shop/"+req.body.type);
+
+        if(req.body && req.body.type){
+            db.push("tovars."+req.body.type, req.body);
+            res.send({sucess: req.body.name});
+        }
+        else res.send({error:"catalog error"})
+    }
+    else res.send({error:"ошибка авторизации администратора, неудачные попытки более 5 раз приведут к бану по ip"})
 });
 // test
 app.post("/testPay", jsonParser, (req, res)=> {
@@ -176,7 +205,6 @@ app.post("/testPay", jsonParser, (req, res)=> {
     log.info("[💵]test: "+html)
     res.send(html)
 });
-
 
 
 

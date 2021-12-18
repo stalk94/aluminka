@@ -21,7 +21,7 @@ module.exports =()=> (`
     </head>
 
     <body root="shadow-profile">
-        <scrypt>window.$state = {tovar:${db.get('tovar.shadow-profile')}}</scrypt>
+        <script>window.$state = {tovar:${db.get('tovar.shadow-profile')}}</script>
         <div class="app"></div>
         <div style="z-index: 9;" class="Bays"></div>
         <div class="Modal"></div>

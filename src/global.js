@@ -1,6 +1,6 @@
 function send(url, data, metod, clb) {
     let response;
-
+    
     if(metod==="GET"){
         response = fetch("http://"+document.location.hostname + url, {
             method: "GET",

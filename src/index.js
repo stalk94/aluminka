@@ -56,7 +56,7 @@ const App =()=> {
 
     return(
         <>
-            {!$state.permisions.create 
+            {globalThis.$state && globalThis.$state.permisions && globalThis.$state.permisions.create
                 ? <Admin visible={true} /> 
                 : <User /> 
             }

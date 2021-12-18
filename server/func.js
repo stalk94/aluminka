@@ -1,12 +1,27 @@
-const TokenGenerator = require('uuid-token-generator');
+require('dotenv').config();
+const { time } = require("./midlevare");
+const CryptoJS = require("crypto-js");
 const db = require("quick.db");
 
 
-
-function tokenGeneration(login, pass) {
-    return new TokenGenerator()
+function setPasswordHash(pass) {
+    return CryptoJS.AES.encrypt(String(pass), process.env.master).toString()
 }
+function getPasswordHash(hashPass) {
+    return CryptoJS.AES.decrypt(String(hashPass), process.env.master).toString(CryptoJS.enc.Utf8)
+}
+/** Кодирует в себе логин и время текущее, ключ - пароль юзера */
+function tokenGeneration(login, pass) {
+    return CryptoJS.AES.encrypt(login+'&'+time(), pass).toString()
+}
+/** Декодер токена */
+function tokenDecriptor(token, pass) {
+    let rez = CryptoJS.AES.decrypt(token, pass).toString(CryptoJS.enc.Utf8)
 
+    return rez === '' 
+        ? '[❌]: error token'
+        : rez
+}
 const useAdminVerifyToken =(login, token)=> { 
     if(scheme.login.test(login) && scheme.token.test(token)){
         let user = db.get("user."+login);
@@ -64,9 +79,8 @@ const verify = {
 }
 
 
-
-exports.regVerify = regVerify
 exports.verify = verify
 exports.authVerify = authVerify
-exports.saveSite = saveSite
 exports.tokenGeneration = tokenGeneration
+exports.getPasswordHash = getPasswordHash
+exports.setPasswordHash = setPasswordHash

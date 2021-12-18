@@ -10,11 +10,11 @@ const options2 = [{value: 'naloj', label: 'Наложенный платеж'}]
 
 let user = store.get("user")
 const stat = {
-    name: user.name?user.name:"",
-    familua: user.familua?user.familua:"",
-    phone: user.phone?user.phone:"",
-    city: user.city?user.city:"",
-    adres: user.adres?user.adres:""
+    name: user && user.name?user.name:"",
+    familua: user && user.familua?user.familua:"",
+    phone: user && user.phone?user.phone:"",
+    city: user && user.city?user.city:"",
+    adres: user && user.adres?user.adres:""
 }
 
 
@@ -92,32 +92,32 @@ export function PanelBays(props) {
         <>
             <OffCanvas
                 labelledby="Корзина"
-                    height="100%"
-                    position="right"
-                    isOpen={isOpen}
-                    onClose={()=> setOpen(isOpen?false:true)}
-                    labelledby="menu-button"
-                >
-                    <Button style={{color:"white"}} flat color="blueviolet" auto onClick={()=> setOpen(false)}>
-                        К странице
-                    </Button>
-                    <div style={{marginTop:"5%"}}>
-                        {(bays.length > 0) && bays.map((val, index)=> (
-                            <div style={{display:"flex",flexDirection:"row"}} key={index}>
-                                <img width="30%" src={val.tovar.images[0]} style={{maxHeight:"80px"}}/>
-                                <div style={{marginTop:"5%",color:"black"}}>{ val.tovar.name }</div>
-                                <h5>{ val.count }</h5>
-                                <h5>{ val.tovar.priceMin * val.count }₴</h5>
-                                <h4 style={{marginTop:"5%",color:"red"}}> x </h4>
-                            </div>
-                        ))}
-                    </div>
-                    {bays.length > 0 
-                        ? <Button onClick={()=> <Pays total={total()} setOpen={setView} onOpen={view} />}> Оформить Покупку </Button> 
-                        : <var> корзина пуста </var>
-                    }
-                    <div style={{marginTop:"5%"}}> Всего: {total()}₴ </div>
-                </OffCanvas>
+                height="100%"
+                position="right"
+                isOpen={isOpen}
+                onClose={()=> setOpen(isOpen?false:true)}
+                labelledby="menu-button"
+            >
+                <Button style={{color:"white"}} flat color="blueviolet" auto onClick={()=> setOpen(false)}>
+                    К странице
+                </Button>
+                <div style={{marginTop:"5%"}}>
+                    {(bays.length > 0) && bays.map((val, index)=> (
+                        <div style={{display:"flex",flexDirection:"row"}} key={index}>
+                            <img width="30%" src={val.tovar.images[0]} style={{maxHeight:"80px"}}/>
+                            <div style={{marginTop:"5%",color:"black"}}>{ val.tovar.name }</div>
+                            <h5>{ val.count }</h5>
+                            <h5>{ val.tovar.priceMin * val.count }₴</h5>
+                            <h4 style={{marginTop:"5%",color:"red"}}> x </h4>
+                        </div>
+                    ))}
+                </div>
+                {bays.length > 0 
+                    ? <Button onClick={()=> <Pays total={total()} setOpen={setView} onOpen={view} />}> Оформить Покупку </Button> 
+                    : <var> корзина пуста </var>
+                }
+                <div style={{marginTop:"5%"}}> Всего: {total()}₴ </div>
+            </OffCanvas>
         </>
     );
 }
