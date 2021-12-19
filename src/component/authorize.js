@@ -11,9 +11,13 @@ export default function RegForm(props) {
 
     useDidMount(()=> {
         EVENT.on("reg", ()=> setVisible(true));
-        EVENT.on("auth", ()=> setVisible(true));
+        EVENT.on("auth", ()=> {
+            setVisible(true)
+            localStorage.clear()
+        });
         EVENT.on("sucess.reg", ()=> setVisible(false));
         EVENT.on("sucess.auth", (data)=> {
+            localStorage.setItem("user", JSON.stringify(data))
             globalThis.$state.user = data
             setVisible(false)
             props.setOpened(false)

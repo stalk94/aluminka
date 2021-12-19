@@ -40,7 +40,6 @@ class EventEmmitter {
         this.eventsOnces[eventName].push(fn)
     }
     on(eventName, fn) {
-        console.log(this.events)
         if(!this.events[eventName]) this.events[eventName] = [];
         this.events[eventName].push(fn);
       
@@ -114,7 +113,7 @@ globalThis.$schemes = {
             category: {
                 title: "категория: ",
                 enum: ["plintus", "furnityra", "shadow-profile", "door-profile", "detail-plintus"],
-                default: "плинтуса",
+                default: "plintus",
                 uniqueItems: true
             }
         }
@@ -228,7 +227,9 @@ globalThis.store = {
     }
 }
 globalThis.getRoot =()=> document.body.getAttribute("root");
-globalThis.setUrl =(url)=> document.location.href = 'http://'+document.location.host+url;
+globalThis.setUrl =(url='')=> {
+    document.location.href = 'http://'+document.location.host+url
+}
 globalThis.toCat =(his)=> document.location.href = document.location.href+"/"+his.getAttribute("url");
 globalThis.useSend =(path, data, clb)=> send(path, data, "POST", clb);
 globalThis.authorize =()=> {

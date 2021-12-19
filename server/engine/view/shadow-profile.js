@@ -22,13 +22,12 @@ module.exports =(state)=> (`
 
     <body root="shadow-profile">
         <script>
-            window.$tovar = {${db.get('tovar.shadow-profile')}}
+            window.$tovar = ${JSON.stringify(db.get('tovars.shadow-profile'))}
             window.$state = ${JSON.stringify(state)}
         </script>
         <div class="app"></div>
-        <div style="z-index: 9;" class="Bays"></div>
+        <div style="z-index: 10;" class="Bays"></div>
         <div class="Modal"></div>
-        <div class="Admin-add"></div>
 
         <header>
             <div class="Titles"></div>
@@ -90,7 +89,7 @@ module.exports =(state)=> (`
             </section>
         </footer>
 
-        <script src="../index.379dd93c.js"></script>
+        <script src="../index.8de4fd23.js"></script>
     </body>
     </html>
 `)

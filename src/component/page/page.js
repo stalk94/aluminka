@@ -40,7 +40,7 @@ export default function Page(props) {
     
 
     return(
-        <div className="Modal" style={{display:display, overflow:"auto"}}>
+        <div className="View-tovar" style={{display:display, overflow:"auto"}}>
             <header>
                 <Button flat color="primary" auto onClick={onEnd}>
                     Назад
@@ -53,7 +53,6 @@ export default function Page(props) {
                 </Carousel>
                 <div className="bodyGalery">
                     <h2 style={{paddingLeft:"10px"}} className="name-tovar">{ props.name }</h2>
-                    <p className="articul">Код товара: { props.id }</p>
                     <p>Модель: { props.model }</p>
                     <div className="price" style={{backgroundColor:"rgb(20,20,20)",marginTop:"2%",display:"flex",flexDirection:"row"}}>
                         Цена:
@@ -90,7 +89,7 @@ export default function Page(props) {
                     <p className="info">Ширина: { props.width }</p>
                     <p className="info">Высота: { props.vusota }</p>
                     <p className="info">Длинна: { props.height }</p>
-                    <p className="info">Цвет: { <Colors select={select} useSelect={setSelect} data={props.colors}/> }</p>
+                    {props.colors && <p className="info">Цвет: { <Colors select={select} useSelect={setSelect} data={props.colors}/> }</p>}
                 </div>
             </section>
         </div>

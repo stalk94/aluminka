@@ -74,7 +74,7 @@ export function PanelBays(props) {
     }
     useDidMount(()=> {
         EVENT.on("bay.open", (val)=> {
-            setBays(getUser().basket)
+            setBasket(getUser().basket)
             setOpen(val)
         });
         EVENT.on("add", (data)=> {

@@ -55,8 +55,12 @@ const App =()=> {
             else setOpened(true);
         });
         EVENT.on("create.tovar", (data)=> send("/create", data, "POST", (res)=> {
-            if(!res.error) EVENT.emit("sucess", res);
-            else EVENT.emit("error", res.error);
+            if(!res.error) useNotify(notifications, "sucess", 'Успешно добавлено', res.sucess);
+            else {
+                useNotify(notifications, "error", 'Ошибка', res.error);
+                localStorage.clear()
+                document.location.reload()
+            }
         }));
         EVENT.on("reg", (data)=> send("/reg", data, "POST", (res)=> {
             if(!res.error||res.sucess){
@@ -112,7 +116,7 @@ const App =()=> {
                 items:[]
             }]
         }
-        console.log(globalThis.$state)
+        if(localStorage.getItem("user")) globalThis.$state.user = JSON.parse(localStorage.getItem("user"))
 
         if(globalThis.$state && globalThis.$state.user && globalThis.$state.user.permision && globalThis.$state.user.permision.create){
             if(globalThis.$state.user.token) setAuthorize(true)

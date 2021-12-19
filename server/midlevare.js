@@ -7,7 +7,6 @@ const LocalStrategy = require("passport-local").Strategy;
 
 exports.time =()=> new Date().getDay()+":"+new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds();
 const wrap =(middleware)=> (expres, next)=> middleware(expres.request, {}, next);
-process.on("uncaughtException", (err)=> logger.error(err));
 exports.scheme = {
     login: RegExp(/^[a-z0-9_-]{3,21}$/),
     password: RegExp(/^[a-z0-9_-]{6,34}$/),

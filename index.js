@@ -8,7 +8,6 @@ const favicon = require('serve-favicon');
 const db = require("quick.db");
 const app = express();
 const pinoms = require('pino-multi-stream');
-const session = require("express-session");
 const cookieParser = require('cookie-parser');
 const { setPasswordHash, tokenGeneration, getPasswordHash } = require("./server/func");
 const { time, scheme } = require("./server/midlevare");
@@ -16,17 +15,17 @@ const dist = require("./dist");
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-global.logger = pinoms(pinoms.multistream([{stream: fs.createWriteStream('log.log')},{stream: pinoms.prettyStream()}]))
-const log = logger;
-app.activ = {}
 app.use(cookieParser())
 app.use(bodyParser.json({limit: "100mb"}));
 app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit: 50000}));
+global.logger = pinoms(pinoms.multistream([{stream: fs.createWriteStream('log.log')},{stream: pinoms.prettyStream()}]))
+const log = logger;
+global.activ = {}
 const jsonParser = bodyParser.json();
 const liqpay = new LiqPay(process.env.test_key, process.env.test_private_key);
-
+process.on("uncaughtException", (err)=> logger.error(err));
 const useAdminVerify =(userData)=> {
-    if(userData.id===0 && userData.permision && userData.permision.create===true) return userData;
+    if(userData.permision && userData.permision.create===true) return userData;
     else return false;
 }
 const autorize =(login, password)=> {
@@ -39,43 +38,42 @@ const autorize =(login, password)=> {
 ///////////////////////////////////////////////////////////////////////////////////////////
 app.get("/", (req, res)=> {
     let token = req.cookies ? req.cookies['token'] : undefined
-    let user = app.activ[token]
-    
+    let user = global.activ[token]
 
     if(user) res.send(dist.index({'user':user}))
     else res.send(dist.index())
 });
 app.get("/shadow-profile", (req, res)=> {
     let token = req.cookies ? req.cookies['token'] : undefined
-    let user = app.activ[token]
+    let user = global.activ[token]
 
     if(user) res.send(dist['shadow-profile']({user:user}))
     else res.send(dist['shadow-profile']())
 });
 app.get("/detail-plintus", (req, res)=> {
     let token = req.cookies ? req.cookies['token'] : undefined
-    let user = app.activ[token]
+    let user = global.activ[token]
 
     if(user) res.send(dist['detail-plintus'](user))
     else res.send(dist['detail-plintus']())
 });
 app.get("/door-profile", (req, res)=> {
     let token = req.cookies ? req.cookies['token'] : undefined
-    let user = app.activ[token]
+    let user = global.activ[token]
 
     if(user) res.send(dist['door-profile']({user:user}))
     else res.send(dist['door-profile']())
 });
 app.get("/furnityra", (req, res)=> {
     let token = req.cookies ? req.cookies['token'] : undefined
-    let user = app.activ[token]
+    let user = global.activ[token]
 
     if(user) res.send(dist['furnityra'](user))
     else res.send(dist['furnityra']())
 });
 app.get("/plintus", (req, res)=> {
     let token = req.cookies ? req.cookies['token'] : undefined
-    let user = app.activ[token]
+    let user = global.activ[token]
 
     if(user) res.send(dist['plintus'](user))
     else res.send(dist['plintus']())
@@ -98,7 +96,7 @@ app.post('/auth', jsonParser, (req, res)=> {
                 let userCopy = Object.assign({}, user);
                 delete userCopy.password;
                 userCopy.token = tokenGeneration(req.body.login, req.body.password);
-                app.activ[userCopy.token] = userCopy;
+                global.activ[userCopy.token] = userCopy;
 
                 res.cookie('token', userCopy.token);
                 res.send(userCopy);
@@ -216,15 +214,14 @@ app.post("/file", jsonParser, (req, res)=> {
     });
 });
 app.post("/create", jsonParser, (req, res)=> {
-    console.log("add tovar:", req.body)
     let token = req.cookies['token'];
-    let user = app.activ[token]
+    let user = global.activ[token]
+    
 
     if(req.body && user && useAdminVerify(user)!==false){
-        logger.info("[✒️🛒]:добавлен товар: shop/"+req.body.type);
-        if(req.body.type){
-            
-            db.push("tovars."+req.body.type, req.body);
+        logger.info("[✒️🛒]:добавлен товар: shop/"+req.body.category);
+        if(req.body.category){
+            db.push("tovars."+req.body.category, req.body);
             res.send({sucess: req.body.name});
         }
         else res.send({error:"catalog error"})

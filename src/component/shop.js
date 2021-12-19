@@ -1,7 +1,7 @@
 import React from 'react';
 import ListTovar from "./page/list-tovar";
 
-
+if(getRoot()!=="index") document.querySelector(".top-img").style['margin-top'] = "-72px"
 
 /**
     <Tovar 
@@ -17,8 +17,8 @@ import ListTovar from "./page/list-tovar";
 export default function ShopController(props) {
     return(
         <div className="head-blok line">
-            {globalThis.$state && globalThis.$state.tovar && globalThis.$state.tovar.length > 0 
-                ? <ListTovar states={$state.tovar} /> 
+            {globalThis.$tovar.length > 0 
+                ? <ListTovar states={globalThis.$tovar} /> 
                 : <var>товаров пока нет</var> 
             }
         </div>     

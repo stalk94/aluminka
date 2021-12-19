@@ -11,7 +11,7 @@
 .tovar-img {
     border-radius: 5px;
     max-height: 140px;
-    max-width: 250px;
+    width:250px;
 }
 .tovar-right {
     flex: 2;
