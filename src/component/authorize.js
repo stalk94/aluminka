@@ -1,14 +1,30 @@
 import React, { useState } from 'react';
-import { Drawer, PasswordInput, TextInput, Button } from '@mantine/core';
+import { Drawer, PasswordInput, TextInput, Button, LoadingOverlay, MantineProvider } from '@mantine/core';
+import { useDidMount } from 'rooks';
 
 
 
 export default function RegForm(props) {
     const [login, setLogin] = useState()
     const [pass, setPass] = useState()
+    const [visible, setVisible] = useState(false)
+
+    useDidMount(()=> {
+        EVENT.on("reg", ()=> setVisible(true));
+        EVENT.on("auth", ()=> setVisible(true));
+        EVENT.on("sucess.reg", ()=> setVisible(false));
+        EVENT.on("sucess.auth", (data)=> {
+            globalThis.$state.user = data
+            setVisible(false)
+            props.setOpened(false)
+        });
+        EVENT.on("error.reg", ()=> setVisible(false));
+        EVENT.on("error.auth", ()=> setVisible(false));
+    })
 
     return(
-        <>
+        <MantineProvider theme={{colorScheme: 'dark'}}>
+            <LoadingOverlay visible={visible} />
             <Drawer 
                 opened={props.opened}
                 onClose={()=> props.setOpened(false)}
@@ -29,13 +45,13 @@ export default function RegForm(props) {
                     required
                     onChange={(e)=> setPass(e.target.value)}
                 />
-                <Button onClick={()=> EVENT.emit("/auth", {login:login,password:pass})} color="green" variant="outline">
+                <Button onClick={()=> EVENT.emit("auth", {login:login,password:pass})} color="green" variant="outline">
                     Авторизация
                 </Button>
-                <Button onClick={()=> EVENT.emit("/reg", {login:login,password:pass})} color="yellow" variant="white">
+                <Button onClick={()=> EVENT.emit("reg", {login:login,password:pass})} color="yellow" variant="white">
                     Регистрация
                 </Button>
             </Drawer>
-        </>
+        </MantineProvider>
     );
 }

@@ -10,7 +10,7 @@ const app = express();
 const pinoms = require('pino-multi-stream');
 const session = require("express-session");
 const cookieParser = require('cookie-parser');
-const { setPasswordHash, tokenGeneration } = require("./server/func");
+const { setPasswordHash, tokenGeneration, getPasswordHash } = require("./server/func");
 const { time, scheme } = require("./server/midlevare");
 const dist = require("./dist");
 
@@ -18,86 +18,127 @@ const dist = require("./dist");
 ///////////////////////////////////////////////////////////////////////////////////////////
 global.logger = pinoms(pinoms.multistream([{stream: fs.createWriteStream('log.log')},{stream: pinoms.prettyStream()}]))
 const log = logger;
-app.tokens = {}
+app.activ = {}
+app.use(cookieParser())
 app.use(bodyParser.json({limit: "100mb"}));
 app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit: 50000}));
 const jsonParser = bodyParser.json();
 const liqpay = new LiqPay(process.env.test_key, process.env.test_private_key);
 
 const useAdminVerify =(userData)=> {
-    if(userData.id===0 && userData.permision==='admin') return userData;
+    if(userData.id===0 && userData.permision && userData.permision.create===true) return userData;
     else return false;
 }
 const autorize =(login, password)=> {
-    let hash = setPasswordHash(password);
     let user = db.get("user."+login);
 
-    if(user && user.password===hash) return user;
+    if(user && user.password && getPasswordHash(user.password)===password) return user;
+    else return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 app.get("/", (req, res)=> {
-    res.send(dist.index)
+    let token = req.cookies ? req.cookies['token'] : undefined
+    let user = app.activ[token]
+    
+
+    if(user) res.send(dist.index({'user':user}))
+    else res.send(dist.index())
 });
 app.get("/shadow-profile", (req, res)=> {
-    res.send(dist['shadow-profile'])
+    let token = req.cookies ? req.cookies['token'] : undefined
+    let user = app.activ[token]
+
+    if(user) res.send(dist['shadow-profile']({user:user}))
+    else res.send(dist['shadow-profile']())
 });
 app.get("/detail-plintus", (req, res)=> {
-    res.send(dist['detail-plintus'])
+    let token = req.cookies ? req.cookies['token'] : undefined
+    let user = app.activ[token]
+
+    if(user) res.send(dist['detail-plintus'](user))
+    else res.send(dist['detail-plintus']())
 });
 app.get("/door-profile", (req, res)=> {
-    res.send(dist['door-profile'])
+    let token = req.cookies ? req.cookies['token'] : undefined
+    let user = app.activ[token]
+
+    if(user) res.send(dist['door-profile']({user:user}))
+    else res.send(dist['door-profile']())
 });
 app.get("/furnityra", (req, res)=> {
-    res.send(dist['furnityra'])
+    let token = req.cookies ? req.cookies['token'] : undefined
+    let user = app.activ[token]
+
+    if(user) res.send(dist['furnityra'](user))
+    else res.send(dist['furnityra']())
 });
 app.get("/plintus", (req, res)=> {
-    res.send(dist['plintus'])
+    let token = req.cookies ? req.cookies['token'] : undefined
+    let user = app.activ[token]
+
+    if(user) res.send(dist['plintus'](user))
+    else res.send(dist['plintus']())
+});
+app.get("/logout", (req, res)=> {
+    logger.info(`[🚪] logout: ${req.cookies['token']}`);
+
+    delete app.activ[req.cookies['token']]
+    res.clearCookie('token');
+    res.redirect("/");
 });
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 app.post('/auth', jsonParser, (req, res)=> {
-    if(scheme.login.test(req.body.login) && scheme.password.test(req.body.password)){
-        let user = autorize(req.body.login, req.body.password);
-        if(user){
-            logger.info("[🗝️]authorization user :", req.body);
-            let userCopy = Object.assign({}, user);
-            delete userCopy.password;
-            app.tokens[userCopy.token] = userCopy;
-            userCopy.token = tokenGeneration(req.body.login, req.body.password);
+    if(req.body.password && req.body.login){
+        if(scheme.login.test(req.body.login) && scheme.password.test(req.body.password)){
+            let user = autorize(req.body.login, req.body.password);
+            if(user && user!==false){
+                logger.info(`[🗝️]authorization user: ${req.body.login}`);
+                let userCopy = Object.assign({}, user);
+                delete userCopy.password;
+                userCopy.token = tokenGeneration(req.body.login, req.body.password);
+                app.activ[userCopy.token] = userCopy;
 
-            res.cookie('token', userCopy.token);
-            res.send(userCopy);
+                res.cookie('token', userCopy.token);
+                res.send(userCopy);
+            }
+            else res.send({error: "проверьте правильность введенных данных"});
         }
-        else res.send({error: "проверьте правильность введенных данных"});
+        else res.send({error: "используйте только символы [0-9], [_,-]"});
     }
-    else res.send({error: "используйте только символы [0-9], [_,-]"});
+    else res.send({error: "вы не ввели логин либо пароль"});
 });
 app.post('/reg', jsonParser, (req, res)=> {
-    if(!db.has("user."+req.body.login)){
+    if(db.has("user."+req.body.login)===false){
         if(scheme.login.test(req.body.login) && scheme.password.test(req.body.password)){
-            logger.info("[✔️]new registration:", req.body);
+            logger.info(`[😊]new registration: ${req.body.login}`);
 
             db.set("user."+req.body.login, {
                 login: req.body.login, 
                 password: setPasswordHash(req.body.password),
+                firsName: '',
+                lastName: '',
                 total: 0,
+                phone: '',
                 bays: [],
                 cupons: [],
-                basket: []
+                basket: [],
+                permision: {
+                    create:false,
+                    copy:false,
+                    move:false,
+                    delete:false,
+                    rename:false,
+                    upload:false,
+                    download:false
+                }
             });
             res.send({sucess: "Спасибо за регистрацию. Теперь авторизируйтесь"})
         }
         else res.send({error: "используйте только символы [0-9], [_,-]"})
     }
     else res.send({error: "логин занят"})
-});
-app.post("/logout", (req, res)=> {
-    logger.info(`[🚪] logout: ${req.cookies['token']}`);
-
-    if(req.logOut) req.logout();
-    res.clearCookie('token');
-    res.redirect("/");
 });
 app.post("/question", jsonParser, (req, res)=> {
     if(scheme.text.test(req.body.text) && scheme.login.test(req.body.name) && scheme.email.test(req.body.email)){
@@ -112,20 +153,21 @@ app.post("/question", jsonParser, (req, res)=> {
     else res.send({error: "validation failed"});
 });
 app.post("/bay", jsonParser, (req, res)=> {
-    if(!req.cookies['token'] && req.body.bay){
+    if(!req.cookies['token'] && req.body.basket){
         db.push("bays", {
-            anonim: req.body.bay, 
+            anonim: req.body.basket, 
             time: time()
         });
         res.send({sucess: 'Ваш заказ оформлен и будет в ближайшее время рассмотрен'});
     }
-    else if(req.cookies['token'] && req.body.bay && app.tokens[req.cookies['token']]){
+    else if(req.cookies['token'] && req.body.basket && app.tokens[req.cookies['token']]){
         let user = app.tokens[req.cookies['token']];
         db.push("bays", {
-            [user.login]: req.body.bay, 
+            [user.login]: req.body.basket, 
             time: time()
         });
-        user.bays.push({[time()]: req.body.bay});
+        user.bays.push({[time()]: req.body.basket});
+        user.basket = []
 
         db.set("user."+user.login, user);
         res.send({sucess: 'Ваш заказ оформлен и будет в ближайшее время рассмотрен'});
@@ -174,10 +216,14 @@ app.post("/file", jsonParser, (req, res)=> {
     });
 });
 app.post("/create", jsonParser, (req, res)=> {
-    if(req.body && req.cookies['login']){
-        logger.info("[✒️🛒]:добавлен товар: shop/"+req.body.type);
+    console.log("add tovar:", req.body)
+    let token = req.cookies['token'];
+    let user = app.activ[token]
 
-        if(req.body && req.body.type){
+    if(req.body && user && useAdminVerify(user)!==false){
+        logger.info("[✒️🛒]:добавлен товар: shop/"+req.body.type);
+        if(req.body.type){
+            
             db.push("tovars."+req.body.type, req.body);
             res.send({sucess: req.body.name});
         }

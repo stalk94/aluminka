@@ -20,7 +20,7 @@ const Butons = (`
 `);
 
 
-module.exports = (`
+module.exports =(state)=> (`
     <!DOCTYPE html>
     <head>
         <meta charset="utf-8">
@@ -38,6 +38,7 @@ module.exports = (`
 
     <body root="index">
         <script src="global.js"></script>
+        <script>window.$state = ${JSON.stringify(state)}</script>
         <div class="app"></div>
         <div class="Modal"></div>
         <div style="z-index: 9;" class="Bays"></div>

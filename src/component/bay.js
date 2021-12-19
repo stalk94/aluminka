@@ -23,6 +23,7 @@ const Pays =(props)=> {
     const [type, setType] = useState()
     const [typePay, setTypePay] = useState()
 
+    //! доделать офрмление покупки
     const onSell =()=> {
         // if(typePay==="cart") EVENT.emit("payCart", {...state, total:total, delivery:type, basket:basket})
         EVENT.emit("newBay", {...state, total:total, basket:basket, delivery:type})
@@ -64,7 +65,7 @@ const Pays =(props)=> {
 export function PanelBays(props) {
     const [view, setView] = useState(false)
     const [isOpen, setOpen] = useState(false)
-    const [basket, setBasket] = useState(getUser().basket??[])
+    const [basket, setBasket] = useState([])
 
     const total =()=> {
         let tot = 0;

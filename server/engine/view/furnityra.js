@@ -6,7 +6,7 @@ const { Slider } = require("../slider");
 /** 
  * bd: `SYS.furnityra`
 */
-module.exports = (`
+module.exports =(state)=> (`
     <!DOCTYPE html>
     <head>
         <meta charset="utf-8">
@@ -27,7 +27,10 @@ module.exports = (`
 
 
     <body root="fyrnityra">
-        <script>window.$tovar = {${db.get('tovar.fyrnityra')}}</script>
+        <script>
+            window.$tovar = {${db.get('tovar.fyrnityra')}}
+            window.$state = ${JSON.stringify(state)}
+        </script>
         <div class="app"></div>
         <div style="z-index: 9;" class="Bays"></div>
         <div class="Modal"></div>

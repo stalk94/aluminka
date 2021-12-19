@@ -2,7 +2,7 @@ const db = require("quick.db");
 const { Slider } = require("../slider");
 
 
-module.exports =()=> (`
+module.exports =(state)=> (`
     <!DOCTYPE html>
     <head>
         <meta charset="utf-8">
@@ -21,7 +21,10 @@ module.exports =()=> (`
     </head>
 
     <body root="shadow-profile">
-        <script>window.$tovar = {${db.get('tovar.shadow-profile')}}</script>
+        <script>
+            window.$tovar = {${db.get('tovar.shadow-profile')}}
+            window.$state = ${JSON.stringify(state)}
+        </script>
         <div class="app"></div>
         <div style="z-index: 9;" class="Bays"></div>
         <div class="Modal"></div>

@@ -6,7 +6,10 @@ import { Tabs } from '@mantine/core';
 
 
 export default function User() {
-    const [state, setState] = React.useState(globalThis.$state.user)
+    const [state, setState] = React.useState()
+    React.useEffect(()=> {
+        if(globalThis.$state) setState(globalThis.$state.user)
+    })
 
     return(
         <div style={{backgroundColor:"rgba(28,29,30,1)"}}>

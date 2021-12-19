@@ -18,6 +18,7 @@ const Colors =(props)=> (
 
 
 export default function Page(props) {
+    const [select, setSelect] = useState()
     const [display, setDisplay] = useState("block")
     const [count, setCount] = useState(0)
 
@@ -89,7 +90,7 @@ export default function Page(props) {
                     <p className="info">Ширина: { props.width }</p>
                     <p className="info">Высота: { props.vusota }</p>
                     <p className="info">Длинна: { props.height }</p>
-                    <p className="info">Цвет: { <Colors select={} useSelect={} data={props.colors}/> }</p>
+                    <p className="info">Цвет: { <Colors select={select} useSelect={setSelect} data={props.colors}/> }</p>
                 </div>
             </section>
         </div>

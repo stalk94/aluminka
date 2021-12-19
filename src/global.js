@@ -1,8 +1,9 @@
 function send(url, data, metod, clb) {
+    console.log("request:", url)
     let response;
     
     if(metod==="GET"){
-        response = fetch("http://"+document.location.hostname + url, {
+        response = fetch("http://"+document.location.hostname+":3000"+ url, {
             method: "GET",
             mode: 'cors',
             cache: 'no-cache',
@@ -14,7 +15,7 @@ function send(url, data, metod, clb) {
             referrerPolicy: 'no-referrer'
         });
     }
-    else response = fetch("http://"+document.location.hostname + url, {
+    else response = fetch("http://"+document.location.hostname+":3000"+ url, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
@@ -49,8 +50,6 @@ class EventEmmitter {
     }
     emit(eventName, data) {
         console.log('%c emit =>', 'color:red')
-        console.log(eventName)
-        console.log(data)
         const event = this.events[eventName];
 
         if(event) event.forEach((fn)=> {
@@ -114,7 +113,7 @@ globalThis.$schemes = {
             },
             category: {
                 title: "категория: ",
-                enum: ["Плинтуса", "Фурнитура", "Профиля теневого шва", "Дверные", "Фурнитура плинтуса"],
+                enum: ["plintus", "furnityra", "shadow-profile", "door-profile", "detail-plintus"],
                 default: "плинтуса",
                 uniqueItems: true
             }
@@ -183,6 +182,7 @@ globalThis.$promoText = `
 globalThis.$tovar = []           
 globalThis.$state = {
     user: {
+        cupons: [],
         bays: [],
         basket: [],
         firsName: undefined,
@@ -190,13 +190,13 @@ globalThis.$state = {
         login: undefined,
         token: undefined,
         permision: {
-            create:true,
-            copy:true,
-            move:true,
-            delete:true,
-            rename:true,
-            upload:true,
-            download:true
+            create:false,
+            copy:false,
+            move:false,
+            delete:false,
+            rename:false,
+            upload:false,
+            download:false
         }
     },
     files: [{
@@ -214,7 +214,7 @@ globalThis.once = EVENT.once;
 globalThis.gurl = document.baseURI;
 globalThis.store = {
     get(key) {
-        return globalThis.$state[key]
+        if(globalThis.$state) return globalThis.$state[key]
     },
     set(key, value) {
         EVENT.emit(`store.${key}`, value)

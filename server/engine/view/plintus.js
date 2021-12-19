@@ -8,7 +8,7 @@ const { Slider } = require("../slider");
 /** 
  * bd: `SYS.plintus`
 */
-module.exports = (`
+module.exports =(state)=> (`
     <!DOCTYPE html>
     <head>
         <meta charset="utf-8">
@@ -28,7 +28,10 @@ module.exports = (`
 
 
     <body root="plintus">
-        <script>window.$tovar = {${db.get('tovar.plintus')}}</script>
+        <script>
+            window.$tovar = {${db.get('tovar.plintus')}}
+            window.$state = ${JSON.stringify(state)}
+        </script>
         <div class="app"></div>
         <div style="z-index: 9;" class="Bays"></div>
         <div class="Modal"></div>

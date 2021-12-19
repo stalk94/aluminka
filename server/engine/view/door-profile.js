@@ -6,7 +6,7 @@ const { Slider } = require("../slider");
 /** 
  * bd: `SYS.door_profile`
 */
-module.exports = (`
+module.exports =(state)=> (`
     <!DOCTYPE html>
     <head>
         <meta charset="utf-8">
@@ -26,7 +26,10 @@ module.exports = (`
     </head>
 
     <body root="door-profile">
-        <script>window.$tovar = {${db.get('tovar.door-profile')}}</script>
+        <script>
+            window.$tovar = {${db.get('tovar.door-profile')}}
+            window.$state = ${JSON.stringify(state)}
+        </script>
         <div class="app"></div>
         <div style="z-index: 9;" class="Bays"></div>
         <div class="Modal"></div>

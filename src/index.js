@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Title from "./component/nav";
+import { MantineProvider } from '@mantine/core';
+import { useNotifications, NotificationsProvider } from '@mantine/notifications';
 import Navigation from "./component/navigation";
 import Promo from "./component/promo";
 import { PhotoGalery } from './component/galery';
-import NotificationLayer from "./component/notification";
 import Admin from './component/admin';
 import Shop from './component/shop';
 import User from "./component/user";
@@ -11,17 +12,33 @@ import AuthForm from "./component/authorize";
 import { PanelBays } from "./component/bay";
 import { useDidMount, useWillUnmount } from 'rooks';
 import ReactDOM from "react-dom";
+import { StatusGood, StatusWarning, StatusCritical } from 'grommet-icons';
 
 
-const notification = document.createElement("div");
-notification.classList.add("notification");
-document.body.appendChild(notification);
+/**
+ * @param {*} type `sucess`||`warn`||`error`
+ * @param {*} title 
+ * @param {*} massage 
+ */
+export const useNotify =(notifications, type, title, massage)=> {
+    let color = type==='sucess'?'green':(type==='warn'?'orange':'red');
+    let icon = type==='sucess'?<StatusGood/>:(type==='warn'?<StatusWarning/>:<StatusCritical/>);
 
+    return notifications.showNotification({
+        title: title,
+        message: massage,
+        color: color,
+        autoClose: 7000,
+        icon: icon
+    });
+}
 
 
 
 const App =()=> {
+    const notifications = useNotifications();
     const [opened, setOpened] = useState(false);
+    const [authorize, setAuthorize] = useState(false);
     
     useDidMount(()=> {
         EVENT.on("close.modal", (val)=> val==='all' && (document.querySelector(".app").style.visibility = "hidden"));
@@ -31,7 +48,7 @@ const App =()=> {
             document.body.style.overflowY = "auto"
         });
         EVENT.on('open.modal', ()=> {
-            if(globalThis.$state && globalThis.$state.user && globalThis.$state.user.login && globalThis.$state.user.password){
+            if(globalThis.$state && globalThis.$state.user && globalThis.$state.user.login){
                 document.querySelector(".app").style.visibility = 'visible'
                 document.body.style.overflowY = "hidden"
             }
@@ -42,16 +59,25 @@ const App =()=> {
             else EVENT.emit("error", res.error);
         }));
         EVENT.on("reg", (data)=> send("/reg", data, "POST", (res)=> {
-            if(!res.error||res.sucess) EVENT.emit("sucess", res.sucess??res);
-            else EVENT.emit("error", res.error);
+            if(!res.error||res.sucess){
+                EVENT.emit("sucess.reg", '')
+                useNotify(notifications, "sucess", 'Успешно', res.sucess)
+            }
+            else {
+                EVENT.emit("error.reg", '')
+                useNotify(notifications, "error", 'Ошибка', res.error)
+            }
         }));
         EVENT.on("auth", (data)=> send("/auth", data, "POST", (res)=> {
-            if(!res.error||res.sucess) EVENT.emit("sucess", res.sucess??res);
-            else EVENT.emit("error", res.error);
-        }));
-        EVENT.on("newBay", (data)=> send("/bay", data, "POST", (res)=> {
-            if(!res.error||res.sucess) EVENT.emit("sucess", res.sucess??res);
-            else EVENT.emit("error", res.error);
+            if(!res.error){
+                EVENT.emit("sucess.auth", res)
+                useNotify(notifications, "sucess", 'Успешно', 'вы авторизировались')
+                setAuthorize(true)
+            }
+            else {
+                EVENT.emit("error.auth", '')
+                useNotify(notifications, "error", 'Ошибка', res.error)
+            }
         }));
         EVENT.on("newBay", (data)=> send("/bay", data, "POST", (res)=> {
             if(!res.error||res.sucess) EVENT.emit("sucess", res.sucess??res);
@@ -59,28 +85,64 @@ const App =()=> {
         }));
     });
     useWillUnmount(()=> EVENT.remote());
+    useEffect(()=> {
+        if(!globalThis.$state) globalThis.$state = {}
+        if(!globalThis.$state.user) globalThis.$state = {
+            user:{
+                cupons: [],
+                bays: [],
+                basket: [],
+                firsName: undefined,
+                lastName: undefined,
+                login: undefined,
+                token: undefined,
+                permision: {
+                    create:false,
+                    copy:false,
+                    move:false,
+                    delete:false,
+                    rename:false,
+                    upload:false,
+                    download:false
+                }
+            },
+            files: [{
+                name: 'Documents',
+                isDirectory: true,
+                items:[]
+            }]
+        }
+        console.log(globalThis.$state)
 
+        if(globalThis.$state && globalThis.$state.user && globalThis.$state.user.permision && globalThis.$state.user.permision.create){
+            if(globalThis.$state.user.token) setAuthorize(true)
+        }
+    }, [globalThis.$state])
 
     return(
         <>
-            {globalThis.$state && globalThis.$state.user 
-             && globalThis.$state.user.permision 
-             && globalThis.$state.user.permision.create
-                ? <Admin visible={true} /> 
-                : <User /> 
-            }
             <PanelBays />
-            <AuthForm opened={opened} setOpened={setOpened} />
+            {!authorize && <AuthForm opened={opened} setOpened={setOpened} />}
+            {(authorize&&(globalThis.$state&&globalThis.$state.user&&globalThis.$state.user.permision&&globalThis.$state.user.permision.create)) 
+                ? <Admin visible={true} /> 
+                : <User />
+            }
         </>
     );
 }
 
 
 
-ReactDOM.render(<App />, document.querySelector(".app"));
+ReactDOM.render(
+    <MantineProvider theme={{colorScheme: 'dark'}}>
+        <NotificationsProvider color='' position="bottom-right" zIndex={2077}>
+            <App />
+        </NotificationsProvider>
+    </MantineProvider>,
+    document.querySelector(".app")
+);
 ReactDOM.render(<Title />, document.querySelector(".Titles"));
 ReactDOM.render(<Navigation />, document.querySelector(".Nav"));
 if(getRoot()!=='index') ReactDOM.render(<Shop />, document.querySelector(".list-tovar"))
 if(getRoot()==='index') ReactDOM.render(<Promo />, document.querySelector(".Promo"));
 ReactDOM.render(<PhotoGalery data={$slides[getRoot()]} />, document.querySelector(".Slider"));
-ReactDOM.render(<NotificationLayer />, notification);
