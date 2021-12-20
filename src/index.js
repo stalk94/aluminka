@@ -11,18 +11,15 @@ import User from "./component/user";
 import AuthForm from "./component/authorize";
 import { PanelBays } from "./component/bay";
 import { useDidMount, useWillUnmount } from 'rooks';
-import ReactDOM from "react-dom";
 import { StatusGood, StatusWarning, StatusCritical } from 'grommet-icons';
+import ReactDOM from "react-dom";
 
 
-/**
- * @param {*} type `sucess`||`warn`||`error`
- * @param {*} title 
- * @param {*} massage 
- */
 export const useNotify =(notifications, type, title, massage)=> {
-    let color = type==='sucess'?'green':(type==='warn'?'orange':'red');
-    let icon = type==='sucess'?<StatusGood/>:(type==='warn'?<StatusWarning/>:<StatusCritical/>);
+    let color = type==='sucess' ? 'green' : (type==='warn'?'orange':'red');
+    let icon = type==='sucess' 
+        ? <StatusGood/> 
+        : (type==='warn' ? <StatusWarning/> : <StatusCritical/>);
 
     return notifications.showNotification({
         title: title,
@@ -41,7 +38,9 @@ const App =()=> {
     const [authorize, setAuthorize] = useState(false);
     
     useDidMount(()=> {
-        EVENT.on("close.modal", (val)=> val==='all' && (document.querySelector(".app").style.visibility = "hidden"));
+        EVENT.on("close.modal", (val)=> {
+            if(val==='all') document.querySelector(".app").style.visibility = "hidden"
+        });
         EVENT.on("close.modal", ()=> {
             setOpened(false)
             document.querySelector(".app").style.visibility = 'hidden'
@@ -87,8 +86,25 @@ const App =()=> {
             if(!res.error||res.sucess) EVENT.emit("sucess", res.sucess??res);
             else EVENT.emit("error", res.error);
         }));
+        EVENT.on("user.edit", (data)=> send("/userEdit", data, "POST", (res)=> {
+            if(!res.error||res.sucess){
+                EVENT.emit("sucess.user.edit", '')
+                useNotify(notifications, "sucess", 'Успешно', res.sucess)
+            }
+            else {
+                EVENT.emit("error", '')
+                useNotify(notifications, "error", 'Ошибка', res.error)
+            }
+        }));
+        EVENT.on("add", (data)=> {
+            window.$state.user.basket.push(data);
+            window.store.save("добавлено в корзину");
+        });
+        EVENT.on("error", (data)=> useNotify(notifications, "error", 'Ошибка', data));
+        EVENT.on("sucess", (data)=> useNotify(notifications, "sucess", 'Успешно', data));
     });
     useWillUnmount(()=> EVENT.remote());
+    
     useEffect(()=> {
         if(!globalThis.$state) globalThis.$state = {}
         if(!globalThis.$state.user) globalThis.$state = {
@@ -108,16 +124,16 @@ const App =()=> {
                     rename:false,
                     upload:false,
                     download:false
-                }
-            },
-            files: [{
-                name: 'Documents',
-                isDirectory: true,
-                items:[]
-            }]
+                },
+                files: [{
+                    name: 'Documents',
+                    isDirectory: true,
+                    items:[]
+                }]
+            }
         }
-        if(localStorage.getItem("user")) globalThis.$state.user = JSON.parse(localStorage.getItem("user"))
 
+        if(localStorage.getItem("user")) globalThis.$state.user = JSON.parse(localStorage.getItem("user"))
         if(globalThis.$state && globalThis.$state.user && globalThis.$state.user.permision && globalThis.$state.user.permision.create){
             if(globalThis.$state.user.token) setAuthorize(true)
         }
@@ -129,7 +145,7 @@ const App =()=> {
             {!authorize && <AuthForm opened={opened} setOpened={setOpened} />}
             {(authorize&&(globalThis.$state&&globalThis.$state.user&&globalThis.$state.user.permision&&globalThis.$state.user.permision.create)) 
                 ? <Admin visible={true} /> 
-                : <User />
+                : <User setOpen={setOpened} visible={opened} />
             }
         </>
     );
@@ -147,6 +163,6 @@ ReactDOM.render(
 );
 ReactDOM.render(<Title />, document.querySelector(".Titles"));
 ReactDOM.render(<Navigation />, document.querySelector(".Nav"));
-if(getRoot()!=='index') ReactDOM.render(<Shop />, document.querySelector(".list-tovar"))
+if(getRoot()!=='index') ReactDOM.render(<Shop />, document.querySelector(".list-tovar"));
 if(getRoot()==='index') ReactDOM.render(<Promo />, document.querySelector(".Promo"));
 ReactDOM.render(<PhotoGalery data={$slides[getRoot()]} />, document.querySelector(".Slider"));

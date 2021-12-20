@@ -9,8 +9,7 @@ import fileXml from "../img/icon/xml.png";
 
 
 export default function FileManagers(props) {
-    const style = {position:'absolute',top:0,left:0}
-    const ctx =  React.useContext(props.context)
+    const style = {position:'absolute', top:55, left:0}
     const [state, setState] = useState({})
     
 
@@ -27,15 +26,20 @@ export default function FileManagers(props) {
             default: return file;
         }
     }
+    const onLoadFile =(e)=> {
+        console.log(e)
+        console.log(globalThis.$state.user.files)
+        globalThis.$state.user.files
+    }
 
 
     return(
-        <div style={{...style, visibility:props.visible}} className="FileManager">
+        <div style={{visibility:props.visible}} className="FileManager">
             <FileManager height={props.height??450}
-                fileSystemProvider={globalThis.$state.files}
+                fileSystemProvider={globalThis.$state.user.files}
                 customizeThumbnail={customizeIcon}
                 onOptionChanged={onOptionChanged}
-                onFileUploaded={()=> useEmit("file-manager.upload", onLoadFile())}
+                onFileUploaded={onLoadFile}
             >
                 <ItemView mode={state}></ItemView>
                 <Permissions {...globalThis.$state.user.permision}>

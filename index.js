@@ -15,15 +15,20 @@ const dist = require("./dist");
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(bodyParser.json({limit: "100mb"}));
 app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit: 50000}));
-global.logger = pinoms(pinoms.multistream([{stream: fs.createWriteStream('log.log')},{stream: pinoms.prettyStream()}]))
+global.logger = pinoms(pinoms.multistream([{stream: fs.createWriteStream('log.log')},{stream: pinoms.prettyStream()}]));
 const log = logger;
-global.activ = {}
+global.activ = {};
 const jsonParser = bodyParser.json();
+
 const liqpay = new LiqPay(process.env.test_key, process.env.test_private_key);
-process.on("uncaughtException", (err)=> logger.error(err));
+process.on("uncaughtException", (err)=> {
+    logger.error(err);
+    db.set("LOG."+time(), fs.readFileSync("log.log", {encoding:"utf-8"}));
+    process.exit();
+});
 const useAdminVerify =(userData)=> {
     if(userData.permision && userData.permision.create===true) return userData;
     else return false;
@@ -119,6 +124,9 @@ app.post('/reg', jsonParser, (req, res)=> {
                 lastName: '',
                 total: 0,
                 phone: '',
+                city: '',
+                phone: '+3',
+                adres: '',
                 bays: [],
                 cupons: [],
                 basket: [],
@@ -130,7 +138,12 @@ app.post('/reg', jsonParser, (req, res)=> {
                     rename:false,
                     upload:false,
                     download:false
-                }
+                },
+                files: [{
+                    name: 'Documents',
+                    isDirectory: true,
+                    items:[]
+                }]
             });
             res.send({sucess: "Спасибо за регистрацию. Теперь авторизируйтесь"})
         }
@@ -150,6 +163,7 @@ app.post("/question", jsonParser, (req, res)=> {
     }
     else res.send({error: "validation failed"});
 });
+// верификатор необходим
 app.post("/bay", jsonParser, (req, res)=> {
     if(!req.cookies['token'] && req.body.basket){
         db.push("bays", {
@@ -158,8 +172,8 @@ app.post("/bay", jsonParser, (req, res)=> {
         });
         res.send({sucess: 'Ваш заказ оформлен и будет в ближайшее время рассмотрен'});
     }
-    else if(req.cookies['token'] && req.body.basket && app.tokens[req.cookies['token']]){
-        let user = app.tokens[req.cookies['token']];
+    else if(req.cookies['token'] && req.body.basket && global.activ[req.cookies['token']]){
+        let user = global.activ[req.cookies['token']];
         db.push("bays", {
             [user.login]: req.body.basket, 
             time: time()
@@ -194,6 +208,21 @@ app.post("/payCart", jsonParser, (req, res)=> {
         res.send(html)
     });
 });
+app.post("/save", jsonParser, (req, res)=> {
+    let token = req.cookies ? req.cookies['token'] : undefined;
+    let user = global.activ[token];
+
+    if(user){
+        Object.keys(req.body.state).map((key)=> {
+            if(key!=='login'&&key!=='password'&&key!=='token'&&key!=='cupon'){
+                if(user[key]) user[key] = req.body.state[key]
+            }
+        });
+        db.set("user."+user.login, user)
+        res.send({sucess: req.body.title})
+    }
+    else res.send({error: "validation failed"});
+});
 app.post(/hook/, jsonParser, (req, res)=> {
     let p = new URL(req.url, `http://${request.headers.host}`);
     let urls = p.pathname.replace('/', '.');
@@ -203,6 +232,21 @@ app.post(/hook/, jsonParser, (req, res)=> {
         req.body.hook.time = time()
         db.push(urls, req.body.hook)        //! not clean
     }
+});
+app.post("/userEdit", jsonParser, (req, res)=> {
+    let token = req.cookies ? req.cookies['token'] : undefined;
+    let user = global.activ[token];
+
+    if(user){
+        Object.keys(req.body).map((key)=> {
+            if(key!=='login'&&key!=='password'&&key!=='token'&&key!=='cupon'&&key!=='basket'&&key!=='bays'){
+                if(user[key]) user[key] = req.body[key]
+            }
+        });
+        db.set("user."+user.login, user)
+        res.send({sucess: "данные успешно изменены"})
+    }
+    else res.send({error: "ошибка токена"})
 });
 
 // admin
@@ -217,7 +261,6 @@ app.post("/create", jsonParser, (req, res)=> {
     let token = req.cookies['token'];
     let user = global.activ[token]
     
-
     if(req.body && user && useAdminVerify(user)!==false){
         logger.info("[✒️🛒]:добавлен товар: shop/"+req.body.category);
         if(req.body.category){

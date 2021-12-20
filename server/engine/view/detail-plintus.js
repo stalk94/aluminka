@@ -95,7 +95,7 @@ module.exports =(state)=> (`
             </section>
         </footer>
 
-        <script src="../index.8de4fd23.js></script>
+        <script src="../index.379dd93c.js></script>
     </body>
     </html>
 `);

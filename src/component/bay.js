@@ -9,8 +9,8 @@ const options = [{value: 'nov', label: 'Новой почтой'}, {value: 'samo
 const options2 = [{value: 'naloj', label: 'Наложенный платеж'}];
 const getUser =()=> store.get("user");
 const stat = {
-    name: getUser() && getUser().name ? getUser().name : "",
-    familua: getUser() && getUser().familua ? getUser().familua : "",
+    firstName: getUser() && getUser().firstName ? getUser().firstName : "",
+    lastName: getUser() && getUser().lastName ? getUser().lastName : "",
     phone:getUser() && getUser().phone ? getUser().phone : "",
     city: getUser() && getUser().city ? getUser().city : "",
     adres: getUser() && getUser().adres ? getUser().adres : ""
@@ -26,7 +26,7 @@ const Pays =(props)=> {
     //! доделать офрмление покупки
     const onSell =()=> {
         // if(typePay==="cart") EVENT.emit("payCart", {...state, total:total, delivery:type, basket:basket})
-        EVENT.emit("newBay", {...state, total:total, basket:basket, delivery:type})
+        EVENT.emit("newBay", {...state, total:total, delivery:type})
     }
     const onState =(name, value)=> {
         let copy = state
@@ -55,7 +55,9 @@ const Pays =(props)=> {
                     onChange={(e)=> onState(type, e.value)} 
                     value={type==="nov" ? "" : state.adres}
                 />
-                <Button onClick={onSell}> Оформить </Button>
+                <Button onClick={onSell}> 
+                    Оформить 
+                </Button>
             </div>
         </OffCanvas>
     );
@@ -68,23 +70,23 @@ export function PanelBays(props) {
     const [basket, setBasket] = useState([])
 
     const total =()=> {
-        let tot = 0;
-        basket.forEach((tovar, i)=> tot += tovar.tovar.priceMin*tovar.count);
+        let tot = {news:0, old:0};
+        basket.forEach((data, i)=> {
+            let old = data.tovar.price
+            let news = data.tovar.priceMin
+            tot.old += old*data.count
+            tot.news += news*data.count
+        });
         return tot;
     }
     useDidMount(()=> {
         EVENT.on("bay.open", (val)=> {
-            setBasket(getUser().basket)
+            setBasket(window.$state.user.basket)
             setOpen(val)
         });
         EVENT.on("add", (data)=> {
-            let user = getUser()
-            let basket = user.basket
-
-            basket.push(data)
-            user.basket = basket
-            store.set("user", user)
-            setBasket(user.basket)
+            let basket = window.$state.user.basket
+            setBasket(basket)
         });
     });
 
@@ -114,12 +116,16 @@ export function PanelBays(props) {
                     ))}
                 </div>
                 {basket.length > 0 
-                    ? <Button onClick={()=> <Pays total={total()} setOpen={setView} onOpen={view} />}> 
+                    ? <Button onClick={()=> <Pays total={total().news} setOpen={setView} onOpen={view} />}> 
                             Оформить Покупку 
                       </Button> 
                     : <var> Корзина пуста </var>
                 }
-                <div style={{marginTop:"5%"}}> Всего: {total()}₴ </div>
+                <div style={{marginTop:"5%",display:"flex",flexDirection:"row"}}> Всего: 
+                    <div style={{textDecoration:"line-through",color:"red"}}>{ total().old }₴</div>
+                        / 
+                    <div style={{color:"green"}}>{ total().news }₴</div>
+                </div>
             </OffCanvas>
         </>
     );

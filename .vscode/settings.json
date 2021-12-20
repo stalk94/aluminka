@@ -64,7 +64,7 @@
     },
     "explorerExclude.backup": null,
     "editor.fontSize": 13.8,
-    "editor.fontWeight": "1",
+    "editor.fontWeight": "0",
     "sync.autoDownload": true,
     "vsintellicode.features.python.deepLearning": "enabled",
     "vscode-dependencies-autocomplete.built-in-modules": "always",

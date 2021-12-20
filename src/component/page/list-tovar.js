@@ -4,11 +4,11 @@ import { Card, Image, Text, Badge, Button, Group, useMantineTheme } from '@manti
 
 
 
-const NewTovar =(props)=> {
+const Tovar =(props)=> {
     return(
-        <Card shadow="sm" padding="lg">
+        <Card style={{marginLeft:"5px"}} shadow="sm" padding="lg">
             <Card.Section>
-                <Image src={props.src??'../../img/no-image.png'} height={180} alt={props.name} />
+                <Image src={props.src??'../../img/no-image.png'} width={"100%"} height={180} alt={props.name} />
             </Card.Section>
             <div style={{display:"flex", flexDirection:"row"}}>
                 <Text style={{fontWeight:"bold"}}>{ props.name??"none" }</Text>
@@ -55,7 +55,7 @@ export default function ListTovar(props) {
         <>
             {view==="nav"
                 ? (data.length > 0 ? data.map((tovar, index)=> (
-                    <NewTovar
+                    <Tovar
                         key={index} 
                         index={index}
                         src={tovar.images[0]} 

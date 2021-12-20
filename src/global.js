@@ -1,5 +1,4 @@
 function send(url, data, metod, clb) {
-    console.log("request:", url)
     let response;
     
     if(metod==="GET"){
@@ -87,6 +86,46 @@ globalThis.$slides = {
         'https://profidom.com.ua/images/2018/statti/sam-b-stroi-komp-8_w.jpg'
     ]
 }
+globalThis.$promoText = `
+    С 2015 года наша компания занимается продажей напольных плинтусов из алюминия, дверных профилей и профилей теневого шва. 
+    В нашем каталоге вы сможете найти именно тот профиль, который больше всего подходит для решения ваших задач. 
+    Алюминиевый профиль имеет различные формы, размеры и предназначение. Давайте поговорим об этом подробнее. 
+    Самый первый раздел каталога это плоский плинтус. Плоский плинтус имеет классическую форму Л-образную, имеет плавный переход от стены к полу, 
+    при этом плинтус не выглядит громоздким, так как имеет небольшую толщину. 
+    Так как плинтус плоский размещение каких-либо проводов за плинтусом не представляется возможным. 
+    Плинтус имеет различную высоту от 40 до 100 мм и различную ширину по полу от 11 до 18 мм. 
+    Монтаж такого плинтуса осуществляется на жидкие гвозди, жидкие гвозди наносятся на заднюю поверхность плинтуса и прижимается к стене.
+    Данный плинтус идет в классическом анодированном светло-сером цвете. Также данные плинтуса могут быть покрашены по желанию заказчика в любой цвет по каталогу RAL.
+`;
+globalThis.$tovar = []           
+globalThis.$state = {
+    user: {
+        cupons: [],
+        bays: [],
+        basket: [],
+        firstName: '',
+        lastName: '',
+        login: '',
+        city: '',
+        phone: '+3',
+        adres: '',
+        token: undefined,
+        permision: {
+            create:false,
+            copy:false,
+            move:false,
+            delete:false,
+            rename:false,
+            upload:false,
+            download:false
+        },
+        files: [{
+            name: 'Documents',
+            isDirectory: true,
+            items:[]
+        }]
+    }
+}
 globalThis.$schemes = {
     admin: [{
         title: "Базовое",
@@ -165,45 +204,40 @@ globalThis.$schemes = {
                 minLength: 2
             }
         }
-    }]
-};
-globalThis.$promoText = `
-    С 2015 года наша компания занимается продажей напольных плинтусов из алюминия, дверных профилей и профилей теневого шва. 
-    В нашем каталоге вы сможете найти именно тот профиль, который больше всего подходит для решения ваших задач. 
-    Алюминиевый профиль имеет различные формы, размеры и предназначение. Давайте поговорим об этом подробнее. 
-    Самый первый раздел каталога это плоский плинтус. Плоский плинтус имеет классическую форму Л-образную, имеет плавный переход от стены к полу, 
-    при этом плинтус не выглядит громоздким, так как имеет небольшую толщину. 
-    Так как плинтус плоский размещение каких-либо проводов за плинтусом не представляется возможным. 
-    Плинтус имеет различную высоту от 40 до 100 мм и различную ширину по полу от 11 до 18 мм. 
-    Монтаж такого плинтуса осуществляется на жидкие гвозди, жидкие гвозди наносятся на заднюю поверхность плинтуса и прижимается к стене.
-    Данный плинтус идет в классическом анодированном светло-сером цвете. Также данные плинтуса могут быть покрашены по желанию заказчика в любой цвет по каталогу RAL.
-`;
-globalThis.$tovar = []           
-globalThis.$state = {
+    }],
     user: {
-        cupons: [],
-        bays: [],
-        basket: [],
-        firsName: undefined,
-        lastName: undefined,
-        login: undefined,
-        token: undefined,
-        permision: {
-            create:false,
-            copy:false,
-            move:false,
-            delete:false,
-            rename:false,
-            upload:false,
-            download:false
+        title: "Данные",
+        type: "object",
+        required: ["title"],
+        properties: {
+            firstName: {
+                title: "имя: ",
+                type: "string",
+                default: $state.user.firstName
+            },
+            lastName: {
+                title: "фамилия: ",
+                type: "string",
+                default: $state.user.lastName
+            },
+            phone: {
+                title: "телефон: ",
+                type: "string",
+                default: $state.user.phone
+            },
+            city: {
+                title: "город: ",
+                type: "string",
+                default: $state.user.city
+            },
+            adres: {
+                title: "адрес(для доставки): ",
+                type: "string",
+                default: $state.user.adres
+            }
         }
-    },
-    files: [{
-        name: 'Documents',
-        isDirectory: true,
-        items:[]
-    }]
-}
+    }
+};
 
 
 globalThis.EVENT = new EventEmmitter();
@@ -218,6 +252,12 @@ globalThis.store = {
     set(key, value) {
         EVENT.emit(`store.${key}`, value)
         globalThis.$state[key] = value
+    },
+    save(title) {
+        send("/save", {state:globalThis.$state, title:title}, "POST", (res)=> {
+            if(!res.error) EVENT.emit("sucess", res.sucess);
+            else EVENT.emit("error", res.error);
+        });
     },
     watch(key, listener) {
         EVENT.on(`store.${key}`, listener)

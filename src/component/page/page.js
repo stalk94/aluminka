@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@nextui-org/react';
-import { Carousel } from "react-responsive-carousel";
+import { PhotoGalery } from '../galery';
 const style = {padding:"5px", border:"1px solid grey"}
 
 
@@ -20,6 +20,7 @@ const Colors =(props)=> (
 export default function Page(props) {
     const [select, setSelect] = useState()
     const [display, setDisplay] = useState("block")
+    const [total, setTotal] = useState({old:0, new:0})
     const [count, setCount] = useState(0)
 
     const onCount =(mod="add")=> setCount((count)=> mod==="add"?(count+=1):(count-=1));
@@ -28,6 +29,7 @@ export default function Page(props) {
         props.onEnd()
     }
     const toBay =()=> {
+        setTotal({old:props.price * count, new:props.priceMin * count})
         EVENT.emit("add", {count:count, tovar:props})
         setCount(0)
     }
@@ -47,10 +49,15 @@ export default function Page(props) {
                 </Button>
             </header>
 
-            <section>
-                <Carousel showArrows={true} onChange={onChange} onClickItem={onClickItem}>
-                    {props.images.map((img, id)=> <img key={id} src={img}/>)}
-                </Carousel>
+            <section style={{textAlign:"center"}}>
+                <div style={{marginLeft:"30%"}}>
+                    <PhotoGalery 
+                        data={props.images} 
+                        width={window.innerHeight*0.5} 
+                        height={window.innerHeight*0.5} 
+                        showIndicator={true}
+                    />
+                </div>
                 <div className="bodyGalery">
                     <h2 style={{paddingLeft:"10px"}} className="name-tovar">{ props.name }</h2>
                     <p>Модель: { props.model }</p>
@@ -62,7 +69,7 @@ export default function Page(props) {
                     <div className="line">
                         <div style={{marginRight:"2%", marginLeft:"40%"}} className="ap-sub line">
                             <button style={style} onClick={()=> onCount("sub")}> - </button>
-                            <div style={style}>{ count }</div>
+                            <div style={style}>{ count }(всего:{total.new}грн)</div>
                             <button style={style} onClick={()=> onCount("add")}> + </button>
                         </div>
                         <Button flat color="#ff4ecd" auto onClick={toBay}> В корзину </Button>
@@ -89,7 +96,10 @@ export default function Page(props) {
                     <p className="info">Ширина: { props.width }</p>
                     <p className="info">Высота: { props.vusota }</p>
                     <p className="info">Длинна: { props.height }</p>
-                    {props.colors && <p className="info">Цвет: { <Colors select={select} useSelect={setSelect} data={props.colors}/> }</p>}
+                        {props.colors && <p className="info">Цвет: { 
+                            <Colors select={select} useSelect={setSelect} data={props.colors}/> 
+                        }</p>
+                    }
                 </div>
             </section>
         </div>

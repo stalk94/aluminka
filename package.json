@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "build": "parcel build src/index.html",
+        "build": "parcel src/index.html",
         "start": "node index.js"
     },
     "keywords": [],
@@ -33,7 +33,6 @@
         "dotenv": "^10.0.0",
         "express": "^4.17.1",
         "express-session": "^1.17.2",
-        "jsdom": "^19.0.0",
         "passport": "^0.5.0",
         "passport-local": "^1.0.0",
         "pino": "^7.0.3",
@@ -49,6 +48,7 @@
         "uuid-token-generator": "^1.0.0"
     },
     "devDependencies": {
+        "jsdom": "^19.0.0",
         "@coreui/coreui": "^4.1.0",
         "@coreui/react": "^4.1.0",
         "@opuscapita/filemanager-server": "^1.1.10",

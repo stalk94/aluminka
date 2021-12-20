@@ -9,9 +9,10 @@ export function PhotoGalery(props) {
             id="gallery"
             dataSource={props.data}
             height={props.height??300}
+            width={props.width}
             loop={false}
             showNavButtons={props.showBtn}
-            showIndicator={false} 
+            showIndicator={props.showIndicator??false} 
         />
     );
 }
