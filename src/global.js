@@ -1,8 +1,9 @@
-function send(url, data, metod, clb) {
+const GURL = '194.61.0.15';
+window.send =(url, data, metod, clb)=> {
     let response;
     
     if(metod==="GET"){
-        response = fetch("http://"+document.location.hostname+":3000"+ url, {
+        response = fetch("http://" + GURL + url, {
             method: "GET",
             mode: 'cors',
             cache: 'no-cache',
@@ -14,7 +15,7 @@ function send(url, data, metod, clb) {
             referrerPolicy: 'no-referrer'
         });
     }
-    else response = fetch("http://"+document.location.hostname+":3000"+ url, {
+    else response = fetch("http://" + GURL + url, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',

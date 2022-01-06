@@ -14,8 +14,6 @@ module.exports =(state)=> (`
         <link rel="stylesheet" href="../css/tovar-cart.css">
         <link rel="stylesheet" href="../css/shop-list.css">
 
-        <script src="../global.js"></script>
-
         <title>Aluminka</title>
         <meta class="meta-tag" name="description" content="${db.get("meta")}"/>
     </head>
@@ -89,7 +87,7 @@ module.exports =(state)=> (`
             </section>
         </footer>
 
-        <script src="../index.379dd93c.js"></script>
+        <script src="../index.1d9016b0.js"></script>
     </body>
     </html>
 `)

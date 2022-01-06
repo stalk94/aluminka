@@ -37,7 +37,6 @@ module.exports =(state)=> (`
     </head>
 
     <body root="index">
-        <script src="global.js"></script>
         <script>window.$state = ${JSON.stringify(state)}</script>
         <div class="app"></div>
         <div class="Modal"></div>
@@ -86,7 +85,7 @@ module.exports =(state)=> (`
             </section>
         </footer>
 
-        <script src="index.379dd93c.js"></script>
+        <script src="index.1d9016b0.js"></script>
     </body>
     </html>
 `);

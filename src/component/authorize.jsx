@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Drawer, PasswordInput, TextInput, Button, LoadingOverlay, MantineProvider } from '@mantine/core';
 import { useDidMount } from 'rooks';
 
 
 
 export default function RegForm(props) {
+    const [opened, setOpened] = useState(false)
     const [login, setLogin] = useState()
     const [pass, setPass] = useState()
     const [visible, setVisible] = useState(false)
@@ -25,12 +26,13 @@ export default function RegForm(props) {
         EVENT.on("error.reg", ()=> setVisible(false));
         EVENT.on("error.auth", ()=> setVisible(false));
     })
+    useEffect(()=> setOpened(props.opened), [props])
 
     return(
         <MantineProvider theme={{colorScheme: 'dark'}}>
             <LoadingOverlay visible={visible} />
             <Drawer 
-                opened={props.opened}
+                opened={opened}
                 onClose={()=> props.setOpened(false)}
                 title="Авторизация/Регистрация"
                 padding="xl"

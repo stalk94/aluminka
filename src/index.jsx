@@ -1,3 +1,4 @@
+import "./global";
 import React, { useEffect, useState } from 'react';
 import Title from "./component/nav";
 import { MantineProvider } from '@mantine/core';
@@ -142,8 +143,8 @@ const App =()=> {
     return(
         <>
             <PanelBays />
-            {!authorize && <AuthForm opened={opened} setOpened={setOpened} />}
-            {(authorize&&(globalThis.$state&&globalThis.$state.user&&globalThis.$state.user.permision&&globalThis.$state.user.permision.create)) 
+            {authorize===false && <AuthForm opened={opened} setOpened={setOpened} />}
+            {(authorize===true && (globalThis.$state && globalThis.$state.user && globalThis.$state.user.permision && globalThis.$state.user.permision.create)) 
                 ? <Admin visible={true} /> 
                 : <User setOpen={setOpened} visible={opened} />
             }
