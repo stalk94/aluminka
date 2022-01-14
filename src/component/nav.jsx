@@ -54,7 +54,7 @@ const Burger =()=> {
 
 
 
-export default function Title(props) {
+export default function Title() {
     return(
         <nav className="one-nav line">
             <div className="lang line" style={{marginLeft:"2%"}}>

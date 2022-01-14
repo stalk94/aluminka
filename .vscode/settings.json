@@ -66,7 +66,9 @@
         "src\\component/promo.jsx": true,
         "src\\component/galery.jsx": true,
         "src/css": true,
-        "src/img": true
+        "src/img": true,
+        "src\\component/base.jsx": true,
+        "src\\component/catalog.jsx": true
     },
     "explorerExclude.backup": null,
     "editor.fontSize": 13.8,

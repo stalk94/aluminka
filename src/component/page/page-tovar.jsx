@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@nextui-org/react';
 import { PhotoGalery } from '../galery';
 import PushPop from "./push-pop";
@@ -19,9 +19,9 @@ const Colors =(props)=> (
 
 
 export default function Page(props) {
-    const [select, setSelect] = useState();
-    const [total, setTotal] = useState({old:0, new:0});
-    const [count, setCount] = useState(0);
+    const [select, setSelect] = React.useState();
+    const [total, setTotal] = React.useState({old:0, new:0});
+    const [count, setCount] = React.useState(0);
 
     
     const toBay =()=> {
@@ -67,7 +67,9 @@ export default function Page(props) {
                             setCount={setCount}
                             count={count}
                         />
-                        <Button flat color="#ff4ecd" auto onClick={toBay}> В корзину </Button>
+                        <Button flat color="#ff4ecd" auto onClick={toBay}> 
+                            В корзину 
+                        </Button>
                     </div>
                 </div>
             </section>

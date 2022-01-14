@@ -14,6 +14,6 @@ export default function Promo(props){return(
             </h5>
              <img src="img/title.png" className="prom-img"/>
         </div>
-        <Button className="p-button-secondary" label='Смотреть еще' />
+        <Button className="p-button-outlined p-button-secondary" label='Смотреть еще' />
     </section>
 )};

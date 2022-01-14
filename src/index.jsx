@@ -115,11 +115,13 @@ const App =()=> {
     return(
         <>
             <PanelBays />
-            { authorize===false && <AuthForm opened={opened} setOpened={setOpened} /> }
-            {(authorize===true && glob.get().user.permision.create) 
-                ? <Admin visible={true} /> 
-                : <User setOpen={setOpened} visible={opened} />
-            }
+            <div style={{position:"fixed",width:"100%",backgroundColor:"#000000e6",zIndex:"9"}}>
+                { authorize===false && <AuthForm opened={opened} setOpened={setOpened} /> }
+                {(authorize===true && glob.get().user.permision.create) 
+                    ? <Admin visible={false} /> 
+                    : <User setOpen={setOpened} visible={opened} />
+                }
+            </div>
             {glob.dir.get()==='index' 
                 ?  <Index />
                 : (glob.dir.get()!=='services'&&glob.dir.get()!=='payment'&&glob.dir.get()!=='contact'

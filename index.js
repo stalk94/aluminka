@@ -2,7 +2,6 @@ require('dotenv').config();
 const fs = require("fs");
 const express = require("express");
 const path = require("path");
-const LiqPay = require('./server/liqpay');
 const bodyParser = require("body-parser");
 const favicon = require('serve-favicon');
 const db = require("quick.db");
@@ -14,21 +13,21 @@ const { time, scheme } = require("./server/midlevare");
 
 
 
-///////////////////////////////////////////////////////////////////////////////////////////
 app.use(cookieParser());
+const jsonParser = bodyParser.json();
 app.use(bodyParser.json({limit: "100mb"}));
 app.use(bodyParser.urlencoded({limit: "100mb", extended: true, parameterLimit: 50000}));
 global.logger = pinoms(pinoms.multistream([{stream: fs.createWriteStream('log.log')},{stream: pinoms.prettyStream()}]));
-const log = logger;
-global.activ = {};
-const jsonParser = bodyParser.json();
-
-const liqpay = new LiqPay(process.env.test_key, process.env.test_private_key);
 process.on("uncaughtException", (err)=> {
     logger.error(err);
     db.set("LOG."+time(), fs.readFileSync("log.log", {encoding:"utf-8"}));
     process.exit();
 });
+global.activ = {};
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
 const useAdminVerify =(userData)=> {
     if(userData.permision && userData.permision.create===true) return userData;
     else return false;
@@ -39,6 +38,7 @@ const autorize =(login, password)=> {
     if(user && user.password && getPasswordHash(user.password)===password) return user;
     else return false;
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 app.get("/", (req, res)=> {
@@ -131,7 +131,6 @@ app.post("/question", jsonParser, (req, res)=> {
     }
     else res.send({error: "validation failed"});
 });
-// верификатор необходим
 app.post("/bay", jsonParser, (req, res)=> {
     if(!req.cookies['token'] && req.body.basket){
         db.push("bays", {
@@ -172,7 +171,7 @@ app.post("/payCart", jsonParser, (req, res)=> {
             'version'        : '3'
         });
     
-        log.info("[💵]: "+html)
+        logger.info("[💵]: "+html)
         res.send(html)
     });
 });
@@ -217,6 +216,7 @@ app.post("/userEdit", jsonParser, (req, res)=> {
     else res.send({error: "ошибка токена"})
 });
 
+
 // admin
 app.post("/file", jsonParser, (req, res)=> {
     console.log(req.cookies['token'])
@@ -239,7 +239,6 @@ app.post("/create", jsonParser, (req, res)=> {
     }
     else res.send({error:"ошибка авторизации администратора, неудачные попытки более 5 раз приведут к бану по ip"})
 });
-// test
 app.post("/testPay", jsonParser, (req, res)=> {
     let user;
     if(verify.isLogin(req.body.login) && db.has("user."+req.body.login)) user = db.get("user."+req.body.login)
@@ -256,7 +255,7 @@ app.post("/testPay", jsonParser, (req, res)=> {
         'version'        : '3'
     });
 
-    log.info("[💵]test: "+html)
+    logger.info("[💵]test: "+html)
     res.send(html)
 });
 

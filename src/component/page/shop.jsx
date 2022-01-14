@@ -1,31 +1,12 @@
 import React from 'react';
 import ListTovar from "./tovar-galery";
-import Page from "./page";
+import Page from "./page-tovar";
 import { PhotoGalery } from '../galery';
-import Footer, { Feedback } from "../footer";
-import Navigation from "../page/navigation";
-import Title from "../nav";
+import Footer, { Feedback } from "./footer";
 import { useState } from '@hookstate/core';
 import globalState from "../../global.state";
+import Header from "./header";
 
-
-
-const Header =({src, useClickUrl})=> (
-    <header>
-        <div className="Titles">
-            <Title />
-        </div>
-        <div className="Nav">
-            <Navigation useClickUrl={useClickUrl} />
-        </div>
-        <div className="top-img">
-            <img 
-                className="img-top" 
-                src={src} 
-            />
-        </div>
-    </header>
-);
 
 
 

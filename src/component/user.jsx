@@ -46,7 +46,7 @@ const Catalog =(props)=> {
 
 
 
-export default function User(props) {
+export default function User({visible, setOpen}) {
     const [activ, setActiv] = React.useState('edit');
     const [state, setState] = React.useState();
 
@@ -63,7 +63,7 @@ export default function User(props) {
     }
 
     return(
-        <>
+        <div style={{display:visible?"block":"none"}}>
             <div style={{backgroundColor:"#545454"}}>
                 <Tabs onTabChange={onChange}>
                     <Tabs.Tab style={{color:"white"}} icon={<FaUserEdit className="user-exit" />}/>
@@ -81,6 +81,6 @@ export default function User(props) {
                     : <div>в разработке</div>
                 )
             }
-        </>
+        </div>
     );
 }

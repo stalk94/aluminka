@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Title, Body, Footer, Button } from "./base";
 
 
 
-/**
- *  ! Вызов через глобальный эммитер `"open.modal"`        
- *  `buttonTitle`: String == event name      
- *  `title`: String     
- *  `child`: JSX     
- *  `size`: 'sm' | 'lg' | 'xl' | ''     
- *  `tools`: JSX
- */
+
 export default function Modal(props) {
-    const [child, setChildren] = useState()
-    const [title, setTitle] = useState('')
-    const [btnTitle, setBtnTitle] = useState('click')
-    const [size, setSize] = useState(null)
-    const [visible, setVisible] = useState(props.visible??false);
+    const [child, setChildren] = React.useState()
+    const [title, setTitle] = React.useState('')
+    const [btnTitle, setBtnTitle] = React.useState('click')
+    const [size, setSize] = React.useState(null)
+    const [visible, setVisible] = React.useState(props.visible??false);
     
 
     return(

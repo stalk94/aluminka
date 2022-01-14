@@ -2,6 +2,7 @@ import React from 'react';
 import Popover from 'devextreme-react/popover';
 
 
+
 /**
  * `category`: string - префикс группы  
  * `properties`: {} - list properties   

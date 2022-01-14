@@ -1,6 +1,6 @@
 import React from 'react';
 import Form from "@rjsf/core";
-import { Button } from "./base";
+import { Button } from "../base";
 
 
 export function PhotoLoader(props) {
@@ -50,23 +50,12 @@ export function PhotoLoader(props) {
 
 
 
-/**
- * 
- * useDidMount(()=> {
-        EVENT.on("open.modal", (arg)=> {
-            document.querySelector(".app").style.visibility = 'visible';
-            setVisible(!visible);
-            if(arg){
-                setBody(arg.body)
-                setFoot(arg.foot)
-            }
-        });
-    });
- */
+
 export function AdminFormCreate(props) {
     const [formData, setFormData] = React.useState(null);
-    const [images, setImages] = React.useState([])
+    const [images, setImages] = React.useState([]);
 
+    
     const usePhoto =(e)=> images.length<=4 && setImages(e);
 
     

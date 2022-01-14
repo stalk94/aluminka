@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AdminFormCreate } from "../tovar-create";
+import { AdminFormCreate } from "./tovar-create";
 import FileManagers from "../file-manager";
 import { Button, Title, Body, Footer } from "../base";
 import { BiStoreAlt } from "react-icons/bi";
