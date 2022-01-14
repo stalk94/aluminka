@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Button } from '@nextui-org/react';
 import { PhotoGalery } from '../galery';
-const style = {padding:"5px", border:"1px solid grey"}
+import PushPop from "./push-pop";
+
 
 
 const Colors =(props)=> (
@@ -18,16 +19,11 @@ const Colors =(props)=> (
 
 
 export default function Page(props) {
-    const [select, setSelect] = useState()
-    const [display, setDisplay] = useState("block")
-    const [total, setTotal] = useState({old:0, new:0})
-    const [count, setCount] = useState(0)
+    const [select, setSelect] = useState();
+    const [total, setTotal] = useState({old:0, new:0});
+    const [count, setCount] = useState(0);
 
-    const onCount =(mod="add")=> setCount((count)=> mod==="add"?(count+=1):(count-=1));
-    const onEnd =()=> {
-        setDisplay("none")
-        props.onEnd()
-    }
+    
     const toBay =()=> {
         setTotal({old:props.price * count, new:props.priceMin * count})
         EVENT.emit("add", {count:count, tovar:props})
@@ -42,9 +38,9 @@ export default function Page(props) {
     
 
     return(
-        <div className="View-tovar" style={{display:display, overflow:"auto"}}>
+        <div className="View-tovar" style={{display:props.open?"display":"none", overflow:"auto"}}>
             <header>
-                <Button flat color="primary" auto onClick={onEnd}>
+                <Button flat color="primary" auto onClick={props.onEnd}>
                     Назад
                 </Button>
             </header>
@@ -63,15 +59,14 @@ export default function Page(props) {
                     <p>Модель: { props.model }</p>
                     <div className="price" style={{backgroundColor:"rgb(20,20,20)",marginTop:"2%",display:"flex",flexDirection:"row"}}>
                         Цена:
-                        <h2 style={{textDecoration:"line-through",color:"red"}}>{ props.price }грн /</h2>
-                        <h2 style={{color:"green"}}> {props.priceMin} грн</h2>
+                        <h2 style={{textDecoration:"line-through",color:"red"}}>{ props.price??100 }грн /</h2>
+                        <h2 style={{color:"green"}}> {props.priceMin??80} грн</h2>
                     </div>
                     <div className="line">
-                        <div style={{marginRight:"2%", marginLeft:"40%"}} className="ap-sub line">
-                            <button style={style} onClick={()=> onCount("sub")}> - </button>
-                            <div style={style}>{ count }(всего:{total.new}грн)</div>
-                            <button style={style} onClick={()=> onCount("add")}> + </button>
-                        </div>
+                        <PushPop
+                            setCount={setCount}
+                            count={count}
+                        />
                         <Button flat color="#ff4ecd" auto onClick={toBay}> В корзину </Button>
                     </div>
                 </div>

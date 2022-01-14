@@ -3,9 +3,9 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "build": "vite build src",
+        "build": "vite build src --outDir=../dist",
         "start": "node index.js",
-        "test": "vite test"
+        "test": "vite src"
     },
     "keywords": [],
     "author": "",
@@ -35,7 +35,9 @@
     "devDependencies": {
         "@coreui/coreui": "^4.1.0",
         "@coreui/react": "^4.1.0",
+        "@hookstate/core": "^3.0.13",
         "@mantine/core": "^3.4.0",
+        "@babel/preset-react": "^7.16.7",
         "@mantine/notifications": "^3.4.2",
         "@nextui-org/react": "^1.0.1-alpha.47",
         "@parcel/babel-preset-env": "^2.0.1",
@@ -53,6 +55,10 @@
         "grommet": "^2.18.0",
         "grommet-icons": "^4.7.0",
         "jsdom": "^19.0.0",
+        "primeflex": "^2.0.0",
+        "primeicons": "^5.0.0",
+        "primereact": "^7.1.0",
+        "process": "^0.11.10",
         "react": "^17.0.2",
         "react-aria-offcanvas": "^1.4.3",
         "react-dom": "^17.0.2",

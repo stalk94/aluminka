@@ -5,7 +5,7 @@ import { Tabs } from '@mantine/core';
 import { ImExit } from "react-icons/im";
 import Form from "@rjsf/core";
 import { Button } from '@mantine/core';
-
+import globalState from "../global.state";
 
 
 const UserEdit =(props)=> {
@@ -16,7 +16,7 @@ const UserEdit =(props)=> {
         <div>
             <Form
                 formData={formData}
-                schema={$schemes.user}
+                schema={globalState.user.get()}
                 onChange={(e)=> setFormData(e.formData)}
                 onError={(e)=> useEmit('error', e)} 
             >
@@ -33,7 +33,7 @@ const UserEdit =(props)=> {
 const Catalog =(props)=> {
     return(
         <>
-            {$state.user.bays.map((bay, i)=> {
+            {globalState.user.bays.get().map((bay, i)=> {
                 <div>
                     <var>{bay.time}</var>
                     <var>{bay.total}</var>

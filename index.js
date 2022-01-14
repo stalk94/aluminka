@@ -11,7 +11,7 @@ const pinoms = require('pino-multi-stream');
 const cookieParser = require('cookie-parser');
 const { setPasswordHash, tokenGeneration, getPasswordHash } = require("./server/func");
 const { time, scheme } = require("./server/midlevare");
-const dist = require("./dist");
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -45,43 +45,10 @@ app.get("/", (req, res)=> {
     let token = req.cookies ? req.cookies['token'] : undefined
     let user = global.activ[token]
 
-    if(user) res.send(dist.index({'user':user}))
-    else res.send(dist.index())
+    res.sendFile('dist/index.html');
 });
-app.get("/shadow-profile", (req, res)=> {
-    let token = req.cookies ? req.cookies['token'] : undefined
-    let user = global.activ[token]
-
-    if(user) res.send(dist['shadow-profile']({user:user}))
-    else res.send(dist['shadow-profile']())
-});
-app.get("/detail-plintus", (req, res)=> {
-    let token = req.cookies ? req.cookies['token'] : undefined
-    let user = global.activ[token]
-
-    if(user) res.send(dist['detail-plintus'](user))
-    else res.send(dist['detail-plintus']())
-});
-app.get("/door-profile", (req, res)=> {
-    let token = req.cookies ? req.cookies['token'] : undefined
-    let user = global.activ[token]
-
-    if(user) res.send(dist['door-profile']({user:user}))
-    else res.send(dist['door-profile']())
-});
-app.get("/furnityra", (req, res)=> {
-    let token = req.cookies ? req.cookies['token'] : undefined
-    let user = global.activ[token]
-
-    if(user) res.send(dist['furnityra'](user))
-    else res.send(dist['furnityra']())
-});
-app.get("/plintus", (req, res)=> {
-    let token = req.cookies ? req.cookies['token'] : undefined
-    let user = global.activ[token]
-
-    if(user) res.send(dist['plintus'](user))
-    else res.send(dist['plintus']())
+app.get("/slides", (req, res)=> {
+    res.send(db.get("slides"))
 });
 app.get("/logout", (req, res)=> {
     logger.info(`[🚪] logout: ${req.cookies['token']}`);
@@ -90,6 +57,7 @@ app.get("/logout", (req, res)=> {
     res.clearCookie('token');
     res.redirect("/");
 });
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 app.post('/auth', jsonParser, (req, res)=> {

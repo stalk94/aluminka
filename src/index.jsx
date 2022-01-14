@@ -1,19 +1,19 @@
 import "./global";
-import React, { useEffect, useState } from 'react';
-import Title from "./component/nav";
+import React from 'react';
+import { useState } from '@hookstate/core';
 import { MantineProvider } from '@mantine/core';
 import { useNotifications, NotificationsProvider } from '@mantine/notifications';
-import Navigation from "./component/navigation";
-import Promo from "./component/promo";
-import { PhotoGalery } from './component/galery';
-import Admin from './component/admin';
-import Shop from './component/shop';
+import Admin from './component/admin/admin';
 import User from "./component/user";
 import AuthForm from "./component/authorize";
-import { PanelBays } from "./component/bay";
-import { useDidMount, useWillUnmount } from 'rooks';
+import { PanelBays } from "./component/page/bay";
+import { useDidMount } from 'rooks';
 import { StatusGood, StatusWarning, StatusCritical } from 'grommet-icons';
+import Shop from './component/page/shop';
+import Index from './component/page/index';
+import globalState from "./global.state";
 import ReactDOM from "react-dom";
+
 
 
 export const useNotify =(notifications, type, title, massage)=> {
@@ -35,9 +35,16 @@ export const useNotify =(notifications, type, title, massage)=> {
 
 const App =()=> {
     const notifications = useNotifications();
-    const [opened, setOpened] = useState(false);
-    const [authorize, setAuthorize] = useState(false);
+    const glob = useState(globalState);
+    const [opened, setOpened] = React.useState(false);
+    const [authorize, setAuthorize] = React.useState(false);
     
+
+    const useExit =(res)=> {
+        useNotify(notifications, "error", 'Ошибка', res.error);
+        localStorage.clear()
+        document.location.reload()
+    }
     useDidMount(()=> {
         EVENT.on("close.modal", (val)=> {
             if(val==='all') document.querySelector(".app").style.visibility = "hidden"
@@ -48,21 +55,17 @@ const App =()=> {
             document.body.style.overflowY = "auto"
         });
         EVENT.on('open.modal', ()=> {
-            if(globalThis.$state && globalThis.$state.user && globalThis.$state.user.login){
+            if(glob.user.login.get()!=='anonim'){
                 document.querySelector(".app").style.visibility = 'visible'
                 document.body.style.overflowY = "hidden"
             }
             else setOpened(true);
         });
-        EVENT.on("create.tovar", (data)=> send("/create", data, "POST", (res)=> {
+        EVENT.on("create.tovar", (data)=> send("create", data, "POST", (res)=> {
             if(!res.error) useNotify(notifications, "sucess", 'Успешно добавлено', res.sucess);
-            else {
-                useNotify(notifications, "error", 'Ошибка', res.error);
-                localStorage.clear()
-                document.location.reload()
-            }
+            else useExit(res);
         }));
-        EVENT.on("reg", (data)=> send("/reg", data, "POST", (res)=> {
+        EVENT.on("reg", (data)=> send("reg", data, "POST", (res)=> {
             if(!res.error||res.sucess){
                 EVENT.emit("sucess.reg", '')
                 useNotify(notifications, "sucess", 'Успешно', res.sucess)
@@ -72,7 +75,7 @@ const App =()=> {
                 useNotify(notifications, "error", 'Ошибка', res.error)
             }
         }));
-        EVENT.on("auth", (data)=> send("/auth", data, "POST", (res)=> {
+        EVENT.on("auth", (data)=> send("auth", data, "POST", (res)=> {
             if(!res.error){
                 EVENT.emit("sucess.auth", res)
                 useNotify(notifications, "sucess", 'Успешно', 'вы авторизировались')
@@ -83,11 +86,11 @@ const App =()=> {
                 useNotify(notifications, "error", 'Ошибка', res.error)
             }
         }));
-        EVENT.on("newBay", (data)=> send("/bay", data, "POST", (res)=> {
+        EVENT.on("newBay", (data)=> send("bay", data, "POST", (res)=> {
             if(!res.error||res.sucess) EVENT.emit("sucess", res.sucess??res);
             else EVENT.emit("error", res.error);
         }));
-        EVENT.on("user.edit", (data)=> send("/userEdit", data, "POST", (res)=> {
+        EVENT.on("user.edit", (data)=> send("userEdit", data, "POST", (res)=> {
             if(!res.error||res.sucess){
                 EVENT.emit("sucess.user.edit", '')
                 useNotify(notifications, "sucess", 'Успешно', res.sucess)
@@ -98,55 +101,31 @@ const App =()=> {
             }
         }));
         EVENT.on("add", (data)=> {
-            window.$state.user.basket.push(data);
-            window.store.save("добавлено в корзину");
+            glob.user.basket.set((st)=> {
+                st.push(data)
+                return st
+            });
+            useNotify(notifications, "sucess", 'Успешно добавлено', "добавлено в корзину");
         });
         EVENT.on("error", (data)=> useNotify(notifications, "error", 'Ошибка', data));
         EVENT.on("sucess", (data)=> useNotify(notifications, "sucess", 'Успешно', data));
     });
-    useWillUnmount(()=> EVENT.remote());
-    
-    useEffect(()=> {
-        if(!globalThis.$state) globalThis.$state = {}
-        if(!globalThis.$state.user) globalThis.$state = {
-            user:{
-                cupons: [],
-                bays: [],
-                basket: [],
-                firsName: undefined,
-                lastName: undefined,
-                login: undefined,
-                token: undefined,
-                permision: {
-                    create:false,
-                    copy:false,
-                    move:false,
-                    delete:false,
-                    rename:false,
-                    upload:false,
-                    download:false
-                },
-                files: [{
-                    name: 'Documents',
-                    isDirectory: true,
-                    items:[]
-                }]
-            }
-        }
 
-        if(localStorage.getItem("user")) globalThis.$state.user = JSON.parse(localStorage.getItem("user"))
-        if(globalThis.$state && globalThis.$state.user && globalThis.$state.user.permision && globalThis.$state.user.permision.create){
-            if(globalThis.$state.user.token) setAuthorize(true)
-        }
-    }, [globalThis.$state])
 
     return(
         <>
             <PanelBays />
-            {authorize===false && <AuthForm opened={opened} setOpened={setOpened} />}
-            {(authorize===true && (globalThis.$state && globalThis.$state.user && globalThis.$state.user.permision && globalThis.$state.user.permision.create)) 
+            { authorize===false && <AuthForm opened={opened} setOpened={setOpened} /> }
+            {(authorize===true && glob.get().user.permision.create) 
                 ? <Admin visible={true} /> 
                 : <User setOpen={setOpened} visible={opened} />
+            }
+            {glob.dir.get()==='index' 
+                ?  <Index />
+                : (glob.dir.get()!=='services'&&glob.dir.get()!=='payment'&&glob.dir.get()!=='contact'
+                    ? <Shop />
+                    : ""
+                )
             }
         </>
     );
@@ -160,10 +139,5 @@ ReactDOM.render(
             <App />
         </NotificationsProvider>
     </MantineProvider>,
-    document.querySelector(".app")
+    document.querySelector(".root")
 );
-ReactDOM.render(<Title />, document.querySelector(".Titles"));
-ReactDOM.render(<Navigation />, document.querySelector(".Nav"));
-if(getRoot()!=='index') ReactDOM.render(<Shop />, document.querySelector(".list-tovar"));
-if(getRoot()==='index') ReactDOM.render(<Promo />, document.querySelector(".Promo"));
-ReactDOM.render(<PhotoGalery data={$slides[getRoot()]} />, document.querySelector(".Slider"));
