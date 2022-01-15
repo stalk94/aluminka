@@ -19,9 +19,12 @@ export default function Index() {
     const useClick =(num)=> {
         console.log(num)
     }
+    const useCatalog =(cat)=> {
+        
+    }
     const useDir =(dir)=> {
         glob.set((st)=> {
-            st.dir = dir 
+            st.dir = st.component.navigation[dir]
             return st
         });
     }
@@ -52,7 +55,7 @@ export default function Index() {
                 <div className="Promo">
                     <Promo />
                 </div>
-                <section style={{width:"100%",backgroundColor:"#151616"}}>
+                <section style={{width:"100%"}}>
                     <h2>Наши партнеры:</h2>
                     <div className="Slider">
                         

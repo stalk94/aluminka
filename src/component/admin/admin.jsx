@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { AdminFormCreate } from "./tovar-create";
+import { Toolbar } from 'primereact/toolbar';
 import FileManagers from "../file-manager";
-import { Button, Title, Body, Footer } from "../base";
-import { BiStoreAlt } from "react-icons/bi";
-import { FiSettings } from "react-icons/fi";
-import { VscFileSubmodule } from "react-icons/vsc";
-import { ImStatsBars } from "react-icons/im";
-
+import { Button } from 'primereact/button';
+import { useState } from '@hookstate/core';
+import globalState from "../../global.state";
 
 
 const Statstics =(props)=> {
@@ -23,57 +21,60 @@ const Settings =(props)=> {
         </div>
     );
 }
+const Leeds =()=> {
+    return(
+        <div>
+
+        </div>
+    );
+}
+const DataBaseEditor =()=> {
+    return(
+        <div>
+
+        </div>
+    );
+}
 
 
 
-/** events: `editor`, `events`, `settings` */ 
-export default function Admin(props) {
-    const [fsVisible, setFsVisible] = useState(false)
-    const [body, setBody] = useState(<Statstics />)
-    const [foot, setFoot] = useState('')
 
-   
+export default function Admin({setOpen, visible}) {
+    const [body, setBody] = React.useState(<Statstics />);
+
     const useDir =(dir)=> {
         if(dir==='editor') setBody(<AdminFormCreate />);
-        else if(dir==='fs') setBody(<FileManagers visible={fsVisible}  />);
+        else if(dir==='fs') setBody(<FileManagers />);
         else if(dir==='setings') setBody(<Settings />);
-        else setBody(<Statstics />);
+        else if(dir==='base') setBody(<Statstics />);
+        else if(dir==='leeds') setBody(<Leeds />);
+        else if(dir==='db') setBody(<DataBaseEditor />);
+        else setOpen(false)
     }
-    const useFoot =()=> {
+    const leftContents = (
+        <React.Fragment>
+            <Button onClick={()=> useDir('base')} icon="pi pi-th-large" className="p-button-secondary" />
+            <Button onClick={()=> useDir('editor')} label="Каталог" icon="pi pi-plus-circle" className="p-mr-2" />
+            <Button onClick={()=> useDir('leeds')} label="Лиды" icon="pi pi-shopping-cart" className="p-button-success" />
+            <Button onClick={()=> useDir('setings')} label="Настройки" icon="pi pi-cog" className="p-button-success" />
+        </React.Fragment>
+    );
+    const rightContents = (
+        <React.Fragment>
+            <Button onClick={()=> useDir('fs')} icon="pi pi-folder" className="p-mr-2 p-button-secondary" />
+            <Button onClick={()=> useDir('db')} icon="pi pi-database" className="p-mr-2 p-button-secondary" />
+            <Button onClick={()=> useDir('exit')} icon="pi pi-times" className="p-mr-2 p-button-danger" />
+        </React.Fragment>
+    );
 
-    }
-    
 
     return(
-        <div style={{backgroundColor:"rgba(28,29,30,0.98)"}}> 
-            <Title size={[25, 70, 5]}>
-                <div style={{display:"flex",flexDirection:"row",backgroundColor:"rgba(77,242,245,0.06)"}}>
-                    <Button color="secondary" onClick={()=> useDir('editor')}>
-                        <BiStoreAlt />
-                    </Button>
-                    <Button color="secondary" onClick={()=> useDir('statistic')}>
-                        <ImStatsBars />
-                    </Button>
-                    <Button color="secondary" onClick={()=> useDir('fs')}>
-                        <VscFileSubmodule />
-                    </Button>
-                    <Button color="secondary" onClick={()=> useDir('setings')}>
-                        <FiSettings />
-                    </Button>
-                </div>
-                <var style={{textAlign:"center",marginLeft:"30%"}}>
-                    админка {document.location.hostname}
-                </var>
-                <Button color="danger" onClick={()=> EVENT.emit("close.modal", "")}>
-                    x
-                </Button>
-            </Title>
-            <Body>
-                { body }
-            </Body>
-            <Footer>
-                { foot }
-            </Footer>
+        <div style={{display:visible?"block":"none"}}>
+            <Toolbar 
+                left={leftContents} 
+                right={rightContents} 
+            />
+            { body }
         </div>
     );
 }

@@ -1,10 +1,8 @@
 import React from "react";
-import { FaUserEdit, FaUserCog } from "react-icons/fa";
-import { FiShoppingBag } from "react-icons/fi";
-import { Tabs } from '@mantine/core';
-import { ImExit } from "react-icons/im";
 import Form from "@rjsf/core";
-import { Button } from '@mantine/core';
+import { Toolbar } from 'primereact/toolbar';
+import { Button } from 'primereact/button';
+import { useState } from '@hookstate/core';
 import globalState from "../global.state";
 
 
@@ -47,40 +45,39 @@ const Catalog =(props)=> {
 
 
 export default function User({visible, setOpen}) {
-    const [activ, setActiv] = React.useState('edit');
-    const [state, setState] = React.useState();
+    const [activ, setActiv] = React.useState();
+    const user = useState(globalState.user);
 
-    React.useEffect(()=> {
-        if(globalThis.$state) setState(globalThis.$state.user)
-    }, [])
+    
     const useExit =()=> {
-        EVENT.emit("close.modal", '')
+        setOpen(false)
     }
-    const onChange =(i)=> {
-        if(i===0) setActiv('edit')
-        else if(i===1) setActiv('catalog')
-        else setActiv('setings')
+    const useDir =(type)=> {
+        if(type===0) setActiv(<UserEdit />);
+        else if(type===1) setActiv(<Catalog />);
+        else setActiv(<div>в разработке</div>);
     }
+    const leftContents = (
+        <React.Fragment>
+            <Button onClick={()=> useDir('userBase')} icon="pi pi-th-large" className="p-button-secondary" />
+            <Button onClick={()=> useDir('bays')} label="Лиды" icon="pi pi-shopping-cart" className="p-button-success" />
+            <Button onClick={()=> useDir('userSetings')} label="Настройки" icon="pi pi-cog" className="p-button-success" />
+        </React.Fragment>
+    );
+    const rightContents = (
+        <React.Fragment>
+            <Button onClick={useExit} icon="pi pi-times" className="p-mr-2 p-button-danger" />
+        </React.Fragment>
+    );
+
 
     return(
         <div style={{display:visible?"block":"none"}}>
-            <div style={{backgroundColor:"#545454"}}>
-                <Tabs onTabChange={onChange}>
-                    <Tabs.Tab style={{color:"white"}} icon={<FaUserEdit className="user-exit" />}/>
-                    <Tabs.Tab style={{color:"white"}} icon={<FiShoppingBag className="user-exit" />}/>
-                    <Tabs.Tab style={{color:"white"}} icon={<FaUserCog className="user-exit" />}/>
-                </Tabs>
-                <div className="user-exit" style={{position:"absolute",zIndex:3,top:"10px",left:"96%"}} onClick={useExit}>
-                    <ImExit/>
-                </div>
-            </div>
-            {activ==='edit'
-                ? <UserEdit />
-                : (activ==='catalog'
-                    ? <Catalog />
-                    : <div>в разработке</div>
-                )
-            }
+            <Toolbar 
+                left={leftContents} 
+                right={rightContents} 
+            />
+            { activ }
         </div>
     );
 }

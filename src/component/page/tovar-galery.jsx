@@ -5,13 +5,14 @@ import React from "react";
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
-
+import { useState } from '@hookstate/core';
+import globalState from "../../global.state";
 
 
 
 
 export default function Tovars({useClick}) {
-    const [products, setProducts] = React.useState(window.$tovar??[]);
+    const products = useState(globalState.tovars);
     const [layout, setLayout] = React.useState('grid');
     const [sortKey, setSortKey] = React.useState(null);
     const [sortOrder, setSortOrder] = React.useState(null);
@@ -21,7 +22,7 @@ export default function Tovars({useClick}) {
         {label: 'по росту цены', value: 'price'},
     ];
 
-    React.useEffect(()=> setProducts(window.$tovar), [window.$tovar])
+    
     const onSortChange =(event)=> {
         const value = event.value;
 
@@ -137,17 +138,15 @@ export default function Tovars({useClick}) {
 
     return(
         <div className="dataview-demo">
-            <div className="card">
-                <DataView paginator 
-                    value={products} 
-                    layout={layout} 
-                    header={renderHeader()}
-                    itemTemplate={itemTemplate} 
-                    rows={9}
-                    sortOrder={sortOrder}
-                    sortField={sortField} 
-                />
-            </div>
+            <DataView paginator 
+                value={products.get()} 
+                layout={layout} 
+                header={renderHeader()}
+                itemTemplate={itemTemplate} 
+                rows={9}
+                sortOrder={sortOrder}
+                sortField={sortField} 
+            />
         </div>
     );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from "@rjsf/core";
 import { Button } from "../base";
+import globalState from "../../global.state";
 
 
 export function PhotoLoader(props) {
@@ -55,26 +56,23 @@ export function AdminFormCreate(props) {
     const [formData, setFormData] = React.useState(null);
     const [images, setImages] = React.useState([]);
 
-    
-    const usePhoto =(e)=> images.length<=4 && setImages(e);
 
-    
     return(
         <div style={{height:window.innerHeight-50,overflowY:"auto"}}>
-            <PhotoLoader images={images} setImages={usePhoto} />
+            <PhotoLoader images={images} setImages={(e)=> images.length<=6 && setImages(e)} />
             <Form
                 formData={formData}
-                schema={$schemes.admin[0]}
+                schema={globalState.schemes.admin.get()[0]}
                 onChange={(e)=> setFormData(e.formData)}
                 onError={(e)=> useEmit('error', e)} 
             >
                 <Form formData={formData}
-                    schema={$schemes.admin[1]}
+                    schema={globalState.schemes.admin.get()[1]}
                     onChange={(e)=> setFormData(e.formData)}
                     onError={(e)=> useEmit('error', e)} 
                 >
                     <Form formData={formData}
-                        schema={$schemes.admin[2]}
+                        schema={globalState.schemes.admin.get()[2]}
                         onChange={(e)=> setFormData(e.formData)}
                         onSubmit={(e)=> useEmit('create', {...formData, images:images})}
                         onError={(e)=> useEmit('error', e)} 
@@ -83,6 +81,7 @@ export function AdminFormCreate(props) {
                     </Form>
                 </Form>
             </Form>
+            
             <Button color="sucess" onClick={()=> EVENT.emit("create.tovar", {...formData, images:images})}> 
                 { props.title??'сохранить' } 
             </Button>

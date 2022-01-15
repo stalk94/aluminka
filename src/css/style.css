@@ -614,7 +614,11 @@ img.ii {
     margin-left: 10px;
     margin-right: 10px;
 }
-
+.p-col:hover {
+    background-color: #dedfdf65;
+    border-radius: 10px;
+    cursor: pointer;
+}
 
 .svg-window {
     border: solid 1px rgba(255, 0, 0, 0.5);

@@ -8,7 +8,7 @@ import fon from "../../img/top_fon.png";
 export default function Header({useClickUrl,src}) {
     return(
         <header>
-            <div className="Titles">
+            <div>
                 <Title/>
             </div>
             <div>

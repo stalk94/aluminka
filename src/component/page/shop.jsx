@@ -1,6 +1,5 @@
 import React from 'react';
 import ListTovar from "./tovar-galery";
-import Page from "./page-tovar";
 import { PhotoGalery } from '../galery';
 import Footer, { Feedback } from "./footer";
 import { useState } from '@hookstate/core';
@@ -21,9 +20,12 @@ export default function Shop() {
     }
     const useDir =(dir)=> {
         glob.set((st)=> {
-            st.dir = dir 
+            st.dir = st.component.navigation[dir];
             return st
         });
+    }
+    const onDir =()=> {
+        if(glob.dir.get() && glob.dir.get().id) return glob.slides.get()[glob.dir.get().id]
     }
 
 
@@ -32,41 +34,21 @@ export default function Shop() {
             <div className="app"></div>
             <div style={{zIndex:"10"}} className="Bays"></div>
             <div className="Modal"></div>
-
             <Header 
                 useClickUrl={useDir}
                 src={"../img/foot_fon.png"} 
             />
-
-            <main>
-                <section className="two line">
-                    <div className="swiper-containers">
-                        <div className="head-blok line">
-                            <div>Товары</div>
-                        </div>
-
-                        <div className="list-tovar">
-                            <Page 
-                                open={open} 
-                                onEnd={()=> setOpen(false)} 
-                                {...curent} 
-                            />
-                            <div classNameName="head-blok line">
-                                <ListTovar useClick={useClick} />
-                            </div>
-                        </div>
-                    </div>
+            <main style={{backgroundColor:"#151616"}}>
+                <section className="two" style={{padding:'0px',marginTop:"-8%"}}>
+                    <ListTovar useClick={useClick} />
                 </section>
-
-                <section className="three">
+                <section style={{width:"100%",backgroundColor:"#151616"}}>
                     <h2>Выгодные предложения:</h2>
                     <div className="Slider">
-                        <PhotoGalery data={$slides[getRoot()]} />
+                        <PhotoGalery data={onDir()} />
                     </div>
                 </section>
-                <Feedback />
             </main>
-
             <Footer/>
         </div>
     );

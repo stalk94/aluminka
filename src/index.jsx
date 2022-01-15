@@ -46,6 +46,9 @@ const App =()=> {
         document.location.reload()
     }
     useDidMount(()=> {
+        if(!window.test) window.send('getAllTovars', {}, 'GET', (data)=> {
+            glob.tovars.set(data);
+        });
         EVENT.on("close.modal", (val)=> {
             if(val==='all') document.querySelector(".app").style.visibility = "hidden"
         });
@@ -118,7 +121,7 @@ const App =()=> {
             <div style={{position:"fixed",width:"100%",backgroundColor:"#000000e6",zIndex:"9"}}>
                 { authorize===false && <AuthForm opened={opened} setOpened={setOpened} /> }
                 {(authorize===true && glob.get().user.permision.create) 
-                    ? <Admin visible={false} /> 
+                    ? <Admin setOpen={setOpened} visible={opened} permisions={glob.get().user.permision} /> 
                     : <User setOpen={setOpened} visible={opened} />
                 }
             </div>

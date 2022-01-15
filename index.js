@@ -47,6 +47,9 @@ app.get("/", (req, res)=> {
 
     res.sendFile('dist/index.html');
 });
+app.get('/getAllTovars', (req, res)=> {
+    res.send(db.get("tovars"))
+});
 app.get("/slides", (req, res)=> {
     res.send(db.get("slides"))
 });
@@ -175,21 +178,6 @@ app.post("/payCart", jsonParser, (req, res)=> {
         res.send(html)
     });
 });
-app.post("/save", jsonParser, (req, res)=> {
-    let token = req.cookies ? req.cookies['token'] : undefined;
-    let user = global.activ[token];
-
-    if(user){
-        Object.keys(req.body.state).map((key)=> {
-            if(key!=='login'&&key!=='password'&&key!=='token'&&key!=='cupon'){
-                if(user[key]) user[key] = req.body.state[key]
-            }
-        });
-        db.set("user."+user.login, user)
-        res.send({sucess: req.body.title})
-    }
-    else res.send({error: "validation failed"});
-});
 app.post(/hook/, jsonParser, (req, res)=> {
     let p = new URL(req.url, `http://${request.headers.host}`);
     let urls = p.pathname.replace('/', '.');
@@ -219,7 +207,6 @@ app.post("/userEdit", jsonParser, (req, res)=> {
 
 // admin
 app.post("/file", jsonParser, (req, res)=> {
-    console.log(req.cookies['token'])
     if(req.cookies['token'] && req.cookies['token']===app.TOKEN) fs.writeFile(`db/${req.body.path}/files.json`, req.body, (err)=> {
         if(!err) res.send("save")
         else res.send({error:err})
