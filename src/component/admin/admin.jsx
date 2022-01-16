@@ -2,7 +2,9 @@ import React from "react";
 import { AdminFormCreate } from "./tovar-create";
 import { Toolbar } from 'primereact/toolbar';
 import FileManagers from "../file-manager";
+import { useIntervalWhen } from "rooks";
 import { Button } from 'primereact/button';
+import Leeds from './task-bay';
 import { useState } from '@hookstate/core';
 import globalState from "../../global.state";
 
@@ -21,13 +23,7 @@ const Settings =(props)=> {
         </div>
     );
 }
-const Leeds =()=> {
-    return(
-        <div>
 
-        </div>
-    );
-}
 const DataBaseEditor =()=> {
     return(
         <div>
@@ -51,6 +47,7 @@ export default function Admin({setOpen, visible}) {
         else if(dir==='db') setBody(<DataBaseEditor />);
         else setOpen(false)
     }
+    
     const leftContents = (
         <React.Fragment>
             <Button onClick={()=> useDir('base')} icon="pi pi-th-large" className="p-button-secondary" />

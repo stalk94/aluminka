@@ -5,6 +5,7 @@ import { InputText } from 'primereact/inputtext';
 
 
 
+
 export const Feedback =()=> {
     const [value, setValue] = React.useState();
     const [state, setState] = React.useState([]);
@@ -15,7 +16,15 @@ export const Feedback =()=> {
         setState(copy)
     }
     const useSend =()=> {
-        
+        if(state[2].length > 10) send("question", {
+            name: state[0],
+            email: state[1],
+            text: state[2]
+        }, "POST", (res)=> {
+            if(res.error) EVENT.emit("error", res.error);
+            else EVENT.emit("sucess", res.sucess);
+        });
+        else EVENT.emit("error", "сообщение должно быть длинее 10 символов")
     }
 
 

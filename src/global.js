@@ -37,7 +37,6 @@ class EventEmmitter {
 
 
 window.EVENT = new EventEmmitter();
-window.test = true
 window.gurl = document.baseURI;
 window.process = process
 

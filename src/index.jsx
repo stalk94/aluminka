@@ -7,15 +7,29 @@ import Admin from './component/admin/admin';
 import User from "./component/user";
 import AuthForm from "./component/authorize";
 import { PanelBays } from "./component/page/bay";
-import { useDidMount } from 'rooks';
+import { useDidMount, useIntervalWhen } from 'rooks';
 import { StatusGood, StatusWarning, StatusCritical } from 'grommet-icons';
 import Shop from './component/page/shop';
 import Index from './component/page/index';
 import globalState from "./global.state";
+import { Button } from 'primereact/button';
 import ReactDOM from "react-dom";
 
 
-
+const ErrorPage =({txt})=> (
+    <div style={{overflow:"hidden"}}>
+    <img style={{position:"absolute",width:"100%",height:"100%",top:"0px",left:"0px"}} 
+        src="https://www.inksystem.biz/uploaded/img/article/error-5100.jpg"
+    />
+        <Button style={{width:""}}
+            label="На главную"
+            icon="pi pi-chevron-left" 
+            className="p-button" 
+            onClick={()=> globalState.dir.set({id:'index', name:'Главная'})} 
+        />
+        <div style={{zIndex:"2",position:"fixed",left:"42%",top:"10%"}} className="p-text-center">{txt}</div>
+    </div>
+);
 export const useNotify =(notifications, type, title, massage)=> {
     let color = type==='sucess' ? 'green' : (type==='warn'?'orange':'red');
     let icon = type==='sucess' 
@@ -45,6 +59,7 @@ const App =()=> {
         localStorage.clear()
         document.location.reload()
     }
+    
     useDidMount(()=> {
         if(!window.test) window.send('getAllTovars', {}, 'GET', (data)=> {
             glob.tovars.set(data);
@@ -65,7 +80,12 @@ const App =()=> {
             else setOpened(true);
         });
         EVENT.on("create.tovar", (data)=> send("create", data, "POST", (res)=> {
-            if(!res.error) useNotify(notifications, "sucess", 'Успешно добавлено', res.sucess);
+            if(!res.error){
+                useNotify(notifications, "sucess", 'Успешно добавлено', res.sucess);
+                window.send('getAllTovars', {}, 'GET', (data)=> {
+                    glob.tovars.set(data);
+                });
+            }
             else useExit(res);
         }));
         EVENT.on("reg", (data)=> send("reg", data, "POST", (res)=> {
@@ -116,7 +136,7 @@ const App =()=> {
 
 
     return(
-        <>
+        <React.StrictMode>
             <PanelBays />
             <div style={{position:"fixed",width:"100%",backgroundColor:"#000000e6",zIndex:"9"}}>
                 { authorize===false && <AuthForm opened={opened} setOpened={setOpened} /> }
@@ -125,14 +145,14 @@ const App =()=> {
                     : <User setOpen={setOpened} visible={opened} />
                 }
             </div>
-            {glob.dir.get()==='index' 
+            {glob.dir.id.get()==='index' 
                 ?  <Index />
-                : (glob.dir.get()!=='services'&&glob.dir.get()!=='payment'&&glob.dir.get()!=='contact'
+                : (glob.dir.id.get()!=='services'&&glob.dir.id.get()!=='pays'&&glob.dir.id.get()!=='contact'&&glob.dir.id.get()!=='index'
                     ? <Shop />
-                    : ""
+                    : <ErrorPage txt={"Страница в разработке"}/>
                 )
             }
-        </>
+        </React.StrictMode>
     );
 }
 

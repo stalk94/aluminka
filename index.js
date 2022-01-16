@@ -50,6 +50,9 @@ app.get("/", (req, res)=> {
 app.get('/getAllTovars', (req, res)=> {
     res.send(db.get("tovars"))
 });
+app.get('/bays', (req, res)=> {
+    res.send(db.get("bays"))
+});
 app.get("/slides", (req, res)=> {
     res.send(db.get("slides"))
 });

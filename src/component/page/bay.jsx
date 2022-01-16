@@ -7,34 +7,31 @@ import { useState } from '@hookstate/core';
 import globalState from "../../global.state";
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-const options = [{value: 'nov', label: 'Новой почтой'}, {value: 'samo', label: 'Самовывоз'}];
-const options2 = [{value: 'naloj', label: 'Наложенный платеж'}];
-
-const stat = {
-    firstName: globalState.user.firstName,
-    lastName: globalState.user.lastName,
-    phone: globalState.user.phone,
-    city: globalState.user.city,
-    adres: globalState.user.adres
-};
-//////////////////////////////////////////////////////////////////////////////////////
-
 
 const Pays =({onOpen, setOpen})=> {
+    const [state, setState] = React.useState({
+        firstName: globalState.user.firstName.get(),
+        lastName: globalState.user.lastName.get(),
+        phone: globalState.user.phone.get(),
+        city: globalState.user.city.get(),
+        adres: globalState.user.adres.get()
+    });
     const [type, setType] = React.useState();
     const [typePay, setTypePay] = React.useState();
 
 
     const onSell =()=> {
         EVENT.emit("newBay", {
-            ...globalState.user.basket.get(), 
+            basket: globalState.user.basket.get(), 
             total: total, 
-            delivery: type
+            delivery: type,
+            target: state
         });
     }
     const onState =(name, value)=> {
-       
+        let copy = state
+        copy[name] = value
+        setState(copy)
     }
 
 
@@ -48,16 +45,27 @@ const Pays =({onOpen, setOpen})=> {
             labelledby="menu-button"
         >
             <div className="delivery">
-                <Input placeholder="имя" onChange={(e)=> onState("firstName",e.value)} value={stat.firstName.get()}/>
-                <Input placeholder="фамилия" onChange={(e)=> onState("lastName",e.value)} value={stat.lastName.get()}/>
-                <Input placeholder="номер телефона" onChange={(e)=> onState("phone",e.value)} value={stat.phone.get()}/>
-                <Input placeholder="город" onChange={(e)=> onState("city",e.value)} value={stat.city.get()}/>
-                <Select placeholder={type} onChange={(e)=> setType(e.value)} options={options} value={type}/>
-                <Select placeholder={typePay} onChange={(e)=> setTypePay(e.value)} options={options2} value={typePay}/>
+                <Input placeholder="имя" onChange={(e)=> onState("firstName",e.value)} value={state.firstName}/>
+                <Input placeholder="фамилия" onChange={(e)=> onState("lastName",e.value)} value={state.lastName}/>
+                <Input placeholder="номер телефона" onChange={(e)=> onState("phone",e.value)} value={state.phone}/>
+                <Input placeholder="город" onChange={(e)=> onState("city",e.value)} value={state.city}/>
+
+                <Select 
+                    placeholder={type} 
+                    onChange={(e)=> setType(e.value)} 
+                    options={globalState.schemes.delivery.get()} 
+                    value={type}
+                />
+                <Select 
+                    placeholder={typePay} 
+                    onChange={(e)=> setTypePay(e.value)} 
+                    options={globalState.schemes.pays.get()} 
+                    value={typePay}
+                />
                 <Input 
                     placeholder={type==="nov" ? "отделение" : "адресс"} 
                     onChange={(e)=> onState(type, e.value)} 
-                    value={type==="nov" ? "" : stat.adres.get()}
+                    value={type==="nov" ? "" : state.adres}
                 />
                 <Button onClick={onSell}> 
                     Оформить 
@@ -110,6 +118,7 @@ export function PanelBays() {
                 <Button style={{color:"white"}} flat color="blueviolet" auto onClick={()=> setOpen(false)}>
                     К странице
                 </Button>
+                
                 <div style={{marginTop:"5%"}}>
                     {(basket.length > 0) && basket.map((val, index)=> (
                         <div style={{display:"flex",flexDirection:"row"}} key={index}>

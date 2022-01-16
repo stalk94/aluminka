@@ -2,7 +2,7 @@ import { createState } from '@hookstate/core';
 
 
 const globalState = createState({
-    dir: 'index',
+    dir: {id:'index', name:'Главная'},
     tovars: {},
     slides: {
         index: [
@@ -63,6 +63,13 @@ const globalState = createState({
         }]
     },
     schemes: {
+        delivery: [
+            {value: 'nov', label: 'Новой почтой'}, 
+            {value: 'samo', label: 'Самовывоз'}
+        ],
+        pays: [
+            {value: 'naloj', label: 'Наложенный платеж'}
+        ],
         admin: [{
             title: "Базовое",
             type: "object",
@@ -182,7 +189,7 @@ const globalState = createState({
             {id:'info', name:'Помошь'},
             {id:'index', name:'Главная'},
             {id:'pays', name:'Оплата и доставка'},
-            {id:'info', name:'Услуги'},
+            {id:'services', name:'Услуги'},
             {id:'contact', name:'Контакты'}
         ]
     }

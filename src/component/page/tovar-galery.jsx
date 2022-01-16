@@ -9,6 +9,10 @@ import { useState } from '@hookstate/core';
 import globalState from "../../global.state";
 
 
+const sortOptions = [
+    {label: 'по падению цены', value: '!price'},
+    {label: 'по росту цены', value: 'price'},
+];
 
 
 export default function Tovars({useClick}) {
@@ -17,10 +21,6 @@ export default function Tovars({useClick}) {
     const [sortKey, setSortKey] = React.useState(null);
     const [sortOrder, setSortOrder] = React.useState(null);
     const [sortField, setSortField] = React.useState(null);
-    const sortOptions = [
-        {label: 'по падению цены', value: '!price'},
-        {label: 'по росту цены', value: 'price'},
-    ];
 
     
     const onSortChange =(event)=> {
@@ -44,10 +44,10 @@ export default function Tovars({useClick}) {
                     <img  src={data.images[0]} alt={data.name} />
                     <div className="product-list-detail">
                         <div className="product-name">
-                            {data.name}
+                            { data.name }
                         </div>
                         <div className="product-description">
-                            {data.description}
+                            { data.description }
                         </div>
                         <i className="pi pi-tag product-category-icon"></i>
                         <span className="product-category">{data.category}</span>

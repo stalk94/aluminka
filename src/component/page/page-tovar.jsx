@@ -25,8 +25,12 @@ export default function Page(props) {
 
     
     const toBay =()=> {
-        setTotal({old:props.price * count, new:props.priceMin * count})
-        EVENT.emit("add", {count:count, tovar:props})
+        setTotal({old:props.price * count, new:props.priceMin * count});
+
+        EVENT.emit("add", {
+            count: count, 
+            tovar: props
+        });
         setCount(0)
     }
     const onChange =(ev)=> {
@@ -55,8 +59,12 @@ export default function Page(props) {
                     />
                 </div>
                 <div className="bodyGalery">
-                    <h2 style={{paddingLeft:"10px"}} className="name-tovar">{ props.name }</h2>
-                    <p>Модель: { props.model }</p>
+                    <h2 style={{paddingLeft:"10px"}} className="name-tovar">
+                        { props.name }
+                    </h2>
+                    <p>
+                        Модель: { props.model }
+                    </p>
                     <div className="price" style={{backgroundColor:"rgb(20,20,20)",marginTop:"2%",display:"flex",flexDirection:"row"}}>
                         Цена:
                         <h2 style={{textDecoration:"line-through",color:"red"}}>{ props.price??100 }грн /</h2>
@@ -93,9 +101,10 @@ export default function Page(props) {
                     <p className="info">Ширина: { props.width }</p>
                     <p className="info">Высота: { props.vusota }</p>
                     <p className="info">Длинна: { props.height }</p>
-                        {props.colors && <p className="info">Цвет: { 
-                            <Colors select={select} useSelect={setSelect} data={props.colors}/> 
-                        }</p>
+                    {props.colors && 
+                        <p className="info"> 
+                            Цвет: { <Colors select={select} useSelect={setSelect} data={props.colors}/> }
+                        </p>
                     }
                 </div>
             </section>

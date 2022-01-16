@@ -17,10 +17,7 @@ export default function Index() {
     const glob = useState(globalState);
 
     const useClick =(num)=> {
-        console.log(num)
-    }
-    const useCatalog =(cat)=> {
-        
+        // 2 кнопки прайсов
     }
     const useDir =(dir)=> {
         glob.set((st)=> {

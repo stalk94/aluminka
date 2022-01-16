@@ -33,11 +33,11 @@
         "uuid-token-generator": "^1.0.0"
     },
     "devDependencies": {
+        "@babel/preset-react": "^7.16.7",
         "@coreui/coreui": "^4.1.0",
         "@coreui/react": "^4.1.0",
         "@hookstate/core": "^3.0.13",
         "@mantine/core": "^3.4.0",
-        "@babel/preset-react": "^7.16.7",
         "@mantine/notifications": "^3.4.2",
         "@nextui-org/react": "^1.0.1-alpha.47",
         "@parcel/babel-preset-env": "^2.0.1",
