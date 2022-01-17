@@ -4,7 +4,6 @@ import { Column } from 'primereact/column';
 import { SplitButton } from 'primereact/splitbutton';
 import { Card } from 'primereact/card';
 import { MiniCard } from "./mini-forms";
-import { useState } from '@hookstate/core';
 import globalState from "../../global.state";
 
 
@@ -70,7 +69,7 @@ function LeedBay({bay}) {
                     </Column>
                     <Column field="priceMin" header="Цена" body={(rowData)=> <span>{rowData.priceMin}</span>}></Column>
                     <Column field="category" header="Категория" body={(rowData)=> <span>{rowData.category}</span>}></Column>
-                    <Column field="model" header="Модель" body={}></Column>
+                    <Column field="model" header="Модель" body={(rowData)=> <span>{rowData.model}</span>}></Column>
                     <Column header="кол-во" body={(rowData)=> <span>{ rowData.count }</span>}></Column>
                 </DataTable>
             </div>
@@ -89,7 +88,9 @@ export default function Leeds() {
 
     return(
         <div>
-
+            {leeds.map((leedData, i)=> {
+                <LeedBay key={i} bay={leedData}/>
+            })}
         </div>
     );
 }

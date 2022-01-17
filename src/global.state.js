@@ -43,6 +43,7 @@ const globalState = createState({
         firstName: '',
         lastName: '',
         login: 'anonim',
+        password: '',
         city: '',
         phone: '+3',
         adres: '',

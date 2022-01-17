@@ -5,10 +5,10 @@ import { Title, Body, Footer, Button } from "./base";
 
 
 export default function Modal(props) {
-    const [child, setChildren] = React.useState()
-    const [title, setTitle] = React.useState('')
-    const [btnTitle, setBtnTitle] = React.useState('click')
-    const [size, setSize] = React.useState(null)
+    const [child, setChildren] = React.useState();
+    const [title, setTitle] = React.useState('');
+    const [btnTitle, setBtnTitle] = React.useState('click');
+    const [size, setSize] = React.useState(null);
     const [visible, setVisible] = React.useState(props.visible??false);
     
 

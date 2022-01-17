@@ -1,4 +1,4 @@
-import process from "process/browser";
+import globalState from "./global.state";
 
 
 class EventEmmitter {
@@ -38,7 +38,6 @@ class EventEmmitter {
 
 window.EVENT = new EventEmmitter();
 window.gurl = document.baseURI;
-window.process = process
 
 
 
@@ -75,18 +74,17 @@ window.send =(url, data, metod, clb)=> {
 }
 window.useSend =(path, data, clb)=> send(path, data, "POST", clb);
 window.authorize =()=> {
-    let login = globalThis.$state.user.login
-    let pass = globalThis.$state.user.password
+    let login = globalState.user.login.get()
+    let pass = globalState.user.password.get()
 
     if(login && pass){
-        send('auth', globalThis.$state.user, 'POST', (data)=> {
-            console.log(data)
+        send('auth', {login:login, password:pass}, 'POST', (data)=> {
             if(!data.error){
-                globalThis.$state.user = data;
+                globalState.user.set(data);
                 EVENT.emit("ok")
             }
             else EVENT.emit("error", data.error)
-        })
+        });
     }
 }
 window.useEmit =(path, e)=> {
@@ -104,7 +102,4 @@ window.useReadFile =(input, clb)=> {
         if(clb) clb(reader.result)
     }
     reader.onerror =()=> EVENT.emit("error", reader.error);
-}
-window.useFetch =(state, key)=> {
-    window.send
 }

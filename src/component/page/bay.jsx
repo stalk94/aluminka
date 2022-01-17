@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Input } from "@nextui-org/react";
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
 import OffCanvas from "react-aria-offcanvas";
 import Select from 'react-select';
 import { useDidMount } from "rooks";
@@ -45,10 +46,22 @@ const Pays =({onOpen, setOpen})=> {
             labelledby="menu-button"
         >
             <div className="delivery">
-                <Input placeholder="имя" onChange={(e)=> onState("firstName",e.value)} value={state.firstName}/>
-                <Input placeholder="фамилия" onChange={(e)=> onState("lastName",e.value)} value={state.lastName}/>
-                <Input placeholder="номер телефона" onChange={(e)=> onState("phone",e.value)} value={state.phone}/>
-                <Input placeholder="город" onChange={(e)=> onState("city",e.value)} value={state.city}/>
+                <span className="p-float-label">
+                    <InputText id="inn" value={state.firstName} onChange={(e)=> onState("firstName", e.target.value)} />
+                    <label htmlFor="inn">Имя</label>
+                </span>
+                <span className="p-float-label">
+                    <InputText id="inl" value={state.lastName} onChange={(e)=> onState("lastName", e.target.value)} />
+                    <label htmlFor="inl">Фамилия</label>
+                </span>
+                <span className="p-float-label">
+                    <InputText id="inp" value={state.phone} onChange={(e)=> onState("phone", e.target.value)} />
+                    <label htmlFor="inp">Телефон</label>
+                </span>
+                <span className="p-float-label">
+                    <InputText id="inc" value={state.city} onChange={(e)=> onState("city", e.target.value)} />
+                    <label htmlFor="inc">Город</label>
+                </span>
 
                 <Select 
                     placeholder={type} 
@@ -62,14 +75,12 @@ const Pays =({onOpen, setOpen})=> {
                     options={globalState.schemes.pays.get()} 
                     value={typePay}
                 />
-                <Input 
+                <InputText
                     placeholder={type==="nov" ? "отделение" : "адресс"} 
                     onChange={(e)=> onState(type, e.value)} 
                     value={type==="nov" ? "" : state.adres}
                 />
-                <Button onClick={onSell}> 
-                    Оформить 
-                </Button>
+                <Button label="Оформить" onClick={onSell}/> 
             </div>
         </OffCanvas>
     );
@@ -77,6 +88,7 @@ const Pays =({onOpen, setOpen})=> {
 
 
 export function PanelBays() {
+    const [pays, setPays] = React.useState(false);
     const [view, setView] = React.useState(false);
     const [isOpen, setOpen] = React.useState(false);
     const basket = useState(globalState.user.basket);
@@ -91,6 +103,9 @@ export function PanelBays() {
             tot.news += news*data.count
         });
         return tot;
+    }
+    const useViewClick =()=> {
+        setPays(<Pays total={total().news} setOpen={setView} onOpen={view} />)
     }
     useDidMount(()=> {
         EVENT.on("bay.open", (val)=> {
@@ -107,6 +122,7 @@ export function PanelBays() {
 
     return(
         <>
+            { pays }
             <OffCanvas
                 labelledby="Корзина"
                 height="100%"
@@ -115,9 +131,7 @@ export function PanelBays() {
                 onClose={()=> setOpen(isOpen?false:true)}
                 labelledby="menu-button"
             >
-                <Button style={{color:"white"}} flat color="blueviolet" auto onClick={()=> setOpen(false)}>
-                    К странице
-                </Button>
+                <Button label='К странице' style={{color:"white"}} onClick={()=> setOpen(false)}/>
                 
                 <div style={{marginTop:"5%"}}>
                     {(basket.length > 0) && basket.map((val, index)=> (
@@ -131,9 +145,7 @@ export function PanelBays() {
                     ))}
                 </div>
                 {basket.length > 0 
-                    ? <Button onClick={()=> <Pays total={total().news} setOpen={setView} onOpen={view} />}> 
-                            Оформить Покупку 
-                      </Button> 
+                    ? <Button label='Офрмить покупку' onClick={useViewClick}/> 
                     : <var> Корзина пуста </var>
                 }
                 <div style={{marginTop:"5%",display:"flex",flexDirection:"row"}}> Всего: 

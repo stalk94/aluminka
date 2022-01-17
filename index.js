@@ -42,10 +42,10 @@ const autorize =(login, password)=> {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 app.get("/", (req, res)=> {
-    let token = req.cookies ? req.cookies['token'] : undefined
-    let user = global.activ[token]
+    //let token = req.cookies ? req.cookies['token'] : undefined
+    //let user = global.activ[token]
 
-    res.sendFile('dist/index.html');
+    res.sendFile(__dirname+'/dist/index.html');
 });
 app.get('/getAllTovars', (req, res)=> {
     res.send(db.get("tovars"))

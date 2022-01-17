@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@nextui-org/react';
+import { Button } from "primereact/button";
 import { PhotoGalery } from '../galery';
 import PushPop from "./push-pop";
 
@@ -44,9 +44,7 @@ export default function Page(props) {
     return(
         <div className="View-tovar" style={{display:props.open?"display":"none", overflow:"auto"}}>
             <header>
-                <Button flat color="primary" auto onClick={props.onEnd}>
-                    Назад
-                </Button>
+                <Button label='Назад' icon="pi-angle-double-left" className="p-button-warning" onClick={props.onEnd} />
             </header>
 
             <section style={{textAlign:"center"}}>
@@ -75,9 +73,7 @@ export default function Page(props) {
                             setCount={setCount}
                             count={count}
                         />
-                        <Button flat color="#ff4ecd" auto onClick={toBay}> 
-                            В корзину 
-                        </Button>
+                        <Button label='В корзину' icon="pi-shopping-cart" className="p-button-sucess" onClick={toBay}/> 
                     </div>
                 </div>
             </section>

@@ -2,6 +2,7 @@
     "name": "aluminka",
     "version": "1.0.0",
     "description": "",
+    "main": "index.js",
     "scripts": {
         "build": "vite build src --outDir=../dist",
         "start": "node index.js",
@@ -11,8 +12,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@hookstate/core": "^3.0.13",
-        "ba64": "^3.0.9",
         "cookie-parser": "^1.4.6",
         "crypto-js": "^4.1.1",
         "dotenv": "^10.0.0",
@@ -24,41 +23,38 @@
         "pino-multi-stream": "^6.0.0",
         "pino-pretty": "^7.1.0",
         "quick.db": "^7.1.3",
-        "request": "^2.88.2",
         "serve-favicon": "^2.5.0",
         "shelljs": "^0.8.4",
-        "store-js": "^2.0.4",
-        "styled-components": "^5.3.1",
         "uuid": "^8.3.2",
         "uuid-token-generator": "^1.0.0"
     },
     "devDependencies": {
+        "@babel/cli": "^7.16.8",
+        "@babel/core": "^7.16.7",
+        "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+        "@babel/plugin-transform-runtime": "^7.16.8",
+        "@babel/preset-env": "^7.16.8",
         "@babel/preset-react": "^7.16.7",
         "@coreui/coreui": "^4.1.0",
         "@coreui/react": "^4.1.0",
         "@hookstate/core": "^3.0.13",
-        "@mantine/core": "^3.4.0",
+        "@mantine/core": "^3.6.0",
+        "@mantine/hooks": "^3.6.0",
         "@mantine/notifications": "^3.4.2",
         "@nextui-org/react": "^1.0.1-alpha.47",
-        "@parcel/babel-preset-env": "^2.0.1",
-        "@parcel/transformer-babel": "^2.0.1",
         "@rjsf/core": "^3.2.1",
-        "@svgdotjs/svg.js": "^3.1.1",
         "@szhsin/react-menu": "^2.1.0",
         "@types/crypto-js": "^4.0.2",
-        "@types/jquery": "^3.5.6",
         "@types/node": "^16.7.1",
         "@vitejs/plugin-react": "^1.1.3",
-        "browserify": "^17.0.0",
-        "devextreme": "21.2.3",
-        "devextreme-react": "21.2.3",
+        "devextreme": "^21.2.4",
+        "devextreme-react": "^21.2.4",
         "grommet": "^2.18.0",
         "grommet-icons": "^4.7.0",
         "jsdom": "^19.0.0",
-        "primeflex": "^2.0.0",
+        "primeflex": "2.0.0",
         "primeicons": "^5.0.0",
         "primereact": "^7.1.0",
-        "process": "^0.11.10",
         "react": "^17.0.2",
         "react-aria-offcanvas": "^1.4.3",
         "react-dom": "^17.0.2",
@@ -67,23 +63,7 @@
         "react-responsive-carousel": "^3.2.22",
         "react-select": "^5.1.0",
         "rooks": "^5.8.0",
-        "rxjs": "^7.4.0",
+        "styled-components": "^5.3.1",
         "vite": "^2.7.7"
-    },
-    "babel": {
-        "plugins": [],
-        "presets": [
-            "@babel/preset-react",
-            "@babel/preset-env"
-        ]
-    },
-    "quokka": {
-        "babel": true
-    },
-    "browserify": {
-        "transform": [
-            "reactify",
-            "esmify"
-        ]
     }
 }

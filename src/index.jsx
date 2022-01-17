@@ -1,3 +1,6 @@
+import "primereact/resources/themes/lara-dark-indigo/theme.css";
+import "primereact/resources/primereact.min.css";          
+import "primeicons/primeicons.css";
 import "./global";
 import React from 'react';
 import { useState } from '@hookstate/core';
@@ -16,7 +19,7 @@ import { Button } from 'primereact/button';
 import ReactDOM from "react-dom";
 
 
-const ErrorPage =({txt})=> (
+const ErrPage =({txt})=> (
     <div style={{overflow:"hidden"}}>
     <img style={{position:"absolute",width:"100%",height:"100%",top:"0px",left:"0px"}} 
         src="https://www.inksystem.biz/uploaded/img/article/error-5100.jpg"
@@ -61,7 +64,7 @@ const App =()=> {
     }
     
     useDidMount(()=> {
-        if(!window.test) window.send('getAllTovars', {}, 'GET', (data)=> {
+        window.send('getAllTovars', {}, 'GET', (data)=> {
             glob.tovars.set(data);
         });
         EVENT.on("close.modal", (val)=> {
@@ -136,7 +139,7 @@ const App =()=> {
 
 
     return(
-        <React.StrictMode>
+        <div>
             <PanelBays />
             <div style={{position:"fixed",width:"100%",backgroundColor:"#000000e6",zIndex:"9"}}>
                 { authorize===false && <AuthForm opened={opened} setOpened={setOpened} /> }
@@ -149,20 +152,12 @@ const App =()=> {
                 ?  <Index />
                 : (glob.dir.id.get()!=='services'&&glob.dir.id.get()!=='pays'&&glob.dir.id.get()!=='contact'&&glob.dir.id.get()!=='index'
                     ? <Shop />
-                    : <ErrorPage txt={"Страница в разработке"}/>
+                    : <ErrPage txt="Страница в разработке"/>
                 )
             }
-        </React.StrictMode>
+        </div>
     );
 }
 
 
-
-ReactDOM.render(
-    <MantineProvider theme={{colorScheme: 'dark'}}>
-        <NotificationsProvider color='' position="bottom-right" zIndex={2077}>
-            <App />
-        </NotificationsProvider>
-    </MantineProvider>,
-    document.querySelector(".root")
-);
+ReactDOM.render(<NotificationsProvider color='dark' position="bottom-right" zIndex={2077}><App /></NotificationsProvider>, document.querySelector(".root"));

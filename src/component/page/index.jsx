@@ -1,6 +1,3 @@
-import "primereact/resources/themes/lara-dark-indigo/theme.css";
-import "primereact/resources/primereact.min.css";          
-import "primeicons/primeicons.css"; 
 import React from 'react';
 import { Button } from 'primereact/button';
 import Promo from "../promo";

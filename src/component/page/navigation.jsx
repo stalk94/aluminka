@@ -1,7 +1,4 @@
-import "primereact/resources/themes/lara-dark-indigo/theme.css";
-import "primereact/resources/primereact.min.css";          
-import "primeicons/primeicons.css"; 
-import 'primeflex/primeflex.css';
+import "primeflex/primeflex.css";
 import React from 'react';
 import { RiShoppingBasketLine } from 'react-icons/ri';
 import { Card } from 'primereact/card';

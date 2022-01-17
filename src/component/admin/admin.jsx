@@ -2,11 +2,8 @@ import React from "react";
 import { AdminFormCreate } from "./tovar-create";
 import { Toolbar } from 'primereact/toolbar';
 import FileManagers from "../file-manager";
-import { useIntervalWhen } from "rooks";
 import { Button } from 'primereact/button';
 import Leeds from './task-bay';
-import { useState } from '@hookstate/core';
-import globalState from "../../global.state";
 
 
 const Statstics =(props)=> {
