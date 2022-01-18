@@ -31,7 +31,6 @@ export default function Shop() {
 
     return(
         <div>
-            <div className="app"></div>
             <div style={{zIndex:"10"}} className="Bays"></div>
             <div className="Modal"></div>
             <Header 

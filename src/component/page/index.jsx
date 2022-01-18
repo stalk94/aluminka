@@ -10,7 +10,7 @@ import Header from "./header";
 
 
 
-export default function Index() {
+export default function Index({setOpened}) {
     const glob = useState(globalState);
 
     const useClick =(num)=> {
@@ -26,7 +26,6 @@ export default function Index() {
 
     return(
         <>
-            <div className="app"></div>
             <div className="Modal"></div>
             <div style={{zIndex:"10"}} className="Bays"></div>
             <Header useClickUrl={useDir} />

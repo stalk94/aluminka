@@ -5,6 +5,7 @@ import { SplitButton } from 'primereact/splitbutton';
 import { Card } from 'primereact/card';
 import { MiniCard } from "./mini-forms";
 import globalState from "../../global.state";
+import { useIntervalWhen } from 'rooks';
 
 
 
@@ -59,18 +60,22 @@ function LeedBay({bay}) {
         <div className="datatable-templating-demo">
             <div className="card">
                 <DataTable value={leed.basket} header={header} footer={footer} responsiveLayout="scroll">
-                    <Column field="name" header="Наименование"></Column>
+                    <Column field="name" header="Наименование"/>
                     <Column 
                         header="Фото" 
                         body={(rowData)=> (
-                            <img style={{height:"60px"}} className="product-image" src={rowData.images[0]}/>
+                            <img 
+                                style={{height:"60px"}} 
+                                className="product-image" 
+                                src={rowData.images[0]}
+                            />
                         )}
                     >
                     </Column>
-                    <Column field="priceMin" header="Цена" body={(rowData)=> <span>{rowData.priceMin}</span>}></Column>
-                    <Column field="category" header="Категория" body={(rowData)=> <span>{rowData.category}</span>}></Column>
-                    <Column field="model" header="Модель" body={(rowData)=> <span>{rowData.model}</span>}></Column>
-                    <Column header="кол-во" body={(rowData)=> <span>{ rowData.count }</span>}></Column>
+                    <Column field="priceMin" header="Цена" body={(rowData)=> <span>{rowData.priceMin}</span>}/>
+                    <Column field="category" header="Категория" body={(rowData)=> <span>{rowData.category}</span>}/>
+                    <Column field="model" header="Модель" body={(rowData)=> <span>{rowData.model}</span>}/>
+                    <Column header="кол-во" body={(rowData)=> <span>{ rowData.count }</span>}/>
                 </DataTable>
             </div>
         </div>
@@ -79,7 +84,7 @@ function LeedBay({bay}) {
 
 
 export default function Leeds() {
-    const [leeds, setLeeds] = React.useState();
+    const [leeds, setLeeds] = React.useState([]);
 
     useIntervalWhen(()=> 
         window.send('bays', {}, 'GET', (data)=> 
@@ -88,9 +93,12 @@ export default function Leeds() {
 
     return(
         <div>
-            {leeds.map((leedData, i)=> {
-                <LeedBay key={i} bay={leedData}/>
-            })}
+            {leeds.length > 0
+                ? leeds.map((leedData, i)=> {
+                    <LeedBay key={i} bay={leedData}/>
+                })
+                : <var>Новых заявок пока нет</var>
+            }
         </div>
     );
 }

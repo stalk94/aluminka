@@ -10,7 +10,7 @@ const pinoms = require('pino-multi-stream');
 const cookieParser = require('cookie-parser');
 const { setPasswordHash, tokenGeneration, getPasswordHash } = require("./server/func");
 const { time, scheme } = require("./server/midlevare");
-
+const { usePay } = require("./services/payer");
 
 
 app.use(cookieParser());
@@ -75,6 +75,10 @@ app.post('/auth', jsonParser, (req, res)=> {
                 let userCopy = Object.assign({}, user);
                 delete userCopy.password;
                 userCopy.token = tokenGeneration(req.body.login, req.body.password);
+                if(userCopy.login==='admin'){
+                    global.adminToken = tokenGeneration("admin", process.env.master)
+                    userCopy.adminToken = global.adminToken
+                }
                 global.activ[userCopy.token] = userCopy;
 
                 res.cookie('token', userCopy.token);
@@ -161,25 +165,7 @@ app.post("/bay", jsonParser, (req, res)=> {
     else logger.error(`[🔥] bay error: ${req.body.toString()}`);
 });
 app.post("/payCart", jsonParser, (req, res)=> {
-    let user;
-    if(verify.isLogin(req.body.login) && db.has("user."+req.body.login)) user = db.get("user."+req.body.login)
-    else user = {login: 'anonimys'}
-
-    let bay = new Bay(user)
-    let total = bay.calculate(req.body.data)
-    bay.id((val)=> {
-        let html = liqpay.cnb_form({
-            'action'         : 'pay',
-            'amount'         : total,
-            'currency'       : 'UAH',
-            'description'    : 'description text',
-            'order_id'       : `order_id_${val}`,
-            'version'        : '3'
-        });
-    
-        logger.info("[💵]: "+html)
-        res.send(html)
-    });
+    res.send(usePay(req.body.login, req.body.bays));
 });
 app.post(/hook/, jsonParser, (req, res)=> {
     let p = new URL(req.url, `http://${request.headers.host}`);
@@ -216,37 +202,18 @@ app.post("/file", jsonParser, (req, res)=> {
     });
 });
 app.post("/create", jsonParser, (req, res)=> {
-    let token = req.cookies['token'];
-    let user = global.activ[token]
+    let user = db.get("user.admin");
     
-    if(req.body && user && useAdminVerify(user)!==false){
+    if(req.body && user && useAdminVerify(user)!==false && req.body.adminToken && global.adminToken===req.body.adminToken){
         logger.info("[✒️🛒]:добавлен товар: shop/"+req.body.category);
         if(req.body.category){
+            delete req.body.adminToken;
             db.push("tovars."+req.body.category, req.body);
             res.send({sucess: req.body.name});
         }
         else res.send({error:"catalog error"})
     }
     else res.send({error:"ошибка авторизации администратора, неудачные попытки более 5 раз приведут к бану по ip"})
-});
-app.post("/testPay", jsonParser, (req, res)=> {
-    let user;
-    if(verify.isLogin(req.body.login) && db.has("user."+req.body.login)) user = db.get("user."+req.body.login)
-    else user = {login:'anonimys'}
-
-    let bay = new Bay(user)
-    let total = bay.calculate(req.body.data)
-    let html = liqpay.cnb_form({
-        'action'         : 'pay',
-        'amount'         : total,
-        'currency'       : 'UAH',
-        'description'    : 'description text',
-        'order_id'       : `order_id_${bay.id()}`,
-        'version'        : '3'
-    });
-
-    logger.info("[💵]test: "+html)
-    res.send(html)
 });
 
 

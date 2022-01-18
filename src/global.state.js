@@ -60,7 +60,7 @@ const globalState = createState({
         files: [{
             name: 'Documents',
             isDirectory: true,
-            items:[]
+            items:[{}]
         }]
     },
     schemes: {
@@ -105,13 +105,13 @@ const globalState = createState({
             type: "object",
             required: ["title"],
             properties: {
-                standart:{
+                price:{
                     title: "цена: ",
                     type: "number",
                     default: 100,
                     minLength: 1
                 }, 
-                action:{
+                priceMin:{
                     title: "акционная цена: ",
                     type: "number",
                     default: 80

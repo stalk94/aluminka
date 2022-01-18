@@ -36,11 +36,18 @@ class EventEmmitter {
 
 
 
-window.EVENT = new EventEmmitter();
-window.gurl = document.baseURI;
+globalThis.EVENT = new EventEmmitter();
+globalThis.gurl = 'http://194.61.0.15/'; // document.baseURI
 
 
-
+window.store = {
+    getToken() {
+        return localStorage.getItem("token")
+    },
+    setToken(data) {
+        localStorage.setItem("token", data)
+    }
+}
 window.send =(url, data, metod, clb)=> {
     let response;
     
@@ -74,11 +81,11 @@ window.send =(url, data, metod, clb)=> {
 }
 window.useSend =(path, data, clb)=> send(path, data, "POST", clb);
 window.authorize =()=> {
-    let login = globalState.user.login.get()
-    let pass = globalState.user.password.get()
+    let login = globalState.user.login.get();
+    let pass = globalState.user.password.get();
 
     if(login && pass){
-        send('auth', {login:login, password:pass}, 'POST', (data)=> {
+        window.send('auth', {login:login, password:pass}, 'POST', (data)=> {
             if(!data.error){
                 globalState.user.set(data);
                 EVENT.emit("ok")

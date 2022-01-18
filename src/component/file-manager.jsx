@@ -8,7 +8,7 @@ import globalState from "../global.state";
 
 
 
-export default function FileManagers(props) {
+export default function FileManagers({visible, height}) {
     const [state, setState] = React.useState({})
     
 
@@ -26,22 +26,20 @@ export default function FileManagers(props) {
         }
     }
     const onLoadFile =(e)=> {
-        console.log(e)
         globalState.user.files.set(e)
     }
 
 
     return(
-        <div style={{visibility:props.visible}} className="FileManager">
-            <FileManager height={props.height??450}
+        <div style={{visibility:visible?"visible":"hidden"}} className="FileManager">
+            <FileManager height={height??450}
                 fileSystemProvider={globalState.user.files.get()}
                 customizeThumbnail={customizeIcon}
                 onOptionChanged={onOptionChanged}
                 onFileUploaded={onLoadFile}
             >
-                <ItemView mode={state}></ItemView>
-                <Permissions {...globalState.user.permision.get()}>
-                </Permissions>
+                <ItemView mode={state}/>
+                <Permissions {...globalState.user.permision.get()}/>
             </FileManager>
         </div>
     );

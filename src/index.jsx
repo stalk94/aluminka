@@ -4,7 +4,6 @@ import "primeicons/primeicons.css";
 import "./global";
 import React from 'react';
 import { useState } from '@hookstate/core';
-import { MantineProvider } from '@mantine/core';
 import { useNotifications, NotificationsProvider } from '@mantine/notifications';
 import Admin from './component/admin/admin';
 import User from "./component/user";
@@ -17,6 +16,7 @@ import Index from './component/page/index';
 import globalState from "./global.state";
 import { Button } from 'primereact/button';
 import ReactDOM from "react-dom";
+import { MantineProvider } from "@mantine/core";
 
 
 const ErrPage =({txt})=> (
@@ -65,6 +65,7 @@ const App =()=> {
     
     useDidMount(()=> {
         window.send('getAllTovars', {}, 'GET', (data)=> {
+            console.log("tovars: ", data)
             glob.tovars.set(data);
         });
         EVENT.on("close.modal", (val)=> {
@@ -82,15 +83,18 @@ const App =()=> {
             }
             else setOpened(true);
         });
-        EVENT.on("create.tovar", (data)=> send("create", data, "POST", (res)=> {
-            if(!res.error){
-                useNotify(notifications, "sucess", 'Успешно добавлено', res.sucess);
-                window.send('getAllTovars', {}, 'GET', (data)=> {
-                    glob.tovars.set(data);
-                });
-            }
-            else useExit(res);
-        }));
+        EVENT.on("create.tovar", (data)=> {
+            if(globalState.user.adminToken.get()) send("create", {...data, adminToken:globalState.user.adminToken.get()}, "POST", (res)=> {
+                if(!res.error){
+                    useNotify(notifications, "sucess", 'Успешно добавлено', res.sucess);
+                    window.send('getAllTovars', {}, 'GET', (data)=> {
+                        glob.tovars.set(data);
+                    });
+                }
+                else useExit(res);
+            });
+            else useExit();
+        });
         EVENT.on("reg", (data)=> send("reg", data, "POST", (res)=> {
             if(!res.error||res.sucess){
                 EVENT.emit("sucess.reg", '')
@@ -137,19 +141,18 @@ const App =()=> {
         EVENT.on("sucess", (data)=> useNotify(notifications, "sucess", 'Успешно', data));
     });
 
-
     return(
         <div>
             <PanelBays />
             <div style={{position:"fixed",width:"100%",backgroundColor:"#000000e6",zIndex:"9"}}>
-                { authorize===false && <AuthForm opened={opened} setOpened={setOpened} /> }
-                {(authorize===true && glob.get().user.permision.create) 
-                    ? <Admin setOpen={setOpened} visible={opened} permisions={glob.get().user.permision} /> 
+                { authorize===false && <AuthForm setAuthorize={setAuthorize} opened={opened} setOpened={setOpened} /> }
+                {(authorize===true && glob.user.permision.create.get()) 
+                    ? <Admin setOpen={setOpened} permisions={glob.user.permision.get()} /> 
                     : <User setOpen={setOpened} visible={opened} />
                 }
             </div>
             {glob.dir.id.get()==='index' 
-                ?  <Index />
+                ?  <Index setOpen={setOpened} />
                 : (glob.dir.id.get()!=='services'&&glob.dir.id.get()!=='pays'&&glob.dir.id.get()!=='contact'&&glob.dir.id.get()!=='index'
                     ? <Shop />
                     : <ErrPage txt="Страница в разработке"/>
@@ -160,4 +163,10 @@ const App =()=> {
 }
 
 
-ReactDOM.render(<NotificationsProvider color='dark' position="bottom-right" zIndex={2077}><App /></NotificationsProvider>, document.querySelector(".root"));
+ReactDOM.render(
+    <MantineProvider theme={{colorScheme:'dark'}}>
+        <NotificationsProvider color='dark' position="bottom-right" zIndex={2077}>
+            <App />
+        </NotificationsProvider>
+    </MantineProvider>, 
+document.querySelector(".root"));

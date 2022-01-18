@@ -28,7 +28,14 @@ export default function RegForm(props) {
         EVENT.on("error.reg", ()=> setVisible(false));
         EVENT.on("error.auth", ()=> setVisible(false));
     });
-    React.useEffect(()=> setOpened(props.opened), [props])
+    React.useEffect(()=> {
+        let user = JSON.parse(localStorage.getItem("user"));
+        if(user){
+            state.user.set(user);
+            props.setAuthorize(true)
+        }
+        setOpened(props.opened);
+    }, [props])
 
     
     return(

@@ -26,17 +26,13 @@ const Chat =()=> (
     </svg>
 );
 const Burger =()=> {
-    const useSend =(data)=> fetch(document.baseURI+'auth', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(data)
-    }).then((value)=> console.log(value))
-    
+    const onClick =()=> {
+        EVENT.emit("admin.visible", true)
+        EVENT.emit("open.modal")
+    }
 
     return(
-        <div onClick={()=> EVENT.emit("open.modal", 'xru')}>
+        <div onClick={onClick}>
             <svg xmlns="http://www.w3.org/2000/svg" 
                 width="32" 
                 height="32" 

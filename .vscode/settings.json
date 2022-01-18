@@ -61,7 +61,6 @@
         "src\\component/base.js": true,
         "src\\component/galery.js": true,
         "src\\component\\page/list-tovar.jsx": true,
-        "src\\component/authorize.jsx": true,
         "src\\component/editor.jsx": true,
         "src\\component/promo.jsx": true,
         "src\\component/galery.jsx": true,
