@@ -6,7 +6,7 @@
     "scripts": {
         "build": "vite build src --outDir=../dist --sourcemap",
         "start": "node index.js",
-        "test": "vite src"
+        "test": "vite src/component"
     },
     "keywords": [],
     "author": "",

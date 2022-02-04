@@ -33,7 +33,7 @@ const ErrPage =({txt})=> (
         <div style={{zIndex:"2",position:"fixed",left:"42%",top:"10%"}} className="p-text-center">{txt}</div>
     </div>
 );
-export const useNotify =(notifications, type, title, massage)=> {
+const useNotify =(notifications, type, title, massage)=> {
     let color = type==='sucess' ? 'green' : (type==='warn'?'orange':'red');
     let icon = type==='sucess' 
         ? <StatusGood/> 
@@ -62,7 +62,6 @@ const App =()=> {
         localStorage.clear()
         document.location.reload()
     }
-    
     useDidMount(()=> {
         window.send('getAllTovars', {}, 'GET', (data)=> {
             console.log("tovars: ", data)
@@ -84,7 +83,7 @@ const App =()=> {
             else setOpened(true);
         });
         EVENT.on("create.tovar", (data)=> {
-            if(globalState.user.adminToken.get()) send("create", {...data, adminToken:globalState.user.adminToken.get()}, "POST", (res)=> {
+            if(globalState.user.adminToken.get()) window.send("create", {...data, adminToken:globalState.user.adminToken.get()}, "POST", (res)=> {
                 if(!res.error){
                     useNotify(notifications, "sucess", 'Успешно добавлено', res.sucess);
                     window.send('getAllTovars', {}, 'GET', (data)=> {
@@ -146,7 +145,7 @@ const App =()=> {
             <PanelBays />
             <div style={{position:"fixed",width:"100%",backgroundColor:"#000000e6",zIndex:"9"}}>
                 { authorize===false && <AuthForm setAuthorize={setAuthorize} opened={opened} setOpened={setOpened} /> }
-                {(authorize===true && glob.user.permision.create.get()) 
+                {(authorize===true && glob.user.permision.create && glob.user.permision.create.get()) 
                     ? <Admin setOpen={setOpened} permisions={glob.user.permision.get()} /> 
                     : <User setOpen={setOpened} visible={opened} />
                 }

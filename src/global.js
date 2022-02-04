@@ -37,7 +37,7 @@ class EventEmmitter {
 
 
 globalThis.EVENT = new EventEmmitter();
-globalThis.gurl = 'http://194.61.0.15/'; // document.baseURI
+globalThis.gurl = document.baseURI; // document.baseURI
 
 
 window.store = {

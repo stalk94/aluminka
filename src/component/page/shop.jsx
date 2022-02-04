@@ -43,7 +43,7 @@ export default function Shop() {
                 </section>
                 <section style={{width:"100%",backgroundColor:"#151616"}}>
                     <h2>Выгодные предложения:</h2>
-                    <div className="Slider">
+                    <div style={{height:"50%"}}>
                         <PhotoGalery data={onDir()} />
                     </div>
                 </section>

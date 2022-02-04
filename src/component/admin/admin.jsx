@@ -1,10 +1,13 @@
+import "../../css/adminka.css";
 import React from "react";
 import { AdminFormCreate } from "./tovar-create";
 import { Toolbar } from 'primereact/toolbar';
-import FileManagers from "../file-manager";
 import { Button } from 'primereact/button';
 import Leeds from './task-bay';
+import DataBase from "./database";
 import { useDidMount } from "rooks";
+
+
 
 
 const Statstics =()=> {
@@ -15,14 +18,6 @@ const Statstics =()=> {
     );
 }
 const Settings =()=> {
-    return(
-        <div>
-            <var>данный раздел в разработке</var>
-        </div>
-    );
-}
-
-const DataBaseEditor =()=> {
     return(
         <div>
             <var>данный раздел в разработке</var>
@@ -43,7 +38,7 @@ export default function Admin({setOpen}) {
         else if(dir==='setings') setBody(<Settings />);
         else if(dir==='base') setBody(<Statstics />);
         else if(dir==='leeds') setBody(<Leeds />);
-        else if(dir==='db') setBody(<DataBaseEditor />);
+        else if(dir==='db') setBody(<DataBase />);
         else setOpen(false)
     }
     useDidMount(()=> {

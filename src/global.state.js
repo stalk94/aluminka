@@ -197,5 +197,4 @@ const globalState = createState({
 });
 
 
-
 export default globalState

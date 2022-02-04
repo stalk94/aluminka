@@ -96,7 +96,7 @@ export function PanelBays() {
 
     const total =()=> {
         let tot = {news:0, old:0};
-        basket.forEach((data, i)=> {
+        if(basket.forEach) basket.forEach((data, i)=> {
             let old = data.tovar.price
             let news = data.tovar.priceMin
             tot.old += old*data.count
